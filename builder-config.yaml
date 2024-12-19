@@ -1,0 +1,23 @@
+dist:
+  name: otelcol
+  description: Custom OTel Collector distribution
+  output_path: ./otelcol-dev
+
+exporters:
+  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.116.0
+  - gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.116.0
+  - gomod: go.opentelemetry.io/collector/exporter/nopexporter v0.116.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/fileexporter v0.116.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/elasticsearchexporter v0.116.0
+
+processors:
+  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.116.0
+
+receivers:
+  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.116.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver v0.116.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver v0.116.0
+    import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver
+    name: 'metricsgenreceiver'
+    path: 'metricsgenreceiver'
+

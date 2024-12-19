@@ -1,0 +1,11 @@
+type: metricsgen
+
+status:
+  class: receiver
+  stability:
+    development: [metrics]
+  distributions: [contrib]
+  codeowners:
+    active: [felixbarny]
+
+tests:

@@ -1,0 +1,11 @@
+metricsgen:
+  start_time: "2024-12-17T00:00:00Z"
+  end_time: "2024-12-17T00:00:30Z"
+  interval: 30s
+  path: testdata/metricstemplate.json
+  seed: 123
+  scale: 10
+  resource_attributes:
+    host.name: "host-{{.ID}}"
+    host.ip: [ "{{.RandomIP}}", "{{.RandomIP}}" ]
+    host.mac: [ "{{.RandomMAC}}", "{{.RandomMAC}}" ]

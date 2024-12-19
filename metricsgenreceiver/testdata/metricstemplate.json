@@ -1,0 +1,93 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "foo"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "172.18.0.2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "02-42-AC-12-00-02"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver/internal/scraper/loadscraper",
+            "version": "0.115.0"
+          },
+          "metrics": [
+            {
+              "name": "system.cpu.load_average.15m",
+              "description": "Average CPU Load over 15 minutes.",
+              "unit": "{thread}",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528689759382",
+                    "asDouble": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "system.cpu.load_average.1m",
+              "description": "Average CPU Load over 1 minute.",
+              "unit": "{thread}",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528689759382",
+                    "asDouble": 0
+                  }
+                ]
+              }
+            },
+            {
+              "name": "system.cpu.load_average.5m",
+              "description": "Average CPU Load over 5 minutes.",
+              "unit": "{thread}",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528689759382",
+                    "asDouble": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "schemaUrl": "https://opentelemetry.io/schemas/1.9.0"
+    }
+  ]
+}

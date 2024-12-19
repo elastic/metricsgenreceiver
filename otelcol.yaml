@@ -1,0 +1,35 @@
+receivers:
+  metricsgen:
+    start_time: "2024-12-17T00:00:00Z"
+    end_time: "2024-12-18T00:00:00Z"
+    interval: 10s
+    real_time: false
+    exit_after_end: true
+    path: hostmetrics.json.tmpl
+    #path: metricsgenreceiver/testdata/metricstemplate.json
+    seed: 123
+    scale: 100
+    template_vars:
+      devices: 10
+    resource_attributes:
+      host.name: "host-{{.ID}}"
+      host.ip: [ "{{.RandomIP}}", "{{.RandomIP}}" ]
+      host.mac: [ "{{.RandomMAC}}", "{{.RandomMAC}}" ]
+
+exporters:
+  debug:
+    verbosity: detailed
+  file:
+    path: ./file-exporter/metrics-generated.json
+  nop:
+
+service:
+  pipelines:
+    #metrics/hostmetrics:
+    #  receivers: [hostmetrics/system]
+    #  processors: [resourcedetection]
+    #  exporters: [debug, file/metrics]
+    metrics:
+      receivers: [metricsgen]
+      exporters: [nop]
+
