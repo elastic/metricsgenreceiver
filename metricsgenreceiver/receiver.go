@@ -104,6 +104,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 	ctx = context.Background()
 	ctx, r.cancel = context.WithCancel(ctx)
 	go func() {
+		start := time.Now()
 		ticker := time.NewTicker(r.cfg.Interval)
 		defer ticker.Stop()
 		dataPoints := 0
@@ -120,7 +121,12 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			}
 			currentTime = currentTime.Add(r.cfg.Interval)
 		}
-		r.settings.Logger.Info("finished generating metrics", zap.Int("datapoints", dataPoints))
+		duration := time.Now().Sub(start)
+
+		r.settings.Logger.Info("finished generating metrics",
+			zap.Int("datapoints", dataPoints),
+			zap.String("duration", duration.Round(time.Millisecond).String()),
+			zap.Float64("data_points_per_second", float64(dataPoints)/duration.Seconds()))
 		if r.cfg.ExitAfterEnd {
 			componentstatus.ReportStatus(host, componentstatus.NewFatalErrorEvent(errors.New("exiting because exit_after_end is set to true")))
 		}
