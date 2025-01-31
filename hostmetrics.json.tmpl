@@ -340,14 +340,12 @@
               "unit": "{packets}",
               "sum": {
                 "dataPoints": [
-                  {{ range $i := loop 1 .devices }}
-                  {{if gt $i 1}},{{end}}
                   {
                     "attributes": [
                       {
                         "key": "device",
                         "value": {
-                          "stringValue": "dev-{{$i}}"
+                          "stringValue": "lo"
                         }
                       },
                       {
@@ -366,7 +364,121 @@
                       {
                         "key": "device",
                         "value": {
-                          "stringValue": "dev-{{$i}}"
+                          "stringValue": "lo"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "receive"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528686354299",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "tunl0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "transmit"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528686354299",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "tunl0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "receive"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528686354299",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "ip6tnl0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "transmit"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528686354299",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "ip6tnl0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "receive"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528686354299",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "eth0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "transmit"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1734346477000000000",
+                    "timeUnixNano": "1734355528686354299",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "eth0"
                         }
                       },
                       {
@@ -380,7 +492,6 @@
                     "timeUnixNano": "1734355528686354299",
                     "asInt": "0"
                   }
-                  {{end}}
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
