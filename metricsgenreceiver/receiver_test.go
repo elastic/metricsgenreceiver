@@ -43,7 +43,7 @@ func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.M
 			value, _ := r.Attributes().Get("host.name")
 			require.Equal(t, fmt.Sprintf("host-%d", i-offset), value.Str())
 			require.Equal(t, cfg.StartTime, dp.StartTimestamp().AsTime())
-			require.Equal(t, timestamp, dp.Timestamp().AsTime())
+			require.WithinRange(t, dp.Timestamp().AsTime(), timestamp, timestamp.Add(20*time.Millisecond))
 		})
 	}
 }

@@ -113,7 +113,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			if ctx.Err() != nil {
 				return
 			}
-			dataPoints += r.produceMetrics(ctx, currentTime)
+			dataPoints += r.produceMetrics(ctx, addJitter(currentTime))
 			r.applyChurn(i)
 
 			if r.cfg.RealTime {
@@ -133,6 +133,12 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 	}()
 
 	return nil
+}
+
+func addJitter(t time.Time) time.Time {
+	jitter := int64(math.Abs(rand.NormFloat64() * float64(5*time.Millisecond)))
+	jitter = min(jitter, int64(20*time.Millisecond))
+	return t.Add(time.Duration(jitter))
 }
 
 func (r *MetricsGenReceiver) applyChurn(interval int) {
