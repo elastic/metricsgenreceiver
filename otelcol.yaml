@@ -9,12 +9,8 @@ receivers:
     exit_after_end: true
     seed: 123
     scenarios:
-    - path: hostmetrics.json
+    - path: scenarios/hostmetrics
       scale: 100
-      resource_attributes:
-        host.name: "host-{{.ID}}"
-        host.ip: [ "{{.RandomIP}}", "{{.RandomIP}}", "{{.RandomIP}}", "{{.RandomIP}}" ]
-        host.mac: [ "{{.RandomMAC}}", "{{.RandomMAC}}", "{{.RandomMAC}}", "{{.RandomMAC}}" ]
 
 exporters:
   debug:

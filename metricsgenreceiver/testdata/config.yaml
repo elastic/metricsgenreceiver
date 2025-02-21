@@ -4,9 +4,5 @@ metricsgen:
   interval: 30s
   seed: 123
   scenarios:
-  - path: testdata/metricstemplate.json
+  - path: testdata/metricstemplate
     scale: 10
-    resource_attributes:
-      host.name: "host-{{.ID}}"
-      host.ip: [ "{{.RandomIP}}", "{{.RandomIP}}" ]
-      host.mac: [ "{{.RandomMAC}}", "{{.RandomMAC}}" ]

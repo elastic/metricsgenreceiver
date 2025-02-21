@@ -34,13 +34,8 @@ func testdataConfigYamlAsMap() *Config {
 		Seed:      123,
 		Scenarios: []ScenarioCfg{
 			{
-				Path:  "testdata/metricstemplate.json",
+				Path:  "testdata/metricstemplate",
 				Scale: 10,
-				ResourceAttributes: map[string]interface{}{
-					"host.name": "host-{{.ID}}",
-					"host.ip":   []interface{}{"{{.RandomIP}}", "{{.RandomIP}}"},
-					"host.mac":  []interface{}{"{{.RandomMAC}}", "{{.RandomMAC}}"},
-				},
 			},
 		},
 	}

@@ -13,7 +13,7 @@ Given an initial set of resource metrics, this receiver generates metrics with a
 For example, given the output of a single report from the `hostmetricsreceiver`,
 lets you generate a day's worth of data from multiple simulated hosts with a given interval.
 
-The datapoints for the metrics are individually simulated, taking into account the temporality, monotonicity,
+The datapoints for the metrics are individually simulated using a standard distribution, taking into account the temporality, monotonicity,
 and capping double values whose initial value is between 0 and 1 to that range.
 
 ## Getting Started
@@ -32,36 +32,46 @@ Settings:
 * `exit_after_end` (default `false`): when set to true, will terminate the collector.
 * `seed` (default random): set to a specific value for deterministic data generation.
 * `scenarios`: a list of scenarios to simulate. For every interval, each scenario is simulated before moving to the next interval.
-  * `path`: the path of the file containing a single batch of resource metrics in JSON format, as produced by the `fileexporter`.
   * `scale`: determines how many instances (like hosts) to simulate.
     The individual instances will a have a consistent set of resource attributes throughout the simulation.
-  * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
-    Time series churn may have an impact on the performance of the backend.
-  * `resource_attributes`: a map with resource attribute keys and values that are rendered as a template.
+  * `path`: the path of the scenario files. Expects a `<path>.json` and a `<path>-resource-attributes.json` file.
+    The `<path>.json` file contains a single batch of resource metrics in JSON format, as produced by the `fileexporter`.
+    The `<path>-resource-attributes.json` file contains the resource attributes template.
+    The resource attributes template is used to simulate the individual instances.
     These resource attributes are injected into all resource metrics for each individually simulated instance, according to the `scale`.
     Supported placeholders:
-    * `{{.ID}}` (an integer equal to the number of the simulated instance, starting with `0`)
+    * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
     * `{{.RandomIP}}`
+    * `{{.RandomIPv4}}`
+    * `{{.RandomIPv6}}`
     * `{{.RandomMAC}}`
-  * `template_vars`: the file provided via the `path` option is rendered as a template.
+    * `{{.RandomHex}}`
+    * `{{.UUID}}`
+  * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
+    Time series churn may have an impact on the performance of the backend.
+  * `template_vars`: the `<path>.json` file is rendered as a template.
     This option lets you specify variables that are available during template rendering.
     This allows, for example, to simulate a variable number of network devices by generating metric data points with different attributes.
 
-All that is required to enable the No-op exporter is to include it in the
-exporter definitions. It takes no configuration.
-
+Example configuration:
 ```yaml
 receivers:
   metricsgen:
-    start_time: "2024-12-17T00:00:00Z"
-    end_time: "2024-12-18T00:00:00Z"
+    start_time: "2025-01-01T00:00:00Z"
+    end_time: "2025-01-01T01:00:00Z"
     interval: 10s
+    exit_after_end: true
     seed: 123
     scenarios:
-    - path: metricsgenreceiver/testdata/metricstemplate.json
-      scale: 100
-      resource_attributes:
-        host.name: "host-{{.ID}}"
-        host.ip: [ "{{.RandomIP}}", "{{.RandomIP}}" ]
-        host.mac: [ "{{.RandomMAC}}", "{{.RandomMAC}}" ]
+      - path: scenarios/hostmetrics
+        scale: 100
+
+exporters:
+  nop:
+
+service:
+  pipelines:
+    metrics:
+      receivers: [metricsgen]
+      exporters: [nop]
 ```

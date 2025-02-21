@@ -19,11 +19,10 @@ type Config struct {
 }
 
 type ScenarioCfg struct {
-	Path               string                 `mapstructure:"path"`
-	ResourceAttributes map[string]interface{} `mapstructure:"resource_attributes"`
-	TemplateVars       map[string]interface{} `mapstructure:"template_vars"`
-	Scale              int                    `mapstructure:"scale"`
-	Churn              int                    `mapstructure:"churn"`
+	Path         string                 `mapstructure:"path"`
+	Scale        int                    `mapstructure:"scale"`
+	Churn        int                    `mapstructure:"churn"`
+	TemplateVars map[string]interface{} `mapstructure:"template_vars"`
 }
 
 func createDefaultConfig() component.Config {

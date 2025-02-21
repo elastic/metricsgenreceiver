@@ -1,0 +1,88 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "host-{{.InstanceID}}"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

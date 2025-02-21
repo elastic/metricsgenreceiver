@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metadata"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/component/componentstatus"
@@ -16,9 +15,7 @@ import (
 	"go.uber.org/zap"
 	"math"
 	"math/rand"
-	"net"
 	"path/filepath"
-	"reflect"
 	"text/template"
 	"time"
 )
@@ -35,9 +32,10 @@ type MetricsGenReceiver struct {
 }
 
 type Scenario struct {
-	config          ScenarioCfg
-	metricsTemplate *pmetric.Metrics
-	resources       []pcommon.Resource
+	config                     ScenarioCfg
+	metricsTemplate            *pmetric.Metrics
+	resourceAttributesTemplate pcommon.Resource
+	resources                  []pcommon.Resource
 }
 
 func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenReceiver, error) {
@@ -65,8 +63,12 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		if err != nil {
 			return nil, err
 		}
+		resourceTemplate, err := getResourceTemplate(scn)
+		if err != nil {
+			return nil, err
+		}
 
-		resources, err := renderResources(scn, r)
+		resources, err := renderResources(resourceTemplate, scn, r)
 		if err != nil {
 			return nil, err
 		}
@@ -99,13 +101,15 @@ func renderMetricsTemplate(scn ScenarioCfg, err error) (*bytes.Buffer, error) {
 			return ch
 		},
 	}
-	tpl, err := template.New(scn.Path).Funcs(funcMap).ParseFiles(scn.Path)
+	path := scn.Path
+	path += ".json"
+	tpl, err := template.New(path).Funcs(funcMap).ParseFiles(path)
 	if err != nil {
 		return nil, err
 	}
 
 	buf := new(bytes.Buffer)
-	err = tpl.ExecuteTemplate(buf, filepath.Base(scn.Path), scn.TemplateVars)
+	err = tpl.ExecuteTemplate(buf, filepath.Base(path), scn.TemplateVars)
 	if err != nil {
 		return nil, err
 	}
@@ -166,9 +170,9 @@ func (r *MetricsGenReceiver) applyChurn(interval int) {
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
 			resource := scn.resources[id%len(scn.resources)]
-			_ = renderResourceAttributes(scn.config, resource, &resourceTemplateModel{
-				ID:   id,
-				rand: r.rand,
+			_ = renderResourceAttributes(scn.resourceAttributesTemplate, resource, &resourceTemplateModel{
+				InstanceID: id,
+				rand:       r.rand,
 			})
 		}
 	}
@@ -261,90 +265,6 @@ func isMonotonic(m *pmetric.Metric) bool {
 
 func isCumulative(m *pmetric.Metric) bool {
 	return m.Type() == pmetric.MetricTypeSum && m.Sum().AggregationTemporality() == pmetric.AggregationTemporalityCumulative
-}
-func renderResources(scn ScenarioCfg, r *rand.Rand) ([]pcommon.Resource, error) {
-	resources := make([]pcommon.Resource, scn.Scale)
-	for i := 0; i < scn.Scale; i++ {
-		resource := pcommon.NewResource()
-		resources[i] = resource
-		err := renderResourceAttributes(scn, resource, &resourceTemplateModel{
-			ID:   i,
-			rand: r,
-		})
-		if err != nil {
-			return nil, err
-		}
-	}
-	return resources, nil
-}
-
-type resourceTemplateModel struct {
-	ID int
-
-	rand *rand.Rand
-}
-
-func (t *resourceTemplateModel) RandomIP() string {
-	return net.IPv4(t.randByte(), t.randByte(), t.randByte(), t.randByte()).String()
-}
-
-func (t *resourceTemplateModel) RandomMAC() string {
-	var mac net.HardwareAddr
-	// Set the local bit
-	mac = append(mac, t.randByte()|2, t.randByte(), t.randByte(), t.randByte(), t.randByte())
-	return mac.String()
-}
-func (t *resourceTemplateModel) randByte() byte {
-	return byte(t.rand.Int())
-}
-
-func renderResourceAttributes(scn ScenarioCfg, resource pcommon.Resource, model *resourceTemplateModel) error {
-	attr := resource.Attributes()
-	for k, v := range scn.ResourceAttributes {
-		kind := reflect.ValueOf(v).Kind()
-		switch kind {
-		case reflect.String:
-			rendered, err := processResourceAttributeTemplate(k, v.(string), model)
-			if err != nil {
-				return err
-			}
-			attr.PutStr(k, rendered)
-			break
-		case reflect.Slice:
-			slice := attr.PutEmptySlice(k)
-			err := slice.FromRaw(v.([]any))
-			for j := 0; j < slice.Len(); j++ {
-				v := slice.At(j)
-				if v.Type() == pcommon.ValueTypeStr {
-					rendered, err := processResourceAttributeTemplate(k, v.Str(), model)
-					if err != nil {
-						return err
-					}
-					v.SetStr(rendered)
-				}
-			}
-			if err != nil {
-				return err
-			}
-			break
-		default:
-			return fmt.Errorf("unhandled resource attribute type %s: %s", k, kind)
-		}
-	}
-	return nil
-}
-
-func processResourceAttributeTemplate(k, v string, model *resourceTemplateModel) (string, error) {
-	tmpl, err := template.New(k).Parse(v)
-	if err != nil {
-		return "", err
-	}
-	buf := new(bytes.Buffer)
-	err = tmpl.Execute(buf, model)
-	if err != nil {
-		return "", err
-	}
-	return buf.String(), nil
 }
 
 func forEachDataPoint(ms *pmetric.Metrics, visitor func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint)) {
