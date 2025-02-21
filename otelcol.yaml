@@ -1,16 +1,15 @@
 receivers:
   metricsgen:
-    start_time: "2024-12-17T00:00:00Z"
-    end_time: "2024-12-18T00:00:00Z"
+    # adjust to a recent time range (now-2h - now+30m) to work with the default settings for TSDB's look-ahead and look-behind times
+    # see also https://www.elastic.co/guide/en/elasticsearch/reference/current/tsds.html#tsds-look-ahead-time
+    start_time: "2025-01-01T00:00:00Z"
+    end_time: "2025-01-01T01:00:00Z"
     interval: 10s
     real_time: false
     exit_after_end: true
     path: hostmetrics.json.tmpl
-    #path: metricsgenreceiver/testdata/metricstemplate.json
     seed: 123
     scale: 100
-    template_vars:
-      devices: 10
     resource_attributes:
       host.name: "host-{{.ID}}"
       host.ip: [ "{{.RandomIP}}", "{{.RandomIP}}" ]
@@ -22,14 +21,17 @@ exporters:
   file:
     path: ./file-exporter/metrics-generated.json
   nop:
+  elasticsearch:
+    endpoint: "http://localhost:9200"
+    mapping:
+      mode: otel
+    metrics_dynamic_index:
+      enabled: true
 
 service:
   pipelines:
-    #metrics/hostmetrics:
-    #  receivers: [hostmetrics/system]
-    #  processors: [resourcedetection]
-    #  exporters: [debug, file/metrics]
     metrics:
       receivers: [metricsgen]
       exporters: [nop]
+      # exporters: [elasticsearch]
 
