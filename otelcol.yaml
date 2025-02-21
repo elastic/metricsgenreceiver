@@ -11,6 +11,10 @@ receivers:
     scenarios:
     - path: scenarios/hostmetrics
       scale: 100
+    # - path: scenarios/kubeletstats-node
+    #   scale: 10
+    # - path: scenarios/kubeletstats-pod
+    #   scale: 1000
 
 exporters:
   debug:

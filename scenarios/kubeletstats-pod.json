@@ -1,0 +1,1404 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "k8s.pod.uid",
+            "value": {
+              "stringValue": "b5fa0ac3-aaaa-4e48-ad6d-25fa397939ac"
+            }
+          },
+          {
+            "key": "k8s.pod.name",
+            "value": {
+              "stringValue": "kube-proxy-b4dl4"
+            }
+          },
+          {
+            "key": "k8s.namespace.name",
+            "value": {
+              "stringValue": "kube-system"
+            }
+          },
+          {
+            "key": "k8s.node.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "k8s.pod.ip",
+            "value": {
+              "stringValue": "172.18.0.2"
+            }
+          },
+          {
+            "key": "k8s.pod.start_time",
+            "value": {
+              "stringValue": "2024-11-18T23:18:14Z"
+            }
+          },
+          {
+            "key": "k8s.daemonset.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          },
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "os.type",
+            "value": {
+              "stringValue": "linux"
+            }
+          },
+          {
+            "key": "host.arch",
+            "value": {
+              "stringValue": "amd64"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::f86a:5cff:feac:c558"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::cc65:80ff:fe73:492e"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::50bd:9aff:feb3:fab2"
+                  },
+                  {
+                    "stringValue": "172.18.0.2"
+                  },
+                  {
+                    "stringValue": "fc00:f853:ccd:e793::2"
+                  },
+                  {
+                    "stringValue": "fe80::42:acff:fe12:2"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::a840:2cff:feea:c472"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::70a2:99ff:fe4f:c0d2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "FA-6A-5C-AC-C5-58"
+                  },
+                  {
+                    "stringValue": "CE-65-80-73-49-2E"
+                  },
+                  {
+                    "stringValue": "52-BD-9A-B3-FA-B2"
+                  },
+                  {
+                    "stringValue": "02-42-AC-12-00-02"
+                  },
+                  {
+                    "stringValue": "AA-40-2C-EA-C4-72"
+                  },
+                  {
+                    "stringValue": "72-A2-99-4F-C0-D2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "os.description",
+            "value": {
+              "stringValue": "Ubuntu 24.04.1 LTS (Noble Numbat) (Linux kind-control-plane 5.15.0-130-generic #140~20.04.1-Ubuntu SMP Wed Dec 18 21:35:34 UTC 2024 x86_64)"
+            }
+          },
+          {
+            "key": "host.cpu.vendor.id",
+            "value": {
+              "stringValue": "GenuineIntel"
+            }
+          },
+          {
+            "key": "host.cpu.family",
+            "value": {
+              "stringValue": "6"
+            }
+          },
+          {
+            "key": "host.cpu.model.id",
+            "value": {
+              "stringValue": "140"
+            }
+          },
+          {
+            "key": "host.cpu.model.name",
+            "value": {
+              "stringValue": "11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz"
+            }
+          },
+          {
+            "key": "host.cpu.stepping",
+            "value": {
+              "stringValue": "1"
+            }
+          },
+          {
+            "key": "host.cpu.cache.l2.size",
+            "value": {
+              "intValue": "12288"
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/kubeletstatsreceiver",
+            "version": "8.16.0"
+          },
+          "metrics": [
+            {
+              "name": "k8s.pod.cpu.node.utilization",
+              "description": "Pod cpu utilization as a ratio of the node's capacity",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 0.000152879375
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.cpu.time",
+              "description": "Total cumulative CPU time (sum of all cores) spent by the container/pod/node since its creation",
+              "unit": "s",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 3.888373577
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
+              }
+            },
+            {
+              "name": "k8s.pod.cpu.usage",
+              "description": "Total CPU usage (sum of all cores per second) averaged over the sample window",
+              "unit": "{cpu}",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 0.001223035
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.cpu.utilization",
+              "description": "Pod CPU utilization",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 0.001223035
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.filesystem.available",
+              "description": "Pod filesystem available",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "129191596032"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.filesystem.capacity",
+              "description": "Pod filesystem capacity",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "497624072192"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.filesystem.usage",
+              "description": "Pod filesystem usage",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "102400"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.memory.major_page_faults",
+              "description": "Pod memory major_page_faults",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "0"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.memory.node.utilization",
+              "description": "Pod memory utilization as a ratio of the node's capacity",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 0.002003886168358129
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.memory.page_faults",
+              "description": "Pod memory page_faults",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "0"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.memory.rss",
+              "description": "Pod memory rss",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "13115392"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.memory.usage",
+              "description": "Pod memory usage",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "66822144"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.memory.working_set",
+              "description": "Pod memory working_set",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "18882560"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.pod.network.errors",
+              "description": "Pod network errors",
+              "unit": "1",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "interface",
+                        "value": {
+                          "stringValue": "eth0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "receive"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "0"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "interface",
+                        "value": {
+                          "stringValue": "eth0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "transmit"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "0"
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
+              }
+            },
+            {
+              "name": "k8s.pod.network.io",
+              "description": "Pod network IO",
+              "unit": "By",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "interface",
+                        "value": {
+                          "stringValue": "eth0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "receive"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "748189162"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "interface",
+                        "value": {
+                          "stringValue": "eth0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "transmit"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "56882815"
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
+              }
+            },
+            {
+              "name": "k8s.pod.uptime",
+              "description": "The time since the pod started",
+              "unit": "s",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721262000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "9487"
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
+              }
+            }
+          ]
+        }
+      ],
+      "schemaUrl": "https://opentelemetry.io/schemas/1.6.1"
+    },
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "k8s.pod.uid",
+            "value": {
+              "stringValue": "b5fa0ac3-aaaa-4e48-ad6d-25fa397939ac"
+            }
+          },
+          {
+            "key": "k8s.pod.name",
+            "value": {
+              "stringValue": "kube-proxy-b4dl4"
+            }
+          },
+          {
+            "key": "k8s.namespace.name",
+            "value": {
+              "stringValue": "kube-system"
+            }
+          },
+          {
+            "key": "k8s.container.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          },
+          {
+            "key": "container.id",
+            "value": {
+              "stringValue": "9f0620ba000b663a6cb373d4fd0d215babf1fb854cc077eedb04ccdf1ae0ebd7"
+            }
+          },
+          {
+            "key": "k8s.pod.start_time",
+            "value": {
+              "stringValue": "2024-11-18T23:18:14Z"
+            }
+          },
+          {
+            "key": "k8s.daemonset.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          },
+          {
+            "key": "k8s.node.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "k8s.pod.ip",
+            "value": {
+              "stringValue": "172.18.0.2"
+            }
+          },
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "os.type",
+            "value": {
+              "stringValue": "linux"
+            }
+          },
+          {
+            "key": "host.arch",
+            "value": {
+              "stringValue": "amd64"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::f86a:5cff:feac:c558"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::cc65:80ff:fe73:492e"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::50bd:9aff:feb3:fab2"
+                  },
+                  {
+                    "stringValue": "172.18.0.2"
+                  },
+                  {
+                    "stringValue": "fc00:f853:ccd:e793::2"
+                  },
+                  {
+                    "stringValue": "fe80::42:acff:fe12:2"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::a840:2cff:feea:c472"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::70a2:99ff:fe4f:c0d2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "FA-6A-5C-AC-C5-58"
+                  },
+                  {
+                    "stringValue": "CE-65-80-73-49-2E"
+                  },
+                  {
+                    "stringValue": "52-BD-9A-B3-FA-B2"
+                  },
+                  {
+                    "stringValue": "02-42-AC-12-00-02"
+                  },
+                  {
+                    "stringValue": "AA-40-2C-EA-C4-72"
+                  },
+                  {
+                    "stringValue": "72-A2-99-4F-C0-D2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "os.description",
+            "value": {
+              "stringValue": "Ubuntu 24.04.1 LTS (Noble Numbat) (Linux kind-control-plane 5.15.0-130-generic #140~20.04.1-Ubuntu SMP Wed Dec 18 21:35:34 UTC 2024 x86_64)"
+            }
+          },
+          {
+            "key": "host.cpu.vendor.id",
+            "value": {
+              "stringValue": "GenuineIntel"
+            }
+          },
+          {
+            "key": "host.cpu.family",
+            "value": {
+              "stringValue": "6"
+            }
+          },
+          {
+            "key": "host.cpu.model.id",
+            "value": {
+              "stringValue": "140"
+            }
+          },
+          {
+            "key": "host.cpu.model.name",
+            "value": {
+              "stringValue": "11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz"
+            }
+          },
+          {
+            "key": "host.cpu.stepping",
+            "value": {
+              "stringValue": "1"
+            }
+          },
+          {
+            "key": "host.cpu.cache.l2.size",
+            "value": {
+              "intValue": "12288"
+            }
+          },
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/kubeletstatsreceiver",
+            "version": "8.16.0"
+          },
+          "metrics": [
+            {
+              "name": "container.cpu.time",
+              "description": "Total cumulative CPU time (sum of all cores) spent by the container/pod/node since its creation",
+              "unit": "s",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 3.879946973
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
+              }
+            },
+            {
+              "name": "container.cpu.usage",
+              "description": "Total CPU usage (sum of all cores per second) averaged over the sample window",
+              "unit": "{cpu}",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 0.001301082
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.cpu.utilization",
+              "description": "Container CPU utilization",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asDouble": 0.001301082
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.filesystem.available",
+              "description": "Container filesystem available",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "129191596032"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.filesystem.capacity",
+              "description": "Container filesystem capacity",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "497624072192"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.filesystem.usage",
+              "description": "Container filesystem usage",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "73728"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.memory.major_page_faults",
+              "description": "Container memory major_page_faults",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "443"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.memory.page_faults",
+              "description": "Container memory page_faults",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "132768"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.memory.rss",
+              "description": "Container memory rss",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "13078528"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.memory.usage",
+              "description": "Container memory usage",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "66568192"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "container.memory.working_set",
+              "description": "Container memory working_set",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737721263000000000",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "18628608"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "schemaUrl": "https://opentelemetry.io/schemas/1.6.1"
+    },
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "k8s.pod.uid",
+            "value": {
+              "stringValue": "b5fa0ac3-aaaa-4e48-ad6d-25fa397939ac"
+            }
+          },
+          {
+            "key": "k8s.pod.name",
+            "value": {
+              "stringValue": "kube-proxy-b4dl4"
+            }
+          },
+          {
+            "key": "k8s.namespace.name",
+            "value": {
+              "stringValue": "kube-system"
+            }
+          },
+          {
+            "key": "k8s.volume.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          },
+          {
+            "key": "k8s.daemonset.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          },
+          {
+            "key": "k8s.node.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "k8s.pod.ip",
+            "value": {
+              "stringValue": "172.18.0.2"
+            }
+          },
+          {
+            "key": "k8s.pod.start_time",
+            "value": {
+              "stringValue": "2024-11-18T23:18:14Z"
+            }
+          },
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "os.type",
+            "value": {
+              "stringValue": "linux"
+            }
+          },
+          {
+            "key": "host.arch",
+            "value": {
+              "stringValue": "amd64"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::f86a:5cff:feac:c558"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::cc65:80ff:fe73:492e"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::50bd:9aff:feb3:fab2"
+                  },
+                  {
+                    "stringValue": "172.18.0.2"
+                  },
+                  {
+                    "stringValue": "fc00:f853:ccd:e793::2"
+                  },
+                  {
+                    "stringValue": "fe80::42:acff:fe12:2"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::a840:2cff:feea:c472"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::70a2:99ff:fe4f:c0d2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "FA-6A-5C-AC-C5-58"
+                  },
+                  {
+                    "stringValue": "CE-65-80-73-49-2E"
+                  },
+                  {
+                    "stringValue": "52-BD-9A-B3-FA-B2"
+                  },
+                  {
+                    "stringValue": "02-42-AC-12-00-02"
+                  },
+                  {
+                    "stringValue": "AA-40-2C-EA-C4-72"
+                  },
+                  {
+                    "stringValue": "72-A2-99-4F-C0-D2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "os.description",
+            "value": {
+              "stringValue": "Ubuntu 24.04.1 LTS (Noble Numbat) (Linux kind-control-plane 5.15.0-130-generic #140~20.04.1-Ubuntu SMP Wed Dec 18 21:35:34 UTC 2024 x86_64)"
+            }
+          },
+          {
+            "key": "host.cpu.vendor.id",
+            "value": {
+              "stringValue": "GenuineIntel"
+            }
+          },
+          {
+            "key": "host.cpu.family",
+            "value": {
+              "stringValue": "6"
+            }
+          },
+          {
+            "key": "host.cpu.model.id",
+            "value": {
+              "stringValue": "140"
+            }
+          },
+          {
+            "key": "host.cpu.model.name",
+            "value": {
+              "stringValue": "11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz"
+            }
+          },
+          {
+            "key": "host.cpu.stepping",
+            "value": {
+              "stringValue": "1"
+            }
+          },
+          {
+            "key": "host.cpu.cache.l2.size",
+            "value": {
+              "intValue": "12288"
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/kubeletstatsreceiver",
+            "version": "8.16.0"
+          },
+          "metrics": [
+            {
+              "name": "k8s.volume.available",
+              "description": "The number of available bytes in the volume.",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "129192366080"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.capacity",
+              "description": "The total capacity in bytes of the volume.",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "497624072192"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.inodes",
+              "description": "The total inodes in the filesystem.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "30883840"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.inodes.free",
+              "description": "The free inodes in the filesystem.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "26582482"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.inodes.used",
+              "description": "The inodes used by the filesystem. This may not equal inodes - free because filesystem may share inodes with other filesystems.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "7"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "schemaUrl": "https://opentelemetry.io/schemas/1.6.1"
+    },
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "k8s.pod.uid",
+            "value": {
+              "stringValue": "b5fa0ac3-aaaa-4e48-ad6d-25fa397939ac"
+            }
+          },
+          {
+            "key": "k8s.pod.name",
+            "value": {
+              "stringValue": "kube-proxy-b4dl4"
+            }
+          },
+          {
+            "key": "k8s.namespace.name",
+            "value": {
+              "stringValue": "kube-system"
+            }
+          },
+          {
+            "key": "k8s.volume.name",
+            "value": {
+              "stringValue": "kube-api-access-dc9q6"
+            }
+          },
+          {
+            "key": "k8s.daemonset.name",
+            "value": {
+              "stringValue": "kube-proxy"
+            }
+          },
+          {
+            "key": "k8s.node.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "k8s.pod.ip",
+            "value": {
+              "stringValue": "172.18.0.2"
+            }
+          },
+          {
+            "key": "k8s.pod.start_time",
+            "value": {
+              "stringValue": "2024-11-18T23:18:14Z"
+            }
+          },
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "kind-control-plane"
+            }
+          },
+          {
+            "key": "os.type",
+            "value": {
+              "stringValue": "linux"
+            }
+          },
+          {
+            "key": "host.arch",
+            "value": {
+              "stringValue": "amd64"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::f86a:5cff:feac:c558"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::cc65:80ff:fe73:492e"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::50bd:9aff:feb3:fab2"
+                  },
+                  {
+                    "stringValue": "172.18.0.2"
+                  },
+                  {
+                    "stringValue": "fc00:f853:ccd:e793::2"
+                  },
+                  {
+                    "stringValue": "fe80::42:acff:fe12:2"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::a840:2cff:feea:c472"
+                  },
+                  {
+                    "stringValue": "10.244.0.1"
+                  },
+                  {
+                    "stringValue": "fe80::70a2:99ff:fe4f:c0d2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "FA-6A-5C-AC-C5-58"
+                  },
+                  {
+                    "stringValue": "CE-65-80-73-49-2E"
+                  },
+                  {
+                    "stringValue": "52-BD-9A-B3-FA-B2"
+                  },
+                  {
+                    "stringValue": "02-42-AC-12-00-02"
+                  },
+                  {
+                    "stringValue": "AA-40-2C-EA-C4-72"
+                  },
+                  {
+                    "stringValue": "72-A2-99-4F-C0-D2"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "os.description",
+            "value": {
+              "stringValue": "Ubuntu 24.04.1 LTS (Noble Numbat) (Linux kind-control-plane 5.15.0-130-generic #140~20.04.1-Ubuntu SMP Wed Dec 18 21:35:34 UTC 2024 x86_64)"
+            }
+          },
+          {
+            "key": "host.cpu.vendor.id",
+            "value": {
+              "stringValue": "GenuineIntel"
+            }
+          },
+          {
+            "key": "host.cpu.family",
+            "value": {
+              "stringValue": "6"
+            }
+          },
+          {
+            "key": "host.cpu.model.id",
+            "value": {
+              "stringValue": "140"
+            }
+          },
+          {
+            "key": "host.cpu.model.name",
+            "value": {
+              "stringValue": "11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz"
+            }
+          },
+          {
+            "key": "host.cpu.stepping",
+            "value": {
+              "stringValue": "1"
+            }
+          },
+          {
+            "key": "host.cpu.cache.l2.size",
+            "value": {
+              "intValue": "12288"
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/kubeletstatsreceiver",
+            "version": "8.16.0"
+          },
+          "metrics": [
+            {
+              "name": "k8s.volume.available",
+              "description": "The number of available bytes in the volume.",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "33346265088"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.capacity",
+              "description": "The total capacity in bytes of the volume.",
+              "unit": "By",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "33346277376"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.inodes",
+              "description": "The total inodes in the filesystem.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "4070590"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.inodes.free",
+              "description": "The free inodes in the filesystem.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "4070581"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "k8s.volume.inodes.used",
+              "description": "The inodes used by the filesystem. This may not equal inodes - free because filesystem may share inodes with other filesystems.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "1737730737466626950",
+                    "timeUnixNano": "1737730749662615002",
+                    "asInt": "9"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "schemaUrl": "https://opentelemetry.io/schemas/1.6.1"
+    }
+  ]
+}

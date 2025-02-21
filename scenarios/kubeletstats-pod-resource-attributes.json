@@ -1,0 +1,112 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "k8s.pod.uid",
+            "value": {
+              "stringValue": "{{.UUID}}"
+            }
+          },
+          {
+            "key": "k8s.pod.name",
+            "value": {
+              "stringValue": "pod-name-{{.InstanceID}}"
+            }
+          },
+          {
+            "key": "k8s.pod.ip",
+            "value": {
+              "stringValue": "{{.RandomIP}}"
+            }
+          },
+          {
+            "key": "k8s.volume.name",
+            "value": {
+              "stringValue": "pod-volume-{{.InstanceID}}"
+            }
+          },
+          {
+            "key": "container.id",
+            "value": {
+              "stringValue": "{{.RandomHex 64}}"
+            }
+          },
+          {
+            "key": "host.ip",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv4}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomIPv6}}"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "key": "host.mac",
+            "value": {
+              "arrayValue": {
+                "values": [
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  },
+                  {
+                    "stringValue": "{{.RandomMAC}}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
