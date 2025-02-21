@@ -181,25 +181,9 @@ func advanceDataPoint(dp dataPoint, rand *rand.Rand, m pmetric.Metric) {
 		case pmetric.NumberDataPointValueTypeDouble:
 			value := v.DoubleValue()
 			if value >= 0 && value <= 1 {
-				value += rand.NormFloat64() * 0.1
-				// keep locked between 0..1
-				value = math.Abs(value)
-				value = math.Min(value, 1)
+				value = advanceZeroToOne(value, rand)
 			} else {
-				maxSwing := math.Min(math.Abs(value)/2, 1)
-				delta := rand.NormFloat64()
-				delta = math.Max(delta, -maxSwing)
-				delta = math.Min(delta, maxSwing)
-
-				if isMonotonic(&m) {
-					value = math.Abs(value)
-				}
-
-				if isCumulative(&m) {
-					value += delta
-				} else {
-					value = delta
-				}
+				value = advanceFloat(rand, m, value)
 				// avoid keeping the value locked between 0..1 in successive runs
 				if value >= 0 && value <= 1 {
 					value += 1.1
@@ -208,21 +192,39 @@ func advanceDataPoint(dp dataPoint, rand *rand.Rand, m pmetric.Metric) {
 			v.SetDoubleValue(value)
 			break
 		case pmetric.NumberDataPointValueTypeInt:
-			value := v.IntValue()
-			delta := rand.Int63n(1000)
-			if !isMonotonic(&m) {
-				delta -= 500
-			}
-			if isCumulative(&m) {
-				value += delta
-			} else {
-				value = delta
-			}
-			v.SetIntValue(value)
+			v.SetIntValue(advanceInt(rand, m, v.IntValue()))
 			break
 		default:
 		}
 	}
+}
+
+func advanceZeroToOne(value float64, rand *rand.Rand) float64 {
+	value += rand.NormFloat64() * 0.05
+	// keep locked between 0..1
+	value = math.Abs(value)
+	value = min(value, 1)
+	return value
+}
+
+func advanceInt(rand *rand.Rand, m pmetric.Metric, value int64) int64 {
+	return int64(advanceFloat(rand, m, float64(value)))
+}
+
+func advanceFloat(rand *rand.Rand, m pmetric.Metric, value float64) float64 {
+	const median = 100
+	const stddev = 5.0
+	delta := rand.NormFloat64()*stddev + median
+	delta = max(0, min(delta, median*2))
+	if !isMonotonic(&m) {
+		delta -= median
+	}
+	if isCumulative(&m) {
+		value += delta
+	} else {
+		value = delta
+	}
+	return value
 }
 
 func isMonotonic(m *pmetric.Metric) bool {
