@@ -28,11 +28,16 @@ type MetricsGenReceiver struct {
 	obsreport *receiverhelper.ObsReport
 	settings  receiver.Settings
 
-	nextMetrics     consumer.Metrics
+	nextMetrics consumer.Metrics
+	rand        *rand.Rand
+	cancel      context.CancelFunc
+	scenarios   []Scenario
+}
+
+type Scenario struct {
+	config          ScenarioCfg
 	metricsTemplate *pmetric.Metrics
-	rand            *rand.Rand
 	resources       []pcommon.Resource
-	cancel          context.CancelFunc
 }
 
 func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenReceiver, error) {
@@ -43,38 +48,45 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	if err != nil {
 		return nil, err
 	}
-
-	buf, err := renderMetricsTemplate(cfg, err)
-	if err != nil {
-		return nil, err
-	}
-
-	metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
-	metrics, err := metricsUnmarshaler.UnmarshalMetrics(buf.Bytes())
-	forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-		dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
-	})
-	if err != nil {
-		return nil, err
-	}
-
 	r := rand.New(rand.NewSource(cfg.Seed))
-	resources, err := renderResources(cfg, r)
-	if err != nil {
-		return nil, err
+	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
+	for _, scn := range cfg.Scenarios {
+
+		buf, err := renderMetricsTemplate(scn, err)
+		if err != nil {
+			return nil, err
+		}
+
+		metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
+		metrics, err := metricsUnmarshaler.UnmarshalMetrics(buf.Bytes())
+		forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
+			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		resources, err := renderResources(scn, r)
+		if err != nil {
+			return nil, err
+		}
+		scenarios = append(scenarios, Scenario{
+			config:          scn,
+			metricsTemplate: &metrics,
+			resources:       resources,
+		})
 	}
 
 	return &MetricsGenReceiver{
-		cfg:             cfg,
-		settings:        set,
-		obsreport:       obsreport,
-		metricsTemplate: &metrics,
-		rand:            r,
-		resources:       resources,
+		cfg:       cfg,
+		settings:  set,
+		obsreport: obsreport,
+		rand:      r,
+		scenarios: scenarios,
 	}, nil
 }
 
-func renderMetricsTemplate(cfg *Config, err error) (*bytes.Buffer, error) {
+func renderMetricsTemplate(scn ScenarioCfg, err error) (*bytes.Buffer, error) {
 	funcMap := template.FuncMap{
 		"loop": func(from, to int) <-chan int {
 			ch := make(chan int)
@@ -87,13 +99,13 @@ func renderMetricsTemplate(cfg *Config, err error) (*bytes.Buffer, error) {
 			return ch
 		},
 	}
-	tpl, err := template.New(cfg.Path).Funcs(funcMap).ParseFiles(cfg.Path)
+	tpl, err := template.New(scn.Path).Funcs(funcMap).ParseFiles(scn.Path)
 	if err != nil {
 		return nil, err
 	}
 
 	buf := new(bytes.Buffer)
-	err = tpl.ExecuteTemplate(buf, filepath.Base(cfg.Path), cfg.TemplateVars)
+	err = tpl.ExecuteTemplate(buf, filepath.Base(scn.Path), scn.TemplateVars)
 	if err != nil {
 		return nil, err
 	}
@@ -146,40 +158,46 @@ func addJitter(t time.Time) time.Time {
 }
 
 func (r *MetricsGenReceiver) applyChurn(interval int) {
-	if r.cfg.Churn == 0 {
-		return
-	}
-	for i := 0; i < r.cfg.Churn; i++ {
-		id := r.cfg.Scale + interval*r.cfg.Churn + i
-		resource := r.resources[id%len(r.resources)]
-		_ = renderResourceAttributes(r.cfg, resource, &resourceTemplateModel{
-			ID:   id,
-			rand: r.rand,
-		})
+	for _, scn := range r.scenarios {
+		if scn.config.Churn == 0 {
+			return
+		}
+
+		for i := 0; i < scn.config.Churn; i++ {
+			id := scn.config.Scale + interval*scn.config.Churn + i
+			resource := scn.resources[id%len(scn.resources)]
+			_ = renderResourceAttributes(scn.config, resource, &resourceTemplateModel{
+				ID:   id,
+				rand: r.rand,
+			})
+		}
 	}
 }
 
 func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime time.Time) int {
-	forEachDataPoint(r.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-		advanceDataPoint(dp, r.rand, m)
-	})
 	dataPoints := 0
-	for i := 0; i < r.cfg.Scale; i++ {
-		r.obsreport.StartMetricsOp(ctx)
-		metrics := pmetric.NewMetrics()
-		r.metricsTemplate.CopyTo(metrics)
-		for j := 0; j < metrics.ResourceMetrics().Len(); j++ {
-			r.resources[i].CopyTo(metrics.ResourceMetrics().At(j).Resource())
-		}
-		forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
+	for _, scn := range r.scenarios {
+		// we don't individually keep track of the data points for each instance individually to reduce memory pressure
+		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
+		forEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
 			advanceDataPoint(dp, r.rand, m)
-			dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
 		})
-		metrics.MarkReadOnly()
-		err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
-		currentCount := metrics.DataPointCount()
-		r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
-		dataPoints += currentCount
+		for i := 0; i < scn.config.Scale; i++ {
+			r.obsreport.StartMetricsOp(ctx)
+			metrics := pmetric.NewMetrics()
+			scn.metricsTemplate.CopyTo(metrics)
+			for j := 0; j < metrics.ResourceMetrics().Len(); j++ {
+				scn.resources[i].CopyTo(metrics.ResourceMetrics().At(j).Resource())
+			}
+			forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
+				advanceDataPoint(dp, r.rand, m)
+				dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
+			})
+			err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
+			currentCount := metrics.DataPointCount()
+			r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
+			dataPoints += currentCount
+		}
 	}
 	return dataPoints
 }
@@ -244,12 +262,12 @@ func isMonotonic(m *pmetric.Metric) bool {
 func isCumulative(m *pmetric.Metric) bool {
 	return m.Type() == pmetric.MetricTypeSum && m.Sum().AggregationTemporality() == pmetric.AggregationTemporalityCumulative
 }
-func renderResources(cfg *Config, r *rand.Rand) ([]pcommon.Resource, error) {
-	resources := make([]pcommon.Resource, cfg.Scale)
-	for i := 0; i < cfg.Scale; i++ {
+func renderResources(scn ScenarioCfg, r *rand.Rand) ([]pcommon.Resource, error) {
+	resources := make([]pcommon.Resource, scn.Scale)
+	for i := 0; i < scn.Scale; i++ {
 		resource := pcommon.NewResource()
 		resources[i] = resource
-		err := renderResourceAttributes(cfg, resource, &resourceTemplateModel{
+		err := renderResourceAttributes(scn, resource, &resourceTemplateModel{
 			ID:   i,
 			rand: r,
 		})
@@ -280,9 +298,9 @@ func (t *resourceTemplateModel) randByte() byte {
 	return byte(t.rand.Int())
 }
 
-func renderResourceAttributes(c *Config, resource pcommon.Resource, model *resourceTemplateModel) error {
+func renderResourceAttributes(scn ScenarioCfg, resource pcommon.Resource, model *resourceTemplateModel) error {
 	attr := resource.Attributes()
-	for k, v := range c.ResourceAttributes {
+	for k, v := range scn.ResourceAttributes {
 		kind := reflect.ValueOf(v).Kind()
 		switch kind {
 		case reflect.String:

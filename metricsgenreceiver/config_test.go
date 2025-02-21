@@ -28,16 +28,20 @@ func testdataConfigYamlAsMap() *Config {
 	endTime, _ := time.Parse(time.RFC3339, "2024-12-17T00:00:30Z")
 	interval, _ := time.ParseDuration("30s")
 	return &Config{
-		Path:      "testdata/metricstemplate.json",
 		StartTime: startTime,
 		EndTime:   endTime,
 		Interval:  interval,
 		Seed:      123,
-		Scale:     10,
-		ResourceAttributes: map[string]interface{}{
-			"host.name": "host-{{.ID}}",
-			"host.ip":   []interface{}{"{{.RandomIP}}", "{{.RandomIP}}"},
-			"host.mac":  []interface{}{"{{.RandomMAC}}", "{{.RandomMAC}}"},
+		Scenarios: []ScenarioCfg{
+			{
+				Path:  "testdata/metricstemplate.json",
+				Scale: 10,
+				ResourceAttributes: map[string]interface{}{
+					"host.name": "host-{{.ID}}",
+					"host.ip":   []interface{}{"{{.RandomIP}}", "{{.RandomIP}}"},
+					"host.mac":  []interface{}{"{{.RandomMAC}}", "{{.RandomMAC}}"},
+				},
+			},
 		},
 	}
 }

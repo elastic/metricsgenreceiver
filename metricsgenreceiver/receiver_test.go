@@ -24,21 +24,21 @@ func TestReceiver(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return sink.DataPointCount() == 3* // 3 metrics
 			2* // 2 intervals
-			cfg.Scale
+			cfg.Scenarios[0].Scale
 	}, 2*time.Second, time.Millisecond)
 	require.NoError(t, rcv.Shutdown(context.Background()))
 
 	allMetrics := sink.AllMetrics()
 	require.NotEmpty(t, allMetrics)
 
-	require.Equal(t, 2*cfg.Scale, len(allMetrics))
+	require.Equal(t, 2*cfg.Scenarios[0].Scale, len(allMetrics))
 
 	verifyMetrics(t, 0, cfg, allMetrics, cfg.StartTime)
-	verifyMetrics(t, cfg.Scale, cfg, allMetrics, cfg.StartTime.Add(30*time.Second))
+	verifyMetrics(t, cfg.Scenarios[0].Scale, cfg, allMetrics, cfg.StartTime.Add(30*time.Second))
 }
 
 func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.Metrics, timestamp time.Time) {
-	for i := offset; i < cfg.Scale+offset; i++ {
+	for i := offset; i < cfg.Scenarios[0].Scale+offset; i++ {
 		forEachDataPoint(&allMetrics[i], func(r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
 			value, _ := r.Attributes().Get("host.name")
 			require.Equal(t, fmt.Sprintf("host-%d", i-offset), value.Str())

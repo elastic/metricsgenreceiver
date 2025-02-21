@@ -8,24 +8,28 @@ import (
 )
 
 type Config struct {
+	StartTime      time.Time     `mapstructure:"start_time"`
+	EndTime        time.Time     `mapstructure:"end_time"`
+	Interval       time.Duration `mapstructure:"interval"`
+	IntervalJitter bool          `mapstructure:"interval_jitter"`
+	RealTime       bool          `mapstructure:"real_time"`
+	ExitAfterEnd   bool          `mapstructure:"exit_after_end"`
+	Seed           int64         `mapstructure:"seed"`
+	Scenarios      []ScenarioCfg `mapstructure:"scenarios"`
+}
+
+type ScenarioCfg struct {
 	Path               string                 `mapstructure:"path"`
-	StartTime          time.Time              `mapstructure:"start_time"`
-	EndTime            time.Time              `mapstructure:"end_time"`
-	Interval           time.Duration          `mapstructure:"interval"`
-	IntervalJitter     bool                   `mapstructure:"interval_jitter"`
-	RealTime           bool                   `mapstructure:"real_time"`
-	ExitAfterEnd       bool                   `mapstructure:"exit_after_end"`
-	Seed               int64                  `mapstructure:"seed"`
-	Scale              int                    `mapstructure:"scale"`
-	Churn              int                    `mapstructure:"churn"`
 	ResourceAttributes map[string]interface{} `mapstructure:"resource_attributes"`
 	TemplateVars       map[string]interface{} `mapstructure:"template_vars"`
+	Scale              int                    `mapstructure:"scale"`
+	Churn              int                    `mapstructure:"churn"`
 }
 
 func createDefaultConfig() component.Config {
 	return &Config{
-		Seed:  rand.Int63(),
-		Scale: 1,
+		Seed:      rand.Int63(),
+		Scenarios: make([]ScenarioCfg, 0),
 	}
 }
 
