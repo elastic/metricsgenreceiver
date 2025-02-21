@@ -24,6 +24,10 @@ Settings:
 * `end_time`: the time at which the metrics should end.
 * `interval`: the interval at which the metrics are simulated.
   The minimum value is 1s.
+* `interval_jitter` (default `false`): when enabled, adds a 0-20ms jitter to the timestamps,
+  following a normal distribution with a median of 0ms and a standard deviation of 5ms.
+  This simulates the real-world scenario where metrics are not perfectly aligned with the configured interval.
+  When enabled, this can impact the effectiveness of the compression that a metric datastore may apply.
 * `real_time` (default `false`): by default, the receiver generates the metrics as fast as possible.
   When set to true, it will pause after each cycle according to the configured `interval`.
 * `exit_after_end` (default `false`): when set to true, will terminate the collector.

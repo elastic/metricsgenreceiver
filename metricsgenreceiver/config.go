@@ -12,6 +12,7 @@ type Config struct {
 	StartTime          time.Time              `mapstructure:"start_time"`
 	EndTime            time.Time              `mapstructure:"end_time"`
 	Interval           time.Duration          `mapstructure:"interval"`
+	IntervalJitter     bool                   `mapstructure:"interval_jitter"`
 	RealTime           bool                   `mapstructure:"real_time"`
 	ExitAfterEnd       bool                   `mapstructure:"exit_after_end"`
 	Seed               int64                  `mapstructure:"seed"`
