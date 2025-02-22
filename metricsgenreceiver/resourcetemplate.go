@@ -10,6 +10,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"time"
 
 	"net"
 	"text/template"
@@ -42,21 +43,24 @@ func getResourceTemplate(scn ScenarioCfg) (pcommon.Resource, error) {
 	return metrics.ResourceMetrics().At(0).Resource(), nil
 }
 
-func renderResources(resourceTemplate pcommon.Resource, scn ScenarioCfg, r *rand.Rand) ([]pcommon.Resource, error) {
+func renderResources(resourceTemplate pcommon.Resource, cfg *Config, scn ScenarioCfg, r *rand.Rand) ([]pcommon.Resource, error) {
+	startTime := cfg.StartTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scn.Scale)
 	for i := 0; i < scn.Scale; i++ {
 		resource := pcommon.NewResource()
 		resources[i] = resource
 		renderResourceAttributes(resourceTemplate, resource, &resourceTemplateModel{
-			InstanceID: i,
-			rand:       r,
+			InstanceID:        i,
+			InstanceStartTime: startTime,
+			rand:              r,
 		})
 	}
 	return resources, nil
 }
 
 type resourceTemplateModel struct {
-	InstanceID int
+	InstanceID        int
+	InstanceStartTime string
 
 	rand *rand.Rand
 }

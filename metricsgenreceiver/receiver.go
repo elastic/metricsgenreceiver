@@ -68,7 +68,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 			return nil, err
 		}
 
-		resources, err := renderResources(resourceTemplate, scn, r)
+		resources, err := renderResources(resourceTemplate, cfg, scn, r)
 		if err != nil {
 			return nil, err
 		}
@@ -134,7 +134,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 				simulatedTime = addJitter(currentTime)
 			}
 			dataPoints += r.produceMetrics(ctx, simulatedTime)
-			r.applyChurn(i)
+			r.applyChurn(i, simulatedTime)
 
 			if r.cfg.RealTime {
 				<-ticker.C
@@ -161,18 +161,20 @@ func addJitter(t time.Time) time.Time {
 	return t.Add(time.Duration(jitter))
 }
 
-func (r *MetricsGenReceiver) applyChurn(interval int) {
+func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 	for _, scn := range r.scenarios {
 		if scn.config.Churn == 0 {
 			return
 		}
 
+		startTime := simulatedTime.Format(time.RFC3339)
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
 			resource := scn.resources[id%len(scn.resources)]
 			renderResourceAttributes(scn.resourceAttributesTemplate, resource, &resourceTemplateModel{
-				InstanceID: id,
-				rand:       r.rand,
+				InstanceID:        id,
+				InstanceStartTime: startTime,
+				rand:              r.rand,
 			})
 		}
 	}

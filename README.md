@@ -38,7 +38,7 @@ Settings:
     The `<path>.json` file contains a single batch of resource metrics in JSON format, as produced by the `fileexporter`.
     The `<path>-resource-attributes.json` file contains the resource attributes template.
     The resource attributes template is used to simulate the individual instances.
-    These resource attributes are injected into all resource metrics for each individually simulated instance, according to the `scale`.
+    These resource attributes are injected into all resource metrics for each individually simulated instance.
     Supported placeholders:
     * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
     * `{{.RandomIP}}`
@@ -47,6 +47,7 @@ Settings:
     * `{{.RandomMAC}}`
     * `{{.RandomHex}}`
     * `{{.UUID}}`
+    * `{{.InstanceStartTime}}`
   * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
     Time series churn may have an impact on the performance of the backend.
   * `template_vars`: the `<path>.json` file is rendered as a template.
