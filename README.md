@@ -38,7 +38,7 @@ Settings:
     The `<path>.json` file contains a single batch of resource metrics in JSON format, as produced by the `fileexporter`.
     The `<path>-resource-attributes.json` file contains the resource attributes template.
     The resource attributes template is used to simulate the individual instances.
-    These resource attributes are injected into all resource metrics for each individually simulated instance.
+    These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
     Supported placeholders:
     * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
     * `{{.RandomIP}}`

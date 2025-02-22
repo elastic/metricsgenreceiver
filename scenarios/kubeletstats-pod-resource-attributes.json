@@ -22,15 +22,27 @@
             }
           },
           {
-            "key": "k8s.volume.name",
+            "key": "k8s.pod.start_time",
             "value": {
-              "stringValue": "pod-volume-{{.InstanceID}}"
+              "stringValue": "{{.InstanceStartTime}}"
+            }
+          },
+          {
+            "key": "k8s.container.name",
+            "value": {
+              "stringValue": "container-name-{{.InstanceID}}"
             }
           },
           {
             "key": "container.id",
             "value": {
               "stringValue": "{{.RandomHex 64}}"
+            }
+          },
+          {
+            "key": "k8s.volume.name",
+            "value": {
+              "stringValue": "pod-volume-{{.InstanceID}}"
             }
           },
           {

@@ -193,7 +193,14 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 			metrics := pmetric.NewMetrics()
 			scn.metricsTemplate.CopyTo(metrics)
 			for j := 0; j < metrics.ResourceMetrics().Len(); j++ {
-				scn.resources[i].CopyTo(metrics.ResourceMetrics().At(j).Resource())
+				ra := metrics.ResourceMetrics().At(j).Resource().Attributes()
+				scn.resources[i].Attributes().Range(func(k string, v pcommon.Value) bool {
+					if _, exists := ra.Get(k); exists {
+						targetValue := ra.PutEmpty(k)
+						v.CopyTo(targetValue)
+					}
+					return true
+				})
 			}
 			forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
 				advanceDataPoint(dp, r.rand, m)
