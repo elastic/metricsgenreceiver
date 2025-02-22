@@ -1,9 +1,6 @@
 receivers:
   metricsgen:
-    # adjust to a recent time range (now-2h - now+30m) to work with the default settings for TSDB's look-ahead and look-behind times
-    # see also https://www.elastic.co/guide/en/elasticsearch/reference/current/tsds.html#tsds-look-ahead-time
-    start_time: "2025-01-01T00:00:00Z"
-    end_time: "2025-01-01T01:00:00Z"
+    start_now_minus: 1h
     interval: 10s
     real_time: false
     exit_after_end: true
@@ -34,5 +31,5 @@ service:
     metrics:
       receivers: [metricsgen]
       exporters: [nop]
-      # exporters: [elasticsearch]
+      #exporters: [elasticsearch]
 

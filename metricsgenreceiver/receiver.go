@@ -47,6 +47,14 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		return nil, err
 	}
 	r := rand.New(rand.NewSource(cfg.Seed))
+	nowish := time.Now().Truncate(time.Second)
+	if cfg.StartTime.IsZero() {
+		cfg.StartTime = nowish.Add(-cfg.StartNowMinus)
+	}
+	if cfg.EndTime.IsZero() {
+		cfg.EndTime = nowish.Add(-cfg.EndNowMinus)
+	}
+
 	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
 	for _, scn := range cfg.Scenarios {
 

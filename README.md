@@ -20,7 +20,11 @@ and capping double values whose initial value is between 0 and 1 to that range.
 
 Settings:
 * `start_time`: the start time for the generated metrics timestamps.
+* `start_now_minus`: the duration to subtract from the current time to set the start time.
+  Note that when using this option, the data generation will not be deterministic.
 * `end_time`: the time at which the metrics should end.
+* `end_now_minus`: the duration to subtract from the current time to set the end time.
+  Note that when using this option, the data generation will not be deterministic.
 * `interval`: the interval at which the metrics are simulated.
   The minimum value is 1s.
 * `interval_jitter` (default `false`): when enabled, adds a 0-20ms jitter to the timestamps,

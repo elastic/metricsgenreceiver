@@ -9,7 +9,9 @@ import (
 
 type Config struct {
 	StartTime      time.Time     `mapstructure:"start_time"`
+	StartNowMinus  time.Duration `mapstructure:"start_now_minus"`
 	EndTime        time.Time     `mapstructure:"end_time"`
+	EndNowMinus    time.Duration `mapstructure:"end_now_minus"`
 	Interval       time.Duration `mapstructure:"interval"`
 	IntervalJitter bool          `mapstructure:"interval_jitter"`
 	RealTime       bool          `mapstructure:"real_time"`
