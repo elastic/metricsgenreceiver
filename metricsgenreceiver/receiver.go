@@ -170,7 +170,7 @@ func (r *MetricsGenReceiver) applyChurn(interval int) {
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
 			resource := scn.resources[id%len(scn.resources)]
-			_ = renderResourceAttributes(scn.resourceAttributesTemplate, resource, &resourceTemplateModel{
+			renderResourceAttributes(scn.resourceAttributesTemplate, resource, &resourceTemplateModel{
 				InstanceID: id,
 				rand:       r.rand,
 			})

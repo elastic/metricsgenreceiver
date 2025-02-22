@@ -47,13 +47,10 @@ func renderResources(resourceTemplate pcommon.Resource, scn ScenarioCfg, r *rand
 	for i := 0; i < scn.Scale; i++ {
 		resource := pcommon.NewResource()
 		resources[i] = resource
-		err := renderResourceAttributes(resourceTemplate, resource, &resourceTemplateModel{
+		renderResourceAttributes(resourceTemplate, resource, &resourceTemplateModel{
 			InstanceID: i,
 			rand:       r,
 		})
-		if err != nil {
-			return nil, err
-		}
 	}
 	return resources, nil
 }
@@ -100,54 +97,44 @@ func (t *resourceTemplateModel) RandomHex(len int) string {
 	return hex.EncodeToString(buf)
 }
 
-func renderResourceAttributes(resourceTemplate pcommon.Resource, resource pcommon.Resource, model *resourceTemplateModel) error {
-	attr := resource.Attributes()
-	resourceTemplate.CopyTo(resource)
-	var outerErr error
-	resource.Attributes().Range(func(k string, v pcommon.Value) bool {
-		// switch v.type
+func renderResourceAttributes(resourceTemplate pcommon.Resource, resource pcommon.Resource, model *resourceTemplateModel) {
+	targetAttr := resource.Attributes()
+	resourceTemplate.Attributes().Range(func(k string, v pcommon.Value) bool {
 		switch v.Type() {
 		case pcommon.ValueTypeStr:
-			rendered, err := processResourceAttributeTemplate(k, v.Str(), model)
-			if err != nil {
-				outerErr = err
-				return false
-			}
-			attr.PutStr(k, rendered)
+			rendered := processResourceAttributeTemplate(k, v.Str(), model)
+			targetAttr.PutStr(k, rendered)
 		case pcommon.ValueTypeSlice:
-			// iterate v.Slice()
+			targetSlice := targetAttr.PutEmptySlice(k)
 			for j := 0; j < v.Slice().Len(); j++ {
-				v := v.Slice().At(j)
-				if v.Type() == pcommon.ValueTypeStr {
-					rendered, err := processResourceAttributeTemplate(k, v.Str(), model)
-					if err != nil {
-						outerErr = err
-						return false
-					}
-					v.SetStr(rendered)
+				sv := v.Slice().At(j)
+				if sv.Type() == pcommon.ValueTypeStr {
+					rendered := processResourceAttributeTemplate(k, sv.Str(), model)
+					targetSlice.AppendEmpty().SetStr(rendered)
 				} else {
-					outerErr = fmt.Errorf("unhandled resource attribute type %s: %s", k, v.Type())
-					return false
+					panic(fmt.Errorf("unhandled resource attribute type %s: %s", k, v.Type()))
 				}
 			}
 		default:
-			outerErr = fmt.Errorf("unhandled resource attribute type %s: %s", k, v.Type())
-			return false
+			panic(fmt.Errorf("unhandled resource attribute type %s: %s", k, v.Type()))
 		}
 		return true
 	})
-	return outerErr
 }
 
-func processResourceAttributeTemplate(k, v string, model *resourceTemplateModel) (string, error) {
+func processResourceAttributeTemplate(k, v string, model *resourceTemplateModel) string {
 	tmpl, err := template.New(k).Parse(v)
 	if err != nil {
-		return "", err
+		panic(err)
 	}
 	buf := new(bytes.Buffer)
 	err = tmpl.Execute(buf, model)
 	if err != nil {
-		return "", err
+		panic(err)
 	}
-	return buf.String(), nil
+	s := buf.String()
+	if len(s) == 0 {
+		panic(fmt.Errorf("resource attribute template %s: '%s' rendered to empty string", k, v))
+	}
+	return s
 }
