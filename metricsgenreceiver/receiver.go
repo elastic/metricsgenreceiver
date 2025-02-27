@@ -173,7 +173,7 @@ func addJitter(t time.Time) time.Time {
 func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 	for _, scn := range r.scenarios {
 		if scn.config.Churn == 0 {
-			return
+			continue
 		}
 
 		startTime := simulatedTime.Format(time.RFC3339)
