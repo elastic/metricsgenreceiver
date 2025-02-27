@@ -1,12 +1,12 @@
 package metricsgenreceiver
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/distribution"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/dp"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metadata"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metricstmpl"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/resourceattr"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/component/componentstatus"
@@ -18,10 +18,8 @@ import (
 	"go.uber.org/zap"
 	"math"
 	"math/rand"
-	"path/filepath"
 	"sync"
 	"sync/atomic"
-	"text/template"
 	"time"
 )
 
@@ -63,7 +61,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
 	for _, scn := range cfg.Scenarios {
 
-		buf, err := renderMetricsTemplate(scn, err)
+		buf, err := metricstmpl.RenderMetricsTemplate(scn.Path, scn.TemplateVars, err)
 		if err != nil {
 			return nil, err
 		}
@@ -95,34 +93,6 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		rand:      r,
 		scenarios: scenarios,
 	}, nil
-}
-
-func renderMetricsTemplate(scn ScenarioCfg, err error) (*bytes.Buffer, error) {
-	funcMap := template.FuncMap{
-		"loop": func(from, to int) <-chan int {
-			ch := make(chan int)
-			go func() {
-				for i := from; i <= to; i++ {
-					ch <- i
-				}
-				close(ch)
-			}()
-			return ch
-		},
-	}
-	path := scn.Path
-	path += ".json"
-	tpl, err := template.New(path).Funcs(funcMap).ParseFiles(path)
-	if err != nil {
-		return nil, err
-	}
-
-	buf := new(bytes.Buffer)
-	err = tpl.ExecuteTemplate(buf, filepath.Base(path), scn.TemplateVars)
-	if err != nil {
-		return nil, err
-	}
-	return buf, nil
 }
 
 func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) error {
