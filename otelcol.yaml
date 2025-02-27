@@ -1,19 +1,25 @@
 receivers:
   metricsgen:
-    start_now_minus: 5h
+    start_now_minus: 8h
     interval: 2s
     real_time: false
-    exit_after_end: true
+    exit_after_end: false
     seed: 123
     scenarios:
     - path: scenarios/tsbs-devops
       scale: 100
 #    - path: scenarios/hostmetrics
 #      scale: 100
-    # - path: scenarios/kubeletstats-node
-    #   scale: 10
-    # - path: scenarios/kubeletstats-pod
-    #   scale: 1000
+#    - path: scenarios/kubeletstats-node
+#      scale: 10
+#    - path: scenarios/kubeletstats-pod
+#      scale: 1000
+
+processors:
+  batch:
+
+extensions:
+  pprof:
 
 exporters:
   debug:
@@ -26,18 +32,26 @@ exporters:
     encoding: proto
     endpoint: http://localhost:8428/opentelemetry
     sending_queue:
-      blocking: true
+  prometheusremotewrite/victoriametrics:
+    endpoint: "http://localhost:8428/api/v1/write"
+    resource_to_telemetry_conversion:
+      enabled: true
+    remote_write_queue:
+      enabled: false
   elasticsearch:
     endpoint: "http://localhost:9200"
     mapping:
       mode: otel
     metrics_dynamic_index:
       enabled: true
+    sending_queue:
 
 service:
+#  extensions: [pprof]
   pipelines:
     metrics:
       receivers: [metricsgen]
+#      processors: [batch]
 #      exporters: [nop]
+#      exporters: [elasticsearch]
       exporters: [otlphttp/victoriametrics]
-
