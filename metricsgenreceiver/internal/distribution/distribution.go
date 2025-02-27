@@ -26,7 +26,11 @@ func AdvanceDataPoint(dp dp.DataPoint, rand *rand.Rand, m pmetric.Metric, dist D
 					value = advanceFloat(rand, m, value, dist)
 					// avoid keeping the value locked between 0..1 in successive runs
 					if value >= 0 && value <= 1 {
-						value += 1.1
+						if value < 0.5 {
+							value--
+						} else {
+							value++
+						}
 					}
 				}
 			} else {

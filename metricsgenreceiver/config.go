@@ -35,8 +35,8 @@ func createDefaultConfig() component.Config {
 		Scenarios: make([]ScenarioCfg, 0),
 		Distribution: distribution.DistributionCfg{
 			MedianMonotonicSum: 100,
-			StdDevGaugePct:     0.05,
-			StdDev:             5.0,
+			StdDevGaugePct:     0.01,
+			StdDev:             1.0,
 		},
 	}
 }
