@@ -51,7 +51,13 @@ func advanceZeroToOne(value float64, rand *rand.Rand, dist DistributionCfg) floa
 }
 
 func advanceInt(rand *rand.Rand, m pmetric.Metric, value int64, dist DistributionCfg) int64 {
-	return int64(advanceFloat(rand, m, float64(value), dist))
+	vf := advanceFloat(rand, m, float64(value), dist)
+	vi := int64(vf)
+	// probabilistic rounding
+	if vf-float64(vi) > rand.Float64() {
+		vi++
+	}
+	return vi
 }
 
 func advanceFloat(rand *rand.Rand, m pmetric.Metric, value float64, dist DistributionCfg) float64 {
