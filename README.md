@@ -64,7 +64,7 @@ Settings:
     * `{{.RandomIPv4}}`
     * `{{.RandomIPv6}}`
     * `{{.RandomMAC}}`
-    * `{{.RandomHex}}`
+    * `{{.RandomHex <length>}}`
     * `{{.UUID}}`
     * `{{.InstanceStartTime}}`
   * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
