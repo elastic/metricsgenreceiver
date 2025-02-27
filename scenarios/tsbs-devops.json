@@ -21,9 +21,9 @@
             "name": "cpu"
           },
           "metrics": [
-            {"name": "cpu_usage_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "cpu_usage_system", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "cpu_usage_idle", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "30"}]}},
+            {"name": "cpu_usage_system", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "20"}]}},
+            {"name": "cpu_usage_idle", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "50"}]}},
             {"name": "cpu_usage_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
             {"name": "cpu_usage_iowait", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
             {"name": "cpu_usage_irq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
