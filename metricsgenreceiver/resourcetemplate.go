@@ -69,10 +69,6 @@ func (m *resourceTemplateModel) randByte() byte {
 	return byte(m.rand.Int())
 }
 
-func (t *resourceTemplateModel) RandomIP() string {
-	return t.RandomIPv4()
-}
-
 func (t *resourceTemplateModel) RandomIPv4() string {
 	return net.IPv4(t.randByte(), t.randByte(), t.randByte(), t.randByte()).String()
 }

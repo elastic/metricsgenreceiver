@@ -18,7 +18,7 @@
           {
             "key": "k8s.pod.ip",
             "value": {
-              "stringValue": "{{.RandomIP}}"
+              "stringValue": "{{.RandomIPv4}}"
             }
           },
           {

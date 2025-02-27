@@ -60,7 +60,6 @@ Settings:
     These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
     Supported placeholders:
     * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
-    * `{{.RandomIP}}`
     * `{{.RandomIPv4}}`
     * `{{.RandomIPv6}}`
     * `{{.RandomMAC}}`
