@@ -26,7 +26,7 @@ func TestLoadConfig(t *testing.T) {
 
 func testdataConfigYamlAsMap() *Config {
 	startTime, _ := time.Parse(time.RFC3339, "2024-12-17T00:00:00Z")
-	endTime, _ := time.Parse(time.RFC3339, "2024-12-17T00:00:30Z")
+	endTime, _ := time.Parse(time.RFC3339, "2024-12-17T00:00:31Z")
 	interval, _ := time.ParseDuration("30s")
 	return &Config{
 		StartTime: startTime,

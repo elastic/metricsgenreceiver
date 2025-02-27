@@ -22,11 +22,11 @@ type Config struct {
 }
 
 type ScenarioCfg struct {
-	Path                string         `mapstructure:"path"`
-	Scale               int            `mapstructure:"scale"`
-	ConcurrentInstances bool           `mapstructure:"concurrent_instances"`
-	Churn               int            `mapstructure:"churn"`
-	TemplateVars        map[string]any `mapstructure:"template_vars"`
+	Path         string         `mapstructure:"path"`
+	Scale        int            `mapstructure:"scale"`
+	Concurrency  int            `mapstructure:"concurrency"`
+	Churn        int            `mapstructure:"churn"`
+	TemplateVars map[string]any `mapstructure:"template_vars"`
 }
 
 func createDefaultConfig() component.Config {
@@ -48,6 +48,15 @@ func (cfg *Config) Validate() error {
 
 	if cfg.StartTime.After(cfg.EndTime) {
 		return fmt.Errorf("start_time must be before end_time")
+	}
+
+	for _, scn := range cfg.Scenarios {
+		if scn.Concurrency != 0 && scn.Scale%scn.Concurrency != 0 {
+			return fmt.Errorf("scale must be a multiple of concurrency")
+		}
+		if scn.Concurrency < 0 {
+			return fmt.Errorf("concurrency must be a positive number")
+		}
 	}
 	return nil
 }

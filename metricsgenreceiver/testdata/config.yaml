@@ -1,6 +1,6 @@
 metricsgen:
   start_time: "2024-12-17T00:00:00Z"
-  end_time: "2024-12-17T00:00:30Z"
+  end_time: "2024-12-17T00:00:31Z"
   interval: 30s
   seed: 123
   scenarios:

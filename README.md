@@ -51,8 +51,7 @@ Settings:
 * `scenarios`: a list of scenarios to simulate. For every interval, each scenario is simulated before moving to the next interval.
   * `scale`: determines how many instances (like hosts) to simulate.
     The individual instances will a have a consistent set of resource attributes throughout the simulation.
-  * `concurrent_instances` (default `false`): when set to true, the receiver simulates each instance pushing metrics concurrently (in a separate goroutine) rather than sequentially.
-    This can be useful to stress test the backend.
+  * `concurrency` (default `0`): when set to a non-zero value, the receiver will simulate the scenario concurrently with the specified number of goroutines.
   * `path`: the path of the scenario files. Expects a `<path>.json` and a `<path>-resource-attributes.json` file.
     The `<path>.json` file contains a single batch of resource metrics in JSON format, as produced by the `fileexporter`.
     The `<path>-resource-attributes.json` file contains the resource attributes template.

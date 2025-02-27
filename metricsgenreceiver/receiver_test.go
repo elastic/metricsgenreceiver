@@ -28,11 +28,18 @@ func TestReceiver(t *testing.T) {
 			resourceMetrics: 1,
 		},
 		{
-			name:            "metricstemplate concurrency",
+			name:            "metricstemplate concurrency 1",
 			path:            "testdata/metricstemplate",
 			dataPoints:      3,
 			resourceMetrics: 1,
-			customizer:      func(cfg *Config) { cfg.Scenarios[0].ConcurrentInstances = true },
+			customizer:      func(cfg *Config) { cfg.Scenarios[0].Concurrency = 1 },
+		},
+		{
+			name:            "metricstemplate concurrency 2",
+			path:            "testdata/metricstemplate",
+			dataPoints:      3,
+			resourceMetrics: 1,
+			customizer:      func(cfg *Config) { cfg.Scenarios[0].Concurrency = 2 },
 		},
 		{
 			name:            "metricstemplate jitter",
@@ -93,7 +100,7 @@ func TestReceiver(t *testing.T) {
 
 			require.Equal(t, 2*cfg.Scenarios[0].Scale, len(allMetrics))
 
-			if !cfg.Scenarios[0].ConcurrentInstances {
+			if cfg.Scenarios[0].Concurrency <= 1 {
 				verifyMetrics(t, 0, cfg, allMetrics, cfg.StartTime)
 				verifyMetrics(t, cfg.Scenarios[0].Scale, cfg, allMetrics, cfg.StartTime.Add(cfg.Interval))
 			}

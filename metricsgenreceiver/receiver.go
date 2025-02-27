@@ -170,18 +170,23 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			distribution.AdvanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 		})
-		for i := 0; i < scn.config.Scale; i++ {
+		if scn.config.Concurrency == 0 {
+			for i := range scn.config.Scale {
+				*dataPoints += uint64(r.produceMetricsForInstance(ctx, currentTime, scn, scn.resources[i]))
+			}
+			continue
+		}
+
+		for i := 0; i < scn.config.Concurrency; i++ {
 			wg.Add(1)
-			f := func() {
+			go func() {
 				defer wg.Done()
-				currentDataPoints := r.produceMetricsForInstance(ctx, currentTime, scn, scn.resources[i])
-				atomic.AddUint64(dataPoints, uint64(currentDataPoints))
-			}
-			if scn.config.ConcurrentInstances {
-				go f()
-			} else {
-				f()
-			}
+				for j := 0; j < scn.config.Scale/scn.config.Concurrency; j++ {
+					resource := scn.resources[j+i*scn.config.Scale/scn.config.Concurrency]
+					currentDataPoints := r.produceMetricsForInstance(ctx, currentTime, scn, resource)
+					atomic.AddUint64(dataPoints, uint64(currentDataPoints))
+				}
+			}()
 		}
 	}
 	wg.Wait()
