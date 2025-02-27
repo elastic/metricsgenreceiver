@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metadata"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/resourceattr"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/component/componentstatus"
 	"go.opentelemetry.io/collector/consumer"
@@ -73,12 +74,8 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		if err != nil {
 			return nil, err
 		}
-		resourceTemplate, err := getResourceTemplate(scn)
-		if err != nil {
-			return nil, err
-		}
 
-		resources, err := renderResources(resourceTemplate, cfg, scn, r)
+		resources, err := resourceattr.GetResources(scn.Path, cfg.StartTime, scn.Scale, r)
 		if err != nil {
 			return nil, err
 		}
@@ -181,11 +178,7 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
 			resource := scn.resources[id%len(scn.resources)]
-			renderResourceAttributes(scn.resourceAttributesTemplate, resource, &resourceTemplateModel{
-				InstanceID:        id,
-				InstanceStartTime: startTime,
-				rand:              r.rand,
-			})
+			resourceattr.RenderResourceAttributes(scn.resourceAttributesTemplate, resource, id, startTime, r.rand)
 		}
 	}
 }

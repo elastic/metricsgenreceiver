@@ -1,4 +1,4 @@
-package metricsgenreceiver
+package resourceattr
 
 import (
 	"bytes"
@@ -16,8 +16,20 @@ import (
 	"text/template"
 )
 
-func getResourceTemplate(scn ScenarioCfg) (pcommon.Resource, error) {
-	path := scn.Path
+func GetResources(path string, startTime time.Time, scale int, r *rand.Rand) ([]pcommon.Resource, error) {
+	resourceTemplate, err := getResourceTemplate(path)
+	if err != nil {
+		return nil, err
+	}
+
+	resources, err := renderResources(resourceTemplate, startTime, scale, r)
+	if err != nil {
+		return nil, err
+	}
+	return resources, nil
+}
+
+func getResourceTemplate(path string) (pcommon.Resource, error) {
 	path += "-resource-attributes.json"
 	// load a file from the file system into a buffer. the `path` variable is a string that contains the path to the file. use io.ReadAll
 	file, err := os.Open(path)
@@ -43,17 +55,13 @@ func getResourceTemplate(scn ScenarioCfg) (pcommon.Resource, error) {
 	return metrics.ResourceMetrics().At(0).Resource(), nil
 }
 
-func renderResources(resourceTemplate pcommon.Resource, cfg *Config, scn ScenarioCfg, r *rand.Rand) ([]pcommon.Resource, error) {
-	startTime := cfg.StartTime.Format(time.RFC3339)
-	resources := make([]pcommon.Resource, scn.Scale)
-	for i := 0; i < scn.Scale; i++ {
+func renderResources(resourceTemplate pcommon.Resource, startTime time.Time, scale int, r *rand.Rand) ([]pcommon.Resource, error) {
+	startTimeString := startTime.Format(time.RFC3339)
+	resources := make([]pcommon.Resource, scale)
+	for i := 0; i < scale; i++ {
 		resource := pcommon.NewResource()
 		resources[i] = resource
-		renderResourceAttributes(resourceTemplate, resource, &resourceTemplateModel{
-			InstanceID:        i,
-			InstanceStartTime: startTime,
-			rand:              r,
-		})
+		RenderResourceAttributes(resourceTemplate, resource, i, startTimeString, r)
 	}
 	return resources, nil
 }
@@ -97,7 +105,12 @@ func (t *resourceTemplateModel) RandomHex(len int) string {
 	return hex.EncodeToString(buf)
 }
 
-func renderResourceAttributes(resourceTemplate pcommon.Resource, resource pcommon.Resource, model *resourceTemplateModel) {
+func RenderResourceAttributes(resourceTemplate pcommon.Resource, resource pcommon.Resource, id int, startTimeString string, r *rand.Rand) {
+	model := &resourceTemplateModel{
+		InstanceID:        id,
+		InstanceStartTime: startTimeString,
+		rand:              r,
+	}
 	targetAttr := resource.Attributes()
 	resourceTemplate.Attributes().Range(func(k string, v pcommon.Value) bool {
 		switch v.Type() {
