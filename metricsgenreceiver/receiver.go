@@ -90,6 +90,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 	ctx, r.cancel = context.WithCancel(ctx)
 	go func() {
 		start := time.Now()
+		nextLog := start.Add(10 * time.Second)
 		ticker := time.NewTicker(r.cfg.Interval)
 		defer ticker.Stop()
 		dataPoints := uint64(0)
@@ -97,6 +98,13 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 		for i := 0; currentTime.UnixNano() <= r.cfg.EndTime.UnixNano(); i++ {
 			if ctx.Err() != nil {
 				return
+			}
+			if time.Now().After(nextLog) {
+				r.settings.Logger.Info("generating metrics progress",
+					zap.Int("progress", int(currentTime.Sub(r.cfg.StartTime).Seconds()*100.0/r.cfg.EndTime.Sub(r.cfg.StartTime).Seconds())),
+					zap.Uint64("datapoints", dataPoints),
+					zap.Float64("data_points_per_second", float64(dataPoints)/time.Now().Sub(start).Seconds()))
+				nextLog = nextLog.Add(10 * time.Second)
 			}
 			simulatedTime := currentTime
 			if r.cfg.IntervalJitter {
