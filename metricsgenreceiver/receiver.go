@@ -16,6 +16,8 @@ import (
 	"math"
 	"math/rand"
 	"path/filepath"
+	"sync"
+	"sync/atomic"
 	"text/template"
 	"time"
 )
@@ -131,7 +133,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 		start := time.Now()
 		ticker := time.NewTicker(r.cfg.Interval)
 		defer ticker.Stop()
-		dataPoints := 0
+		dataPoints := uint64(0)
 		currentTime := r.cfg.StartTime
 		for i := 0; currentTime.UnixNano() <= r.cfg.EndTime.UnixNano(); i++ {
 			if ctx.Err() != nil {
@@ -152,7 +154,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 		duration := time.Now().Sub(start)
 
 		r.settings.Logger.Info("finished generating metrics",
-			zap.Int("datapoints", dataPoints),
+			zap.Uint64("datapoints", dataPoints),
 			zap.String("duration", duration.Round(time.Millisecond).String()),
 			zap.Float64("data_points_per_second", float64(dataPoints)/duration.Seconds()))
 		if r.cfg.ExitAfterEnd {
@@ -188,38 +190,55 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 	}
 }
 
-func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime time.Time) int {
-	dataPoints := 0
+func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime time.Time) uint64 {
+	dataPoints := new(uint64)
+	wg := sync.WaitGroup{}
 	for _, scn := range r.scenarios {
-		// we don't individually keep track of the data points for each instance individually to reduce memory pressure
+		// we don't keep track of the data points for each instance individually to reduce memory pressure
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
+		// this makes sure counters are increasing over time
 		forEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
 			advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 		})
 		for i := 0; i < scn.config.Scale; i++ {
-			r.obsreport.StartMetricsOp(ctx)
-			metrics := pmetric.NewMetrics()
-			scn.metricsTemplate.CopyTo(metrics)
-			for j := 0; j < metrics.ResourceMetrics().Len(); j++ {
-				ra := metrics.ResourceMetrics().At(j).Resource().Attributes()
-				scn.resources[i].Attributes().Range(func(k string, v pcommon.Value) bool {
-					if _, exists := ra.Get(k); exists {
-						targetValue := ra.PutEmpty(k)
-						v.CopyTo(targetValue)
-					}
-					return true
-				})
+			wg.Add(1)
+			f := func() {
+				defer wg.Done()
+				currentDataPoints := r.produceMetricsForInstance(ctx, currentTime, scn, i)
+				atomic.AddUint64(dataPoints, uint64(currentDataPoints))
 			}
-			forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-				advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
-				dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
-			})
-			err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
-			currentCount := metrics.DataPointCount()
-			r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
-			dataPoints += currentCount
+			if scn.config.ConcurrentInstances {
+				go f()
+			} else {
+				f()
+			}
 		}
 	}
+	wg.Wait()
+	return *dataPoints
+}
+
+func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, currentTime time.Time, scn Scenario, i int) int {
+	r.obsreport.StartMetricsOp(ctx)
+	metrics := pmetric.NewMetrics()
+	scn.metricsTemplate.CopyTo(metrics)
+	for j := 0; j < metrics.ResourceMetrics().Len(); j++ {
+		ra := metrics.ResourceMetrics().At(j).Resource().Attributes()
+		scn.resources[i].Attributes().Range(func(k string, v pcommon.Value) bool {
+			if _, exists := ra.Get(k); exists {
+				targetValue := ra.PutEmpty(k)
+				v.CopyTo(targetValue)
+			}
+			return true
+		})
+	}
+	forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
+		advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
+		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
+	})
+	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
+	dataPoints := metrics.DataPointCount()
+	r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
 	return dataPoints
 }
 

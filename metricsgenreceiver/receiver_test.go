@@ -37,6 +37,29 @@ func TestReceiver(t *testing.T) {
 	verifyMetrics(t, cfg.Scenarios[0].Scale, cfg, allMetrics, cfg.StartTime.Add(30*time.Second))
 }
 
+func TestReceiverConcurrency(t *testing.T) {
+	sink := new(consumertest.MetricsSink)
+
+	factory := NewFactory()
+	cfg := testdataConfigYamlAsMap()
+	cfg.Scenarios[0].ConcurrentInstances = true
+	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(), cfg, sink)
+	require.NoError(t, err)
+	err = rcv.Start(context.Background(), nil)
+	require.NoError(t, err)
+	require.Eventually(t, func() bool {
+		return sink.DataPointCount() == 3* // 3 metrics
+			2* // 2 intervals
+			cfg.Scenarios[0].Scale
+	}, 2*time.Second, time.Millisecond)
+	require.NoError(t, rcv.Shutdown(context.Background()))
+
+	allMetrics := sink.AllMetrics()
+	require.NotEmpty(t, allMetrics)
+
+	require.Equal(t, 2*cfg.Scenarios[0].Scale, len(allMetrics))
+}
+
 func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.Metrics, timestamp time.Time) {
 	for i := offset; i < cfg.Scenarios[0].Scale+offset; i++ {
 		forEachDataPoint(&allMetrics[i], func(r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {

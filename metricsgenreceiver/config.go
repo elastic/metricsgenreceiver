@@ -21,10 +21,11 @@ type Config struct {
 }
 
 type ScenarioCfg struct {
-	Path         string                 `mapstructure:"path"`
-	Scale        int                    `mapstructure:"scale"`
-	Churn        int                    `mapstructure:"churn"`
-	TemplateVars map[string]interface{} `mapstructure:"template_vars"`
+	Path                string                 `mapstructure:"path"`
+	Scale               int                    `mapstructure:"scale"`
+	ConcurrentInstances bool                   `mapstructure:"concurrent_instances"`
+	Churn               int                    `mapstructure:"churn"`
+	TemplateVars        map[string]interface{} `mapstructure:"template_vars"`
 }
 
 type DistributionCfg struct {
