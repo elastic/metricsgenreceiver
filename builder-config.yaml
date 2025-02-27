@@ -23,3 +23,5 @@ receivers:
     name: 'metricsgenreceiver'
     path: 'metricsgenreceiver'
 
+extensions:
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension v0.120.0
