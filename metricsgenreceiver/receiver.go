@@ -199,7 +199,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 			wg.Add(1)
 			f := func() {
 				defer wg.Done()
-				currentDataPoints := r.produceMetricsForInstance(ctx, currentTime, scn, i)
+				currentDataPoints := r.produceMetricsForInstance(ctx, currentTime, scn, scn.resources[i])
 				atomic.AddUint64(dataPoints, uint64(currentDataPoints))
 			}
 			if scn.config.ConcurrentInstances {
@@ -213,19 +213,13 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 	return *dataPoints
 }
 
-func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, currentTime time.Time, scn Scenario, i int) int {
+func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, currentTime time.Time, scn Scenario, instanceResource pcommon.Resource) int {
 	r.obsreport.StartMetricsOp(ctx)
 	metrics := pmetric.NewMetrics()
 	scn.metricsTemplate.CopyTo(metrics)
-	for j := 0; j < metrics.ResourceMetrics().Len(); j++ {
-		ra := metrics.ResourceMetrics().At(j).Resource().Attributes()
-		scn.resources[i].Attributes().Range(func(k string, v pcommon.Value) bool {
-			if _, exists := ra.Get(k); exists {
-				targetValue := ra.PutEmpty(k)
-				v.CopyTo(targetValue)
-			}
-			return true
-		})
+	resourceMetrics := metrics.ResourceMetrics()
+	for j := 0; j < resourceMetrics.Len(); j++ {
+		resourceattr.OverrideExistingAttributes(instanceResource, resourceMetrics.At(j).Resource())
 	}
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 		distribution.AdvanceDataPoint(dp, r.rand, m, r.cfg.Distribution)

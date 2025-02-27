@@ -151,3 +151,14 @@ func processResourceAttributeTemplate(k, v string, model *resourceTemplateModel)
 	}
 	return s
 }
+
+func OverrideExistingAttributes(source, target pcommon.Resource) {
+	targetAttr := target.Attributes()
+	source.Attributes().Range(func(k string, v pcommon.Value) bool {
+		if _, exists := targetAttr.Get(k); exists {
+			targetValue := targetAttr.PutEmpty(k)
+			v.CopyTo(targetValue)
+		}
+		return true
+	})
+}
