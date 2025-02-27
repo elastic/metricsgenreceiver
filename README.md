@@ -18,10 +18,10 @@ The datapoints for the metrics are individually simulated using a distribution t
 ## Getting Started
 
 Settings:
-* `start_time`: the start time for the generated metrics timestamps.
+* `start_time`: the start time of the generated metrics (inclusive).
 * `start_now_minus`: the duration to subtract from the current time to set the start time.
   Note that when using this option, the data generation will not be deterministic.
-* `end_time`: the time at which the metrics should end.
+* `end_time`: the end time of the generated metrics (exclusive).
 * `end_now_minus`: the duration to subtract from the current time to set the end time.
   Note that when using this option, the data generation will not be deterministic.
 * `interval`: the interval at which the metrics are simulated.

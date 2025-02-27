@@ -95,7 +95,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 		defer ticker.Stop()
 		dataPoints := uint64(0)
 		currentTime := r.cfg.StartTime
-		for i := 0; currentTime.UnixNano() <= r.cfg.EndTime.UnixNano(); i++ {
+		for i := 0; currentTime.UnixNano() < r.cfg.EndTime.UnixNano(); i++ {
 			if ctx.Err() != nil {
 				return
 			}
