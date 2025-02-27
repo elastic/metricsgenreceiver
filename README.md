@@ -66,6 +66,11 @@ Settings:
     * `{{.RandomHex <length>}}`
     * `{{.UUID}}`
     * `{{.InstanceStartTime}}`
+    This receiver comes with a number of pre-packaged scenarios that can be found in the `scenarios` directory:
+    * `scenarios/hostmetrics`: simulates metrics from the `hostmetricsreceiver`.
+    * `scenarios/kubeletstats-node`: simulates node metrics from the `kubeletstatsreceiver`.
+    * `scenarios/kubeletstats-pod`: simulates pod metrics from the `kubeletstatsreceiver`.
+      Each simulated pod reports metrics for the pod itself, one container, and one volume mount.
   * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
     Time series churn may have an impact on the performance of the backend.
   * `template_vars`: the `<path>.json` file is rendered as a template.
