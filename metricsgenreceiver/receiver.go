@@ -100,8 +100,11 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 				return
 			}
 			if time.Now().After(nextLog) {
+				progressPct := currentTime.Sub(r.cfg.StartTime).Seconds() / r.cfg.EndTime.Sub(r.cfg.StartTime).Seconds()
+				duration := time.Now().Sub(start)
 				r.settings.Logger.Info("generating metrics progress",
-					zap.Int("progress", int(currentTime.Sub(r.cfg.StartTime).Seconds()*100.0/r.cfg.EndTime.Sub(r.cfg.StartTime).Seconds())),
+					zap.Int("progress_percent", int(progressPct*100)),
+					zap.String("eta", (time.Duration(float64(duration.Nanoseconds())/progressPct)-duration).Round(time.Second).String()),
 					zap.Uint64("datapoints", dataPoints),
 					zap.Float64("data_points_per_second", float64(dataPoints)/time.Now().Sub(start).Seconds()))
 				nextLog = nextLog.Add(10 * time.Second)
