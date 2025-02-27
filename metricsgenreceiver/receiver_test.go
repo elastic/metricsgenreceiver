@@ -3,6 +3,7 @@ package metricsgenreceiver
 import (
 	"context"
 	"fmt"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/dp"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/consumer/consumertest"
 	"go.opentelemetry.io/collector/pdata/pcommon"
@@ -62,7 +63,7 @@ func TestReceiverConcurrency(t *testing.T) {
 
 func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.Metrics, timestamp time.Time) {
 	for i := offset; i < cfg.Scenarios[0].Scale+offset; i++ {
-		forEachDataPoint(&allMetrics[i], func(r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
+		dp.ForEachDataPoint(&allMetrics[i], func(r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			value, _ := r.Attributes().Get("host.name")
 			require.Equal(t, fmt.Sprintf("host-%d", i-offset), value.Str())
 			require.Equal(t, cfg.StartTime, dp.StartTimestamp().AsTime())

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/distribution"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/dp"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metadata"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/resourceattr"
 	"go.opentelemetry.io/collector/component"
@@ -68,7 +70,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 
 		metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
 		metrics, err := metricsUnmarshaler.UnmarshalMetrics(buf.Bytes())
-		forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
+		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
 		})
 		if err != nil {
@@ -190,8 +192,8 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		// we don't keep track of the data points for each instance individually to reduce memory pressure
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		// this makes sure counters are increasing over time
-		forEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-			advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
+		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
+			distribution.AdvanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 		})
 		for i := 0; i < scn.config.Scale; i++ {
 			wg.Add(1)
@@ -225,128 +227,14 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, curr
 			return true
 		})
 	}
-	forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-		advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
+	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
+		distribution.AdvanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
 	})
 	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
 	dataPoints := metrics.DataPointCount()
 	r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
 	return dataPoints
-}
-
-func advanceDataPoint(dp dataPoint, rand *rand.Rand, m pmetric.Metric, dist DistributionCfg) {
-	switch v := dp.(type) {
-	case pmetric.NumberDataPoint:
-		switch v.ValueType() {
-		case pmetric.NumberDataPointValueTypeDouble:
-			value := v.DoubleValue()
-			if m.Type() == pmetric.MetricTypeGauge {
-				if value >= 0 && value <= 1 {
-					value = advanceZeroToOne(value, rand, dist)
-				} else {
-					value = advanceFloat(rand, m, value, dist)
-					// avoid keeping the value locked between 0..1 in successive runs
-					if value >= 0 && value <= 1 {
-						value += 1.1
-					}
-				}
-			} else {
-				value = advanceFloat(rand, m, value, dist)
-			}
-			v.SetDoubleValue(value)
-			break
-		case pmetric.NumberDataPointValueTypeInt:
-			v.SetIntValue(advanceInt(rand, m, v.IntValue(), dist))
-			break
-		default:
-		}
-	}
-}
-
-func advanceZeroToOne(value float64, rand *rand.Rand, dist DistributionCfg) float64 {
-	value += rand.NormFloat64() * dist.StdDevGaugePct
-	// keep locked between 0..1
-	value = math.Abs(value)
-	value = min(value, 1)
-	return value
-}
-
-func advanceInt(rand *rand.Rand, m pmetric.Metric, value int64, dist DistributionCfg) int64 {
-	return int64(advanceFloat(rand, m, float64(value), dist))
-}
-
-func advanceFloat(rand *rand.Rand, m pmetric.Metric, value float64, dist DistributionCfg) float64 {
-	delta := rand.NormFloat64() * dist.StdDev
-	if isMonotonicSum(&m) {
-		delta += float64(dist.MedianMonotonicSum)
-	}
-	if isDelta(&m) {
-		value = delta
-	} else {
-		value += delta
-	}
-	return value
-}
-
-func isMonotonicSum(m *pmetric.Metric) bool {
-	return m.Type() == pmetric.MetricTypeSum && m.Sum().IsMonotonic()
-}
-
-func isDelta(m *pmetric.Metric) bool {
-	return m.Type() == pmetric.MetricTypeSum && m.Sum().AggregationTemporality() == pmetric.AggregationTemporalityDelta
-}
-
-func forEachDataPoint(ms *pmetric.Metrics, visitor func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint)) {
-	rms := ms.ResourceMetrics()
-	for i := 0; i < rms.Len(); i++ {
-		rm := rms.At(i)
-		ilms := rm.ScopeMetrics()
-		for j := 0; j < ilms.Len(); j++ {
-			sm := ilms.At(j)
-			metricsList := sm.Metrics()
-			for k := 0; k < metricsList.Len(); k++ {
-				m := metricsList.At(k)
-				//exhaustive:enforce
-				switch metricsList.At(k).Type() {
-				case pmetric.MetricTypeGauge:
-					ds := m.Gauge().DataPoints()
-					for l := 0; l < ds.Len(); l++ {
-						visitor(rm.Resource(), sm.Scope(), m, ds.At(l))
-					}
-				case pmetric.MetricTypeSum:
-					ds := m.Sum().DataPoints()
-					for l := 0; l < ds.Len(); l++ {
-						visitor(rm.Resource(), sm.Scope(), m, ds.At(l))
-					}
-				case pmetric.MetricTypeHistogram:
-					ds := m.Histogram().DataPoints()
-					for l := 0; l < ds.Len(); l++ {
-						visitor(rm.Resource(), sm.Scope(), m, ds.At(l))
-					}
-				case pmetric.MetricTypeExponentialHistogram:
-					ds := m.ExponentialHistogram().DataPoints()
-					for l := 0; l < ds.Len(); l++ {
-						visitor(rm.Resource(), sm.Scope(), m, ds.At(l))
-					}
-				case pmetric.MetricTypeSummary:
-					ds := m.Summary().DataPoints()
-					for l := 0; l < ds.Len(); l++ {
-						visitor(rm.Resource(), sm.Scope(), m, ds.At(l))
-					}
-				case pmetric.MetricTypeEmpty:
-				}
-			}
-		}
-	}
-}
-
-type dataPoint interface {
-	Attributes() pcommon.Map
-	StartTimestamp() pcommon.Timestamp
-	SetStartTimestamp(pcommon.Timestamp)
-	Timestamp() pcommon.Timestamp
-	SetTimestamp(pcommon.Timestamp)
 }
 
 func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {

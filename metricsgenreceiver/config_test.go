@@ -1,6 +1,7 @@
 package metricsgenreceiver
 
 import (
+	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/distribution"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/confmap/confmaptest"
@@ -38,7 +39,7 @@ func testdataConfigYamlAsMap() *Config {
 				Scale: 10,
 			},
 		},
-		Distribution: DistributionCfg{
+		Distribution: distribution.DistributionCfg{
 			MedianMonotonicSum: 100,
 			StdDevGaugePct:     0.05,
 			StdDev:             5.0,
