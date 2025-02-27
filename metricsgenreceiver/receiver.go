@@ -200,8 +200,8 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, curr
 		distribution.AdvanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
 	})
-	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
 	dataPoints := metrics.DataPointCount()
+	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
 	r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
 	return dataPoints
 }
