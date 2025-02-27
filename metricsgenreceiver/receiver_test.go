@@ -3,6 +3,7 @@ package metricsgenreceiver
 import (
 	"context"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/dp"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/consumer/consumertest"
 	"go.opentelemetry.io/collector/pdata/pcommon"
@@ -61,7 +62,7 @@ func TestReceiver(t *testing.T) {
 		{
 			name:            "tsbs-devops",
 			path:            "../scenarios/tsbs-devops",
-			dataPoints:      99,
+			dataPoints:      101,
 			resourceMetrics: 9,
 		},
 	}
@@ -80,12 +81,11 @@ func TestReceiver(t *testing.T) {
 			err = rcv.Start(context.Background(), nil)
 			require.NoError(t, err)
 
-			expectedDataPoints := test.dataPoints *
-				2 * // 2 intervals
-				cfg.Scenarios[0].Scale
-			require.Eventually(t, func() bool {
-				return sink.DataPointCount() == expectedDataPoints
-			}, 2*time.Second, time.Millisecond, "expected %d data points, got %d", expectedDataPoints, sink.DataPointCount())
+			require.EventuallyWithT(t, func(c *assert.CollectT) {
+				require.Equal(c, test.dataPoints*
+					2* // 2 intervals
+					cfg.Scenarios[0].Scale, sink.DataPointCount())
+			}, 2*time.Second, time.Millisecond)
 			require.NoError(t, rcv.Shutdown(context.Background()))
 
 			allMetrics := sink.AllMetrics()
