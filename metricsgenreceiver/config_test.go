@@ -3,8 +3,8 @@ package metricsgenreceiver
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/confmap/confmaptest"
+	"go.opentelemetry.io/collector/confmap/xconfmap"
 	"path/filepath"
 	"testing"
 	"time"
@@ -19,7 +19,7 @@ func TestLoadConfig(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, sub.Unmarshal(cfg))
 
-	assert.NoError(t, component.ValidateConfig(cfg))
+	assert.NoError(t, xconfmap.Validate(cfg))
 	assert.Equal(t, testdataConfigYamlAsMap(), cfg)
 }
 
@@ -37,6 +37,11 @@ func testdataConfigYamlAsMap() *Config {
 				Path:  "testdata/metricstemplate",
 				Scale: 10,
 			},
+		},
+		Distribution: DistributionCfg{
+			MedianMonotonicSum: 100,
+			StdDevGaugePct:     0.05,
+			StdDev:             5.0,
 		},
 	}
 }

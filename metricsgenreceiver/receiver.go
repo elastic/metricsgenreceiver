@@ -194,7 +194,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		// we don't individually keep track of the data points for each instance individually to reduce memory pressure
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		forEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-			advanceDataPoint(dp, r.rand, m)
+			advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 		})
 		for i := 0; i < scn.config.Scale; i++ {
 			r.obsreport.StartMetricsOp(ctx)
@@ -211,7 +211,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 				})
 			}
 			forEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint) {
-				advanceDataPoint(dp, r.rand, m)
+				advanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
 				dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
 			})
 			err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
@@ -223,65 +223,66 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 	return dataPoints
 }
 
-func advanceDataPoint(dp dataPoint, rand *rand.Rand, m pmetric.Metric) {
+func advanceDataPoint(dp dataPoint, rand *rand.Rand, m pmetric.Metric, dist DistributionCfg) {
 	switch v := dp.(type) {
 	case pmetric.NumberDataPoint:
 		switch v.ValueType() {
 		case pmetric.NumberDataPointValueTypeDouble:
 			value := v.DoubleValue()
-			if value >= 0 && value <= 1 {
-				value = advanceZeroToOne(value, rand)
-			} else {
-				value = advanceFloat(rand, m, value)
-				// avoid keeping the value locked between 0..1 in successive runs
+			if m.Type() == pmetric.MetricTypeGauge {
 				if value >= 0 && value <= 1 {
-					value += 1.1
+					value = advanceZeroToOne(value, rand, dist)
+				} else {
+					value = advanceFloat(rand, m, value, dist)
+					// avoid keeping the value locked between 0..1 in successive runs
+					if value >= 0 && value <= 1 {
+						value += 1.1
+					}
 				}
+			} else {
+				value = advanceFloat(rand, m, value, dist)
 			}
 			v.SetDoubleValue(value)
 			break
 		case pmetric.NumberDataPointValueTypeInt:
-			v.SetIntValue(advanceInt(rand, m, v.IntValue()))
+			v.SetIntValue(advanceInt(rand, m, v.IntValue(), dist))
 			break
 		default:
 		}
 	}
 }
 
-func advanceZeroToOne(value float64, rand *rand.Rand) float64 {
-	value += rand.NormFloat64() * 0.05
+func advanceZeroToOne(value float64, rand *rand.Rand, dist DistributionCfg) float64 {
+	value += rand.NormFloat64() * dist.StdDevGaugePct
 	// keep locked between 0..1
 	value = math.Abs(value)
 	value = min(value, 1)
 	return value
 }
 
-func advanceInt(rand *rand.Rand, m pmetric.Metric, value int64) int64 {
-	return int64(advanceFloat(rand, m, float64(value)))
+func advanceInt(rand *rand.Rand, m pmetric.Metric, value int64, dist DistributionCfg) int64 {
+	return int64(advanceFloat(rand, m, float64(value), dist))
 }
 
-func advanceFloat(rand *rand.Rand, m pmetric.Metric, value float64) float64 {
-	const median = 100
-	const stddev = 5.0
-	delta := rand.NormFloat64()*stddev + median
-	delta = max(0, min(delta, median*2))
-	if !isMonotonic(&m) {
-		delta -= median
+func advanceFloat(rand *rand.Rand, m pmetric.Metric, value float64, dist DistributionCfg) float64 {
+	delta := rand.NormFloat64() * dist.StdDev
+	if isMonotonicSum(&m) {
+		delta += float64(dist.MedianMonotonicSum)
 	}
-	if isCumulative(&m) {
-		value += delta
-	} else {
+	if isDelta(&m) {
 		value = delta
+	} else {
+		value += delta
 	}
 	return value
 }
 
-func isMonotonic(m *pmetric.Metric) bool {
+func isMonotonicSum(m *pmetric.Metric) bool {
 	return m.Type() == pmetric.MetricTypeSum && m.Sum().IsMonotonic()
 }
 
-func isCumulative(m *pmetric.Metric) bool {
-	return m.Type() == pmetric.MetricTypeSum && m.Sum().AggregationTemporality() == pmetric.AggregationTemporalityCumulative
+func isDelta(m *pmetric.Metric) bool {
+	return m.Type() == pmetric.MetricTypeSum && m.Sum().AggregationTemporality() == pmetric.AggregationTemporalityDelta
 }
 
 func forEachDataPoint(ms *pmetric.Metrics, visitor func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dataPoint)) {

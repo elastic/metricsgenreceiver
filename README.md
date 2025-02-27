@@ -13,8 +13,7 @@ Given an initial set of resource metrics, this receiver generates metrics with a
 For example, given the output of a single report from the `hostmetricsreceiver`,
 lets you generate a day's worth of data from multiple simulated hosts with a given interval.
 
-The datapoints for the metrics are individually simulated using a standard distribution, taking into account the temporality, monotonicity,
-and capping double values whose initial value is between 0 and 1 to that range.
+The datapoints for the metrics are individually simulated using a distribution that can be customized with the `distribution` settings.
 
 ## Getting Started
 
@@ -34,7 +33,21 @@ Settings:
 * `real_time` (default `false`): by default, the receiver generates the metrics as fast as possible.
   When set to true, it will pause after each cycle according to the configured `interval`.
 * `exit_after_end` (default `false`): when set to true, will terminate the collector.
-* `seed` (default random): set to a specific value for deterministic data generation.
+* `seed` (default `0`): seed value for the random number generator that's used for simulating the standard distribution. The seed makes sure that the data generation is deterministic.
+* `distribution`: the datapoints for the metrics are individually simulated by advancing their initial value using a standard distribution,
+  taking into account the [temporality](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#temporality),
+  [monotonicity](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#point-kinds),
+  and capping floating point gauges values whose initial value is between 0 and 1 to that range.
+  By changing the distribution parameters, you can simulate how predictable the metrics are evolving over time.
+  This may have an impact on how well the backend can compress the data.
+  * `median_monotonic_sum` (default `100`): the median value for the normal distribution used to simulate metrics that are monotonic sums.
+    If the sum is not monotonic, or if the metric is a gauge, the median will always be zero, to simulate a value that goes up and down over time.
+    If the temporality of the metric is delta, the new value will be set to the result of the normal distribution.
+    Otherwise (if the metric is using cumulative or unspecified temporality), the new value will be incremented by the result of the normal distribution.
+  * `std_dev_gauge_pct` (default `0.05`): the standard deviation used for floating point gauge metrics whose initial value is between 0 and 1.
+  * `std_dev` (default `5`): the standard deviation of the normal distribution used to simulate all other metrics.
+    The generated metrics will be kept within that range and the median is always 0, to simulate a value that goes up and down over time.
+    The new value will be incremented by the result of the normal distribution.
 * `scenarios`: a list of scenarios to simulate. For every interval, each scenario is simulated before moving to the next interval.
   * `scale`: determines how many instances (like hosts) to simulate.
     The individual instances will a have a consistent set of resource attributes throughout the simulation.
