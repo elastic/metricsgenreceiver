@@ -7,7 +7,6 @@ import (
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/dp"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metadata"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/metricstmpl"
-	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/resourceattr"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/component/componentstatus"
 	"go.opentelemetry.io/collector/consumer"
@@ -61,20 +60,12 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
 	for _, scn := range cfg.Scenarios {
 
-		buf, err := metricstmpl.RenderMetricsTemplate(scn.Path, scn.TemplateVars, err)
-		if err != nil {
-			return nil, err
-		}
+		metrics, err := metricstmpl.RenderMetricsTemplate(scn.Path+".json", scn.TemplateVars)
 
-		metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
-		metrics, err := metricsUnmarshaler.UnmarshalMetrics(buf.Bytes())
-		if err != nil {
-			return nil, err
-		}
 		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
 		})
-		resources, err := resourceattr.GetResources(scn.Path, cfg.StartTime, scn.Scale, r)
+		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, r)
 		if err != nil {
 			return nil, err
 		}
@@ -148,8 +139,12 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 		startTime := simulatedTime.Format(time.RFC3339)
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
-			resource := scn.resources[id%len(scn.resources)]
-			resourceattr.RenderResourceAttributes(scn.resourceAttributesTemplate, resource, id, startTime, r.rand)
+			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, r.rand)
+			if err != nil {
+				r.settings.Logger.Error("failed to apply churn", zap.Error(err))
+			} else {
+				scn.resources[id%len(scn.resources)] = resource
+			}
 		}
 	}
 }
@@ -188,7 +183,7 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, curr
 	scn.metricsTemplate.CopyTo(metrics)
 	resourceMetrics := metrics.ResourceMetrics()
 	for j := 0; j < resourceMetrics.Len(); j++ {
-		resourceattr.OverrideExistingAttributes(instanceResource, resourceMetrics.At(j).Resource())
+		overrideExistingAttributes(instanceResource, resourceMetrics.At(j).Resource())
 	}
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 		distribution.AdvanceDataPoint(dp, r.rand, m, r.cfg.Distribution)
@@ -198,6 +193,17 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, curr
 	dataPoints := metrics.DataPointCount()
 	r.obsreport.EndMetricsOp(ctx, metadata.Type.String(), dataPoints, err)
 	return dataPoints
+}
+
+func overrideExistingAttributes(source, target pcommon.Resource) {
+	targetAttr := target.Attributes()
+	source.Attributes().Range(func(k string, v pcommon.Value) bool {
+		if _, exists := targetAttr.Get(k); exists {
+			targetValue := targetAttr.PutEmpty(k)
+			v.CopyTo(targetValue)
+		}
+		return true
+	})
 }
 
 func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {

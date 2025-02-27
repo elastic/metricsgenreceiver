@@ -17,11 +17,11 @@
           {"key": "path", "value": { "stringValue": "/dev/sda{{.RandomIntn 10}}"}},
           {"key": "fstype", "value": { "stringValue": "{{.RandomFrom `ext3` `ext4` `btrfs`}}"}},
           {"key": "serial", "value": { "stringValue": "{{.RandomIntn 1000}}-{{.RandomIntn 1000}}-{{.RandomIntn 1000}}"}},
-          {"key": "boot_time", "value": { "stringValue": "{{.RandomIntn 240}}"}},
+          {"key": "boot_time", "value": { "intValue": {{.RandomIntn 240}}}},
           {"key": "interface", "value": { "stringValue": "eth{{.RandomIntn 4}}"}},
           {"key": "port", "value": { "stringValue": "{{.RandomIntn 20000}}"}},
           {"key": "server", "value": { "stringValue": "server_{{.RandomIntn 100000}}"}},
-          {"key": "uptime_in_seconds", "value": { "stringValue": "{{.RandomIntn 10000000}}"}}
+          {"key": "uptime_in_seconds", "value": { "intValue": {{.RandomIntn 10000000}}}}
         ]
       }
     }
