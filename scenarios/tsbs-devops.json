@@ -1,0 +1,347 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_cpu"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "cpu"
+          },
+          "metrics": [
+            {"name": "usage_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_system", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_idle", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_iowait", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_irq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_softirq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_steal", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_guest", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "usage_guest_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "path", "value": { "stringValue": ""}},
+          {"key": "fstype", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_disk"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "disk"
+          },
+          "metrics": [
+            {"name": "total", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "inodes_total", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "inodes_free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "inodes_used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "serial", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_diskio"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "diskio"
+          },
+          "metrics": [
+            {"name": "reads", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "writes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "read_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "write_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "read_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "write_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "io_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "boot_time", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_kernel"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "kernel"
+          },
+          "metrics": [
+            {"name": "interrupts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "context_switches", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "processes_forked", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_pages_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_pages_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_mem"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "mem"
+          },
+          "metrics": [
+            {"name": "total", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "available", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "cached", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "buffered", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
+            {"name": "available_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
+            {"name": "buffered_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "interface", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_net"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "net"
+          },
+          "metrics": [
+            {"name": "bytes_sent", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "bytes_recv", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "packets_sent", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "packets_recv", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "err_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "err_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "drop_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "drop_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "port", "value": { "stringValue": ""}},
+          {"key": "server", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_nginx"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "nginx"
+          },
+          "metrics": [
+            {"name": "accepts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "active", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "handled", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "reading", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "requests", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "waiting", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "writing", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_postgres"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "postgres"
+          },
+          "metrics": [
+            {"name": "numbackends", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "xact_commit", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "xact_rollback", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "blks_read", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "blks_hit", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "tup_returned", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "tup_fetched", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "tup_inserted", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "tup_updated", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "tup_deleted", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "conflicts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "temp_files", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "temp_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "deadlocks", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "blk_read_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "blk_write_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+          ]
+        }
+      ]
+    },
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": ""}},
+          {"key": "region", "value": { "stringValue": ""}},
+          {"key": "datacenter", "value": { "stringValue": ""}},
+          {"key": "rack", "value": { "stringValue": ""}},
+          {"key": "os", "value": { "stringValue": ""}},
+          {"key": "arch", "value": { "stringValue": ""}},
+          {"key": "team", "value": { "stringValue": ""}},
+          {"key": "service", "value": { "stringValue": ""}},
+          {"key": "service_version", "value": { "stringValue": ""}},
+          {"key": "service_environment", "value": { "stringValue": ""}},
+          {"key": "port", "value": { "stringValue": ""}},
+          {"key": "server", "value": { "stringValue": ""}},
+          {"key": "uptime_in_seconds", "value": { "asInt": "0"}},
+          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_redis"}}
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "redis"
+          },
+          "metrics": [
+            {"name": "total_connections_received", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "expired_keys", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "evicted_keys", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "keyspace_hits", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "keyspace_misses", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "instantaneous_ops_per_sec", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "instantaneous_input_kbps", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "instantaneous_output_kbps", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "connected_clients", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "used_memory", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_memory_rss", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_memory_peak", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_memory_lua", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "rdb_changes_since_last_save", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "sync_full", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "sync_partial_ok", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "sync_partial_err", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "pubsub_channels", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "pubsub_patterns", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "latest_fork_usec", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "connected_slaves", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "master_repl_offset", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "repl_backlog_active", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "repl_backlog_size", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "repl_backlog_histlen", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "mem_fragmentation_ratio", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_cpu_sys", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_cpu_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_cpu_sys_children", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "used_cpu_user_children", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,10 @@ func RenderMetricsTemplate(path string, templateVars map[string]any, err error) 
 		},
 	}
 	path += ".json"
+	path, err = filepath.Abs(path)
+	if err != nil {
+		return nil, err
+	}
 	tpl, err := template.New(path).Funcs(funcMap).ParseFiles(path)
 	if err != nil {
 		return nil, err

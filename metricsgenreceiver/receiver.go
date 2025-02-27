@@ -68,13 +68,12 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 
 		metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
 		metrics, err := metricsUnmarshaler.UnmarshalMetrics(buf.Bytes())
-		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
-		})
 		if err != nil {
 			return nil, err
 		}
-
+		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
+			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
+		})
 		resources, err := resourceattr.GetResources(scn.Path, cfg.StartTime, scn.Scale, r)
 		if err != nil {
 			return nil, err

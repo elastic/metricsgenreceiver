@@ -1,0 +1,29 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {"key": "hostname", "value": { "stringValue": "host_{{.InstanceID}}"}},
+          {"key": "region", "value": { "stringValue": "us-{{.RandomFrom `west` `east` `central`}}-{{.RandomIntn 2}}"}},
+          {"key": "datacenter", "value": { "stringValue": "us-{{.RandomFrom `west` `east` `central`}}-{{.RandomIntn 2}}{{.RandomFrom `a` `b` `c`}}"}},
+          {"key": "rack", "value": { "stringValue": "rack-{{.RandomIntn 100}}"}},
+          {"key": "os", "value": { "stringValue": "{{.RandomFrom `Ubuntu16.10` `Ubuntu16.04LTS` `Ubuntu15.10`}}"}},
+          {"key": "arch", "value": { "stringValue": "{{.RandomFrom `x64` `x86`}}"}},
+          {"key": "team", "value": { "stringValue": "{{.RandomFrom `SF` `NYC` `LON` `CHI`}}"}},
+          {"key": "service", "value": { "stringValue": "service_{{.RandomIntn 20}}"}},
+          {"key": "service_version", "value": { "stringValue": "v{{.RandomIntn 2}}.0.0"}},
+          {"key": "service_environment", "value": { "stringValue": "{{.RandomFrom `production` `staging` `test`}}"}},
+
+          {"key": "path", "value": { "stringValue": "/dev/sda{{.RandomIntn 10}}"}},
+          {"key": "fstype", "value": { "stringValue": "{{.RandomFrom `ext3` `ext4` `btrfs`}}"}},
+          {"key": "serial", "value": { "stringValue": "{{.RandomIntn 1000}}-{{.RandomIntn 1000}}-{{.RandomIntn 1000}}"}},
+          {"key": "boot_time", "value": { "stringValue": "{{.RandomIntn 240}}"}},
+          {"key": "interface", "value": { "stringValue": "eth{{.RandomIntn 4}}"}},
+          {"key": "port", "value": { "stringValue": "{{.RandomIntn 20000}}"}},
+          {"key": "server", "value": { "stringValue": "server_{{.RandomIntn 100000}}"}},
+          {"key": "uptime_in_seconds", "value": { "stringValue": "{{.RandomIntn 10000000}}"}}
+        ]
+      }
+    }
+  ]
+}

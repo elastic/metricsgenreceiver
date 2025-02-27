@@ -64,7 +64,8 @@ func advanceFloat(rand *rand.Rand, m pmetric.Metric, value float64, dist Distrib
 	} else {
 		value += delta
 	}
-	return value
+	// negative metrics are pretty rare, so we just simulate positive values
+	return math.Abs(value)
 }
 
 func isMonotonicSum(m *pmetric.Metric) bool {

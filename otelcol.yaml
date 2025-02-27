@@ -1,13 +1,15 @@
 receivers:
   metricsgen:
-    start_now_minus: 1h
-    interval: 10s
+    start_now_minus: 5h
+    interval: 2s
     real_time: false
     exit_after_end: true
     seed: 123
     scenarios:
-    - path: scenarios/hostmetrics
+    - path: scenarios/tsbs-devops
       scale: 100
+#    - path: scenarios/hostmetrics
+#      scale: 100
     # - path: scenarios/kubeletstats-node
     #   scale: 10
     # - path: scenarios/kubeletstats-pod
@@ -19,6 +21,12 @@ exporters:
   file:
     path: ./file-exporter/metrics-generated.json
   nop:
+  otlphttp/victoriametrics:
+    compression: gzip
+    encoding: proto
+    endpoint: http://localhost:8428/opentelemetry
+    sending_queue:
+      blocking: true
   elasticsearch:
     endpoint: "http://localhost:9200"
     mapping:
@@ -30,6 +38,6 @@ service:
   pipelines:
     metrics:
       receivers: [metricsgen]
-      exporters: [nop]
-      #exporters: [elasticsearch]
+#      exporters: [nop]
+      exporters: [otlphttp/victoriametrics]
 

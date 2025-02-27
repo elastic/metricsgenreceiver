@@ -105,6 +105,14 @@ func (t *resourceTemplateModel) RandomHex(len int) string {
 	return hex.EncodeToString(buf)
 }
 
+func (t *resourceTemplateModel) RandomIntn(n int) int {
+	return t.rand.Intn(n)
+}
+
+func (t *resourceTemplateModel) RandomFrom(s ...string) string {
+	return s[t.rand.Intn(len(s))]
+}
+
 func RenderResourceAttributes(resourceTemplate pcommon.Resource, resource pcommon.Resource, id int, startTimeString string, r *rand.Rand) {
 	model := &resourceTemplateModel{
 		InstanceID:        id,
