@@ -12,8 +12,7 @@
           {"key": "team", "value": { "stringValue": ""}},
           {"key": "service", "value": { "stringValue": ""}},
           {"key": "service_version", "value": { "stringValue": ""}},
-          {"key": "service_environment", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_cpu"}}
+          {"key": "service_environment", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -22,16 +21,16 @@
             "name": "cpu"
           },
           "metrics": [
-            {"name": "usage_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_system", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_idle", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_iowait", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_irq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_softirq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_steal", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_guest", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "usage_guest_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}}
+            {"name": "cpu_usage_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_system", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_idle", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_iowait", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_irq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_softirq", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_steal", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_guest", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "cpu_usage_guest_nice", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}}
           ]
         }
       ]
@@ -50,8 +49,7 @@
           {"key": "service_version", "value": { "stringValue": ""}},
           {"key": "service_environment", "value": { "stringValue": ""}},
           {"key": "path", "value": { "stringValue": ""}},
-          {"key": "fstype", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_disk"}}
+          {"key": "fstype", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -60,13 +58,13 @@
             "name": "disk"
           },
           "metrics": [
-            {"name": "total", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "inodes_total", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "inodes_free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "inodes_used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+            {"name": "disk_total", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "disk_inodes_total", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_inodes_free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "disk_inodes_used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
           ]
         }
       ]
@@ -84,8 +82,7 @@
           {"key": "service", "value": { "stringValue": ""}},
           {"key": "service_version", "value": { "stringValue": ""}},
           {"key": "service_environment", "value": { "stringValue": ""}},
-          {"key": "serial", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_diskio"}}
+          {"key": "serial", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -94,13 +91,13 @@
             "name": "diskio"
           },
           "metrics": [
-            {"name": "reads", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "writes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "read_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "write_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "read_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "write_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "io_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+            {"name": "diskio_reads", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "diskio_writes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "diskio_read_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "diskio_write_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "diskio_read_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "diskio_write_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "diskio_io_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
           ]
         }
       ]
@@ -118,8 +115,7 @@
           {"key": "service", "value": { "stringValue": ""}},
           {"key": "service_version", "value": { "stringValue": ""}},
           {"key": "service_environment", "value": { "stringValue": ""}},
-          {"key": "boot_time", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_kernel"}}
+          {"key": "boot_time", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -128,11 +124,12 @@
             "name": "kernel"
           },
           "metrics": [
-            {"name": "interrupts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "context_switches", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "processes_forked", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "disk_pages_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "disk_pages_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+            {"name": "kernel_boot_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "kernel_interrupts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "kernel_context_switches", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "kernel_processes_forked", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "kernel_disk_pages_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "kernel_disk_pages_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
           ]
         }
       ]
@@ -149,8 +146,7 @@
           {"key": "team", "value": { "stringValue": ""}},
           {"key": "service", "value": { "stringValue": ""}},
           {"key": "service_version", "value": { "stringValue": ""}},
-          {"key": "service_environment", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_mem"}}
+          {"key": "service_environment", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -159,15 +155,15 @@
             "name": "mem"
           },
           "metrics": [
-            {"name": "total", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "available", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "cached", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "buffered", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
-            {"name": "available_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
-            {"name": "buffered_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}}
+            {"name": "mem_total", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "mem_available", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "mem_used", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "mem_free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "mem_cached", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "mem_buffered", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "mem_used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
+            {"name": "mem_available_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
+            {"name": "mem_buffered_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}}
           ]
         }
       ]
@@ -185,8 +181,7 @@
           {"key": "service", "value": { "stringValue": ""}},
           {"key": "service_version", "value": { "stringValue": ""}},
           {"key": "service_environment", "value": { "stringValue": ""}},
-          {"key": "interface", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_net"}}
+          {"key": "interface", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -195,14 +190,14 @@
             "name": "net"
           },
           "metrics": [
-            {"name": "bytes_sent", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "bytes_recv", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "packets_sent", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "packets_recv", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "err_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "err_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "drop_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "drop_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+            {"name": "net_bytes_sent", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_bytes_recv", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_packets_sent", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_packets_recv", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_err_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_err_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_drop_in", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "net_drop_out", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
           ]
         }
       ]
@@ -221,8 +216,7 @@
           {"key": "service_version", "value": { "stringValue": ""}},
           {"key": "service_environment", "value": { "stringValue": ""}},
           {"key": "port", "value": { "stringValue": ""}},
-          {"key": "server", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_nginx"}}
+          {"key": "server", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -231,13 +225,13 @@
             "name": "nginx"
           },
           "metrics": [
-            {"name": "accepts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "active", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "handled", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "reading", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "requests", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "waiting", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "writing", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}}
+            {"name": "nginx_accepts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "nginx_active", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "nginx_handled", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "nginx_reading", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "nginx_requests", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "nginx_waiting", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "nginx_writing", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}}
           ]
         }
       ]
@@ -254,8 +248,7 @@
           {"key": "team", "value": { "stringValue": ""}},
           {"key": "service", "value": { "stringValue": ""}},
           {"key": "service_version", "value": { "stringValue": ""}},
-          {"key": "service_environment", "value": { "stringValue": ""}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_postgres"}}
+          {"key": "service_environment", "value": { "stringValue": ""}}
         ]
       },
       "scopeMetrics": [
@@ -264,22 +257,22 @@
             "name": "postgres"
           },
           "metrics": [
-            {"name": "numbackends", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "xact_commit", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "xact_rollback", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "blks_read", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "blks_hit", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "tup_returned", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "tup_fetched", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "tup_inserted", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "tup_updated", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "tup_deleted", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "conflicts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "temp_files", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "temp_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "deadlocks", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "blk_read_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "blk_write_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
+            {"name": "postgres_numbackends", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_xact_commit", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_xact_rollback", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_blks_read", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_blks_hit", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_tup_returned", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_tup_fetched", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_tup_inserted", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_tup_updated", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_tup_deleted", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_conflicts", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_temp_files", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_temp_bytes", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_deadlocks", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_blk_read_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "postgres_blk_write_time", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}}
           ]
         }
       ]
@@ -299,8 +292,7 @@
           {"key": "service_environment", "value": { "stringValue": ""}},
           {"key": "port", "value": { "stringValue": ""}},
           {"key": "server", "value": { "stringValue": ""}},
-          {"key": "uptime_in_seconds", "value": { "asInt": "0"}},
-          {"key": "data_stream.dataset", "value": { "stringValue": "tsbs_devops_redis"}}
+          {"key": "uptime_in_seconds", "value": { "asInt": "0"}}
         ]
       },
       "scopeMetrics": [
@@ -309,36 +301,37 @@
             "name": "redis"
           },
           "metrics": [
-            {"name": "total_connections_received", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "expired_keys", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "evicted_keys", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "keyspace_hits", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "keyspace_misses", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
-            {"name": "instantaneous_ops_per_sec", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "instantaneous_input_kbps", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "instantaneous_output_kbps", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "connected_clients", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "used_memory", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_memory_rss", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_memory_peak", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_memory_lua", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "rdb_changes_since_last_save", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "sync_full", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "sync_partial_ok", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "sync_partial_err", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "pubsub_channels", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "pubsub_patterns", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "latest_fork_usec", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "connected_slaves", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "master_repl_offset", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "repl_backlog_active", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "repl_backlog_size", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "repl_backlog_histlen", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "mem_fragmentation_ratio", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_cpu_sys", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_cpu_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_cpu_sys_children", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
-            {"name": "used_cpu_user_children", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}}
+            {"name": "redis_uptime_in_seconds", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "redis_total_connections_received", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "redis_expired_keys", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "redis_evicted_keys", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "redis_keyspace_hits", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "redis_keyspace_misses", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2,"isMonotonic": true}},
+            {"name": "redis_instantaneous_ops_per_sec", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_instantaneous_input_kbps", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_instantaneous_output_kbps", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_connected_clients", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
+            {"name": "redis_used_memory", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_memory_rss", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_memory_peak", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_memory_lua", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_rdb_changes_since_last_save", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_sync_full", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_sync_partial_ok", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_sync_partial_err", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_pubsub_channels", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_pubsub_patterns", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_latest_fork_usec", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_connected_slaves", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_master_repl_offset", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_repl_backlog_active", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_repl_backlog_size", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_repl_backlog_histlen", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_mem_fragmentation_ratio", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_cpu_sys", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_cpu_user", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_cpu_sys_children", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}},
+            {"name": "redis_used_cpu_user_children", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}]}}
           ]
         }
       ]
