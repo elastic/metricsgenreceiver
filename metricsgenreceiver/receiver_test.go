@@ -83,7 +83,7 @@ func TestReceiver(t *testing.T) {
 			if test.customizer != nil {
 				test.customizer(cfg)
 			}
-			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(), cfg, sink)
+			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
 			require.NoError(t, err)
 			err = rcv.Start(context.Background(), nil)
 			require.NoError(t, err)
