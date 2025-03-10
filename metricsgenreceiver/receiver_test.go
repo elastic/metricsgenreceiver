@@ -72,6 +72,35 @@ func TestReceiver(t *testing.T) {
 			dataPoints:      101,
 			resourceMetrics: 9,
 		},
+		{
+			name:            "elasticapm-service-metrics",
+			path:            "../scenarios/elasticapm-service-metrics",
+			dataPoints:      4,
+			resourceMetrics: 1,
+		},
+		{
+			name:            "elasticapm-span-destination-metrics",
+			path:            "../scenarios/elasticapm-span-destination-metrics",
+			dataPoints:      20,
+			resourceMetrics: 1,
+			customizer: func(cfg *Config) {
+				cfg.Scenarios[0].TemplateVars = map[string]any{
+					"destinations": 10,
+				}
+			},
+		},
+		{
+			name:            "elasticapm-transaction-metrics",
+			path:            "../scenarios/elasticapm-transaction-metrics",
+			dataPoints:      40,
+			resourceMetrics: 1,
+			customizer: func(cfg *Config) {
+				cfg.Scenarios[0].TemplateVars = map[string]any{
+					"services":     2,
+					"transactions": 10,
+				}
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

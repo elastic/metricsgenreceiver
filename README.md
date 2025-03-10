@@ -52,30 +52,41 @@ Settings:
   * `scale`: determines how many instances (like hosts) to simulate.
     The individual instances will a have a consistent set of resource attributes throughout the simulation.
   * `concurrency` (default `0`): when set to a non-zero value, the receiver will simulate the scenario concurrently with the specified number of goroutines.
-  * `path`: the path of the scenario files. Expects a `<path>.json` and a `<path>-resource-attributes.json` file.
-    The `<path>.json` file contains a single batch of resource metrics in JSON format, as produced by the `fileexporter`.
-    The `<path>-resource-attributes.json` file contains the resource attributes template.
-    The resource attributes template is used to simulate the individual instances.
-    These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
-    Supported placeholders:
-    * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
-    * `{{.RandomIPv4}}`
-    * `{{.RandomIPv6}}`
-    * `{{.RandomMAC}}`
-    * `{{.RandomHex <length>}}`
-    * `{{.UUID}}`
-    * `{{.InstanceStartTime}}`
-    * `{{.RandomFrom <list>}}` (a random element from the list)
-    * `{{.RandomIntn <n>}}` (a random integer in the range `[0, n)`)
-    This receiver comes with a number of pre-packaged scenarios that can be found in the `scenarios` directory:
-    * `scenarios/hostmetrics`: simulates metrics from the `hostmetricsreceiver`.
-    * `scenarios/kubeletstats-node`: simulates node metrics from the `kubeletstatsreceiver`.
-    * `scenarios/kubeletstats-pod`: simulates pod metrics from the `kubeletstatsreceiver`.
-      Each simulated pod reports metrics for the pod itself, one container, and one volume mount.
-    * `scenarios/tsbs-devops`: an adaptation of the [Timescale TSBS](https://github.com/timescale/tsbs) devops scenario.
+  * `path`: the path of the scenario files.
+    * Built-in scenarios:
+      This receiver comes with a number of pre-packaged scenarios that can be found in the `scenarios` directory:
+      * `scenarios/hostmetrics`: simulates metrics from the `hostmetricsreceiver`.
+      * `scenarios/kubeletstats-node`: simulates node metrics from the `kubeletstatsreceiver`.
+      * `scenarios/kubeletstats-pod`: simulates pod metrics from the `kubeletstatsreceiver`.
+        Each simulated pod reports metrics for the pod itself, one container, and one volume mount.
+      * `scenarios/tsbs-devops`: an adaptation of the [Timescale TSBS](https://github.com/timescale/tsbs) devops scenario.
+      * `scenarios/elasticapm-service-metrics`: simulates aggregated service metrics from the `elasticapmconnector`. The scale influences how many services are simulated.
+      * `scenarios/elasticapm-span-destination-metrics`: simulates aggregated span destination metrics from the `elasticapmconnector`. The scale influences how many services are simulated.Uses the `template_vars` option to customize the data generation:
+        * `destinations`: the number of distinct exit span names to simulate per service. This affects the number of simulated metrics.
+      * `scenarios/elasticapm-transaction-metrics`: simulates aggregated transaction metrics from the `elasticapmconnector`. The scale influences how many service instances are simulated. Uses the `template_vars` option to customize the data generation:
+        * `services`: the number of services to simulate. Does not affect the number of metrics.
+        * `transactions`: the number of transactions to simulate per service instance. This affects the number of simulated metrics.
+    * Custom scenarios:
+      Expects a `<path>.json` or `<path>.yaml` and a `<path>-resource-attributes.json` or `<path>-resource-attributes.yaml` file.
+      The `<path>.json`/`<path>.yaml` file contains a single batch of resource metrics in JSON or YAML format, as produced by the `fileexporter`.
+      The `<path>-resource-attributes.json`/`<path>-resource-attributes.yaml` file contains the resource attributes template.
+      The resource attributes template is used to simulate the individual instances.
+      These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
+      Supported placeholders:
+        * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
+        * `{{.RandomIPv4}}`
+        * `{{.RandomIPv6}}`
+        * `{{.RandomMAC}}`
+        * `{{.RandomHex <length>}}`
+        * `{{.UUID}}`
+        * `{{.InstanceStartTime}}`
+        * `{{.RandomFrom <list>}}` (a random element from the list)
+        * `{{.ModFrom <n> <list>}}` (an element from the list at index `n % len(list)`)
+        * `{{.RandomIntn <n>}}` (a random integer in the range `[0, n)`)
+        * `{{.Mod <x> <y>}}` (the result of `x % y`)
   * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
     Time series churn may have an impact on the performance of the backend.
-  * `template_vars`: the `<path>.json` file is rendered as a template.
+  * `template_vars`: the `<path>.json`/`<path>.yaml` file is rendered as a template.
     This option lets you specify variables that are available during template rendering.
     This allows, for example, to simulate a variable number of network devices by generating metric data points with different attributes.
 

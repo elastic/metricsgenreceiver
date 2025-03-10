@@ -3,11 +3,16 @@ package metricstmpl
 import (
 	"bytes"
 	"encoding/hex"
+	"encoding/json"
+	"fmt"
 	"github.com/google/uuid"
 	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/pmetric"
+	"gopkg.in/yaml.v3"
 	"math/rand"
+	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 	"time"
 
@@ -27,31 +32,47 @@ func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, err
 			return ch
 		},
 	}
-	path, err := filepath.Abs(path)
-	if err != nil {
-		return pmetric.Metrics{}, err
-	}
-	tpl, err := template.New(path).Funcs(funcMap).ParseFiles(path)
-	if err != nil {
-		return pmetric.Metrics{}, err
-	}
+	for _, ext := range []string{".json", ".yaml", ".yml"} {
+		absPath, err := filepath.Abs(path + ext)
+		if err != nil {
+			continue
+		}
+		if _, err := os.Stat(absPath); os.IsNotExist(err) {
+			continue
+		}
+		tpl, err := template.New(absPath).Funcs(funcMap).ParseFiles(absPath)
+		if err != nil {
+			return pmetric.Metrics{}, err
+		}
 
-	buf := new(bytes.Buffer)
-	err = tpl.ExecuteTemplate(buf, filepath.Base(path), templateModel)
-	if err != nil {
-		return pmetric.Metrics{}, err
+		buf := new(bytes.Buffer)
+		err = tpl.ExecuteTemplate(buf, filepath.Base(absPath), templateModel)
+		if err != nil {
+			return pmetric.Metrics{}, err
+		}
+		b := buf.Bytes()
+		if strings.HasSuffix(absPath, ".yaml") || strings.HasSuffix(absPath, ".yml") {
+			var m map[string]any
+			if err = yaml.Unmarshal(b, &m); err != nil {
+				return pmetric.Metrics{}, err
+			}
+			b, err = json.Marshal(m)
+			if err != nil {
+				return pmetric.Metrics{}, err
+			}
+		}
+		metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
+		metrics, err := metricsUnmarshaler.UnmarshalMetrics(b)
+		return metrics, err
 	}
-
-	metricsUnmarshaler := &pmetric.JSONUnmarshaler{}
-	metrics, err := metricsUnmarshaler.UnmarshalMetrics(buf.Bytes())
-	return metrics, err
+	return pmetric.Metrics{}, fmt.Errorf("no .json/.yaml/.yml template file found for %s", path)
 }
 
-func GetResources(path string, startTime time.Time, scale int, r *rand.Rand) ([]pcommon.Resource, error) {
+func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand) ([]pcommon.Resource, error) {
 	startTimeString := startTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scale)
 	for i := 0; i < scale; i++ {
-		resource, err := RenderResource(path, i, startTimeString, r)
+		resource, err := RenderResource(path, i, startTimeString, vars, r)
 		if err != nil {
 			return nil, err
 		}
@@ -60,10 +81,11 @@ func GetResources(path string, startTime time.Time, scale int, r *rand.Rand) ([]
 	return resources, nil
 }
 
-func RenderResource(path string, id int, startTimeString string, r *rand.Rand) (pcommon.Resource, error) {
-	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes.json", &resourceTemplateModel{
+func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand) (pcommon.Resource, error) {
+	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes", &resourceTemplateModel{
 		InstanceID:        id,
 		InstanceStartTime: startTimeString,
+		Vars:              vars,
 		rand:              r,
 	})
 	if err != nil {
@@ -73,10 +95,11 @@ func RenderResource(path string, id int, startTimeString string, r *rand.Rand) (
 }
 
 type resourceTemplateModel struct {
-	InstanceID        int
-	InstanceStartTime string
+	InstanceID int
+	Vars       map[string]any
 
-	rand *rand.Rand
+	InstanceStartTime string
+	rand              *rand.Rand
 }
 
 func (m *resourceTemplateModel) randByte() byte {
@@ -117,4 +140,12 @@ func (t *resourceTemplateModel) RandomIntn(n int) int {
 
 func (t *resourceTemplateModel) RandomFrom(s ...string) string {
 	return s[t.rand.Intn(len(s))]
+}
+
+func (t *resourceTemplateModel) ModFrom(mod int, s ...string) string {
+	return s[mod%len(s)]
+}
+
+func (t *resourceTemplateModel) Mod(x, y int) int {
+	return x % y
 }

@@ -7,6 +7,12 @@ import (
 	"math/rand"
 )
 
+var DefaultDistribution = DistributionCfg{
+	MedianMonotonicSum: 100,
+	StdDevGaugePct:     0.01,
+	StdDev:             1.0,
+}
+
 type DistributionCfg struct {
 	MedianMonotonicSum uint    `mapstructure:"median_monotonic_sum"`
 	StdDevGaugePct     float64 `mapstructure:"std_dev_gauge_pct"`
@@ -43,6 +49,15 @@ func AdvanceDataPoint(dp dp.DataPoint, rand *rand.Rand, m pmetric.Metric, dist D
 			break
 		default:
 		}
+	case pmetric.HistogramDataPoint:
+		count := uint64(0)
+		for i := 0; i < v.BucketCounts().Len(); i++ {
+			val := uint64(advanceInt(rand, m, int64(v.BucketCounts().At(i)), dist))
+			count += val
+			v.BucketCounts().SetAt(i, val)
+		}
+		v.SetCount(count)
+		v.RemoveSum()
 	}
 }
 

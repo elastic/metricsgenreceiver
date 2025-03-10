@@ -14,6 +14,17 @@ receivers:
 #      scale: 10
 #    - path: scenarios/kubeletstats-pod
 #      scale: 1000
+#    - path: scenarios/elasticapm-service-metrics
+#      scale: 100
+#    - path: scenarios/elasticapm-span-destination-metrics
+#      scale: 100
+#      template_vars:
+#        destinations: 10
+#    - path: scenarios/elasticapm-transaction-metrics
+#      scale: 1000
+#      template_vars:
+#        services: 100
+#        transactions: 50
 
 processors:
   batch:

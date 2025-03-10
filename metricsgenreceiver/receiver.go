@@ -60,12 +60,14 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
 	for _, scn := range cfg.Scenarios {
 
-		metrics, err := metricstmpl.RenderMetricsTemplate(scn.Path+".json", scn.TemplateVars)
-
+		metrics, err := metricstmpl.RenderMetricsTemplate(scn.Path, scn.TemplateVars)
+		if err != nil {
+			return nil, err
+		}
 		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
 		})
-		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, r)
+		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, r)
 		if err != nil {
 			return nil, err
 		}
@@ -150,7 +152,7 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 		startTime := simulatedTime.Format(time.RFC3339)
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
-			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, r.rand)
+			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, scn.config.TemplateVars, r.rand)
 			if err != nil {
 				r.settings.Logger.Error("failed to apply churn", zap.Error(err))
 			} else {

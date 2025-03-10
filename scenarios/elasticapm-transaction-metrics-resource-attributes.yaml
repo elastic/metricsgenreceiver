@@ -1,0 +1,10 @@
+resourceMetrics:
+  - resource:
+      attributes:
+        - { key: agent.name, value: { stringValue: "otlp/{{.ModFrom .InstanceID `go` `java` `dotnet` `nodejs`}}" } }
+        - { key: telemetry.sdk.language, value: { stringValue: "{{.ModFrom .InstanceID `go` `java` `dotnet` `nodejs`}}" } }
+        - { key: deployment.environment, value: { stringValue: "{{.RandomFrom `production` `staging` `test`}}" } }
+        - { key: service.name, value: { stringValue: "service_{{.Mod .InstanceID .Vars.services}}" } }
+        - { key: service.instance.id, value: { stringValue: "instance-{{.InstanceID}}" } }
+        - { key: k8s.pod.name, value: { stringValue: "pod-name-{{.InstanceID}}" } }
+        - { key: container.id, value: { stringValue: "{{.RandomHex 64}}" } }
