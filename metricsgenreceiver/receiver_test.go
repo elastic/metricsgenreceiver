@@ -50,37 +50,37 @@ func TestReceiver(t *testing.T) {
 		},
 		{
 			name:            "hostmetrics",
-			path:            "../scenarios/hostmetrics",
+			path:            "builtin/hostmetrics",
 			dataPoints:      90,
 			resourceMetrics: 6,
 		},
 		{
 			name:            "kubeletstats-node",
-			path:            "../scenarios/kubeletstats-node",
+			path:            "builtin/kubeletstats-node",
 			dataPoints:      17,
 			resourceMetrics: 1,
 		},
 		{
 			name:            "kubeletstats-pod",
-			path:            "../scenarios/kubeletstats-pod",
+			path:            "builtin/kubeletstats-pod",
 			dataPoints:      34,
 			resourceMetrics: 3,
 		},
 		{
 			name:            "tsbs-devops",
-			path:            "../scenarios/tsbs-devops",
+			path:            "builtin/tsbs-devops",
 			dataPoints:      101,
 			resourceMetrics: 9,
 		},
 		{
 			name:            "elasticapm-service-metrics",
-			path:            "../scenarios/elasticapm-service-metrics",
+			path:            "builtin/elasticapm-service-metrics",
 			dataPoints:      4,
 			resourceMetrics: 1,
 		},
 		{
 			name:            "elasticapm-span-destination-metrics",
-			path:            "../scenarios/elasticapm-span-destination-metrics",
+			path:            "builtin/elasticapm-span-destination-metrics",
 			dataPoints:      20,
 			resourceMetrics: 1,
 			customizer: func(cfg *Config) {
@@ -91,7 +91,7 @@ func TestReceiver(t *testing.T) {
 		},
 		{
 			name:            "elasticapm-transaction-metrics",
-			path:            "../scenarios/elasticapm-transaction-metrics",
+			path:            "builtin/elasticapm-transaction-metrics",
 			dataPoints:      40,
 			resourceMetrics: 1,
 			customizer: func(cfg *Config) {

@@ -2,6 +2,7 @@ package metricstmpl
 
 import (
 	"bytes"
+	"embed"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -10,7 +11,6 @@ import (
 	"go.opentelemetry.io/collector/pdata/pmetric"
 	"gopkg.in/yaml.v3"
 	"math/rand"
-	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -18,6 +18,9 @@ import (
 
 	"net"
 )
+
+//go:embed builtin
+var fsys embed.FS
 
 func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, error) {
 	funcMap := template.FuncMap{
@@ -32,26 +35,27 @@ func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, err
 			return ch
 		},
 	}
+
 	for _, ext := range []string{".json", ".yaml", ".yml"} {
-		absPath, err := filepath.Abs(path + ext)
+		p := path + ext
+		var tpl *template.Template
+		var err error
+		if strings.HasPrefix(p, "builtin/") {
+			tpl, err = template.New(p).Funcs(funcMap).ParseFS(fsys, p)
+		} else {
+			tpl, err = template.New(p).Funcs(funcMap).ParseFiles(p)
+		}
 		if err != nil {
 			continue
-		}
-		if _, err := os.Stat(absPath); os.IsNotExist(err) {
-			continue
-		}
-		tpl, err := template.New(absPath).Funcs(funcMap).ParseFiles(absPath)
-		if err != nil {
-			return pmetric.Metrics{}, err
 		}
 
 		buf := new(bytes.Buffer)
-		err = tpl.ExecuteTemplate(buf, filepath.Base(absPath), templateModel)
+		err = tpl.ExecuteTemplate(buf, filepath.Base(p), templateModel)
 		if err != nil {
 			return pmetric.Metrics{}, err
 		}
 		b := buf.Bytes()
-		if strings.HasSuffix(absPath, ".yaml") || strings.HasSuffix(absPath, ".yml") {
+		if strings.HasSuffix(p, ".yaml") || strings.HasSuffix(p, ".yml") {
 			var m map[string]any
 			if err = yaml.Unmarshal(b, &m); err != nil {
 				return pmetric.Metrics{}, err

@@ -54,16 +54,16 @@ Settings:
   * `concurrency` (default `0`): when set to a non-zero value, the receiver will simulate the scenario concurrently with the specified number of goroutines.
   * `path`: the path of the scenario files.
     * Built-in scenarios:
-      This receiver comes with a number of pre-packaged scenarios that can be found in the `scenarios` directory:
-      * `scenarios/hostmetrics`: simulates metrics from the `hostmetricsreceiver`.
-      * `scenarios/kubeletstats-node`: simulates node metrics from the `kubeletstatsreceiver`.
-      * `scenarios/kubeletstats-pod`: simulates pod metrics from the `kubeletstatsreceiver`.
+      This receiver comes with a number of pre-packaged scenarios:
+      * `builtin/hostmetrics`: simulates metrics from the `hostmetricsreceiver`.
+      * `builtin/kubeletstats-node`: simulates node metrics from the `kubeletstatsreceiver`.
+      * `builtin/kubeletstats-pod`: simulates pod metrics from the `kubeletstatsreceiver`.
         Each simulated pod reports metrics for the pod itself, one container, and one volume mount.
-      * `scenarios/tsbs-devops`: an adaptation of the [Timescale TSBS](https://github.com/timescale/tsbs) devops scenario.
-      * `scenarios/elasticapm-service-metrics`: simulates aggregated service metrics from the `elasticapmconnector`. The scale influences how many services are simulated.
-      * `scenarios/elasticapm-span-destination-metrics`: simulates aggregated span destination metrics from the `elasticapmconnector`. The scale influences how many services are simulated.Uses the `template_vars` option to customize the data generation:
+      * `builtin/tsbs-devops`: an adaptation of the [Timescale TSBS](https://github.com/timescale/tsbs) devops scenario.
+      * `builtin/elasticapm-service-metrics`: simulates aggregated service metrics from the `elasticapmconnector`. The scale influences how many services are simulated.
+      * `builtin/elasticapm-span-destination-metrics`: simulates aggregated span destination metrics from the `elasticapmconnector`. The scale influences how many services are simulated.Uses the `template_vars` option to customize the data generation:
         * `destinations`: the number of distinct exit span names to simulate per service. This affects the number of simulated metrics.
-      * `scenarios/elasticapm-transaction-metrics`: simulates aggregated transaction metrics from the `elasticapmconnector`. The scale influences how many service instances are simulated. Uses the `template_vars` option to customize the data generation:
+      * `builtin/elasticapm-transaction-metrics`: simulates aggregated transaction metrics from the `elasticapmconnector`. The scale influences how many service instances are simulated. Uses the `template_vars` option to customize the data generation:
         * `services`: the number of services to simulate. Does not affect the number of metrics.
         * `transactions`: the number of transactions to simulate per service instance. This affects the number of simulated metrics.
     * Custom scenarios:
