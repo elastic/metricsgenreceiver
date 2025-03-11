@@ -45,6 +45,8 @@ exporters:
     sending_queue:
       enabled: true
       blocking: true
+      queue_size: 10
+
   prometheusremotewrite/victoriametrics:
     endpoint: "http://localhost:8428/api/v1/write"
     resource_to_telemetry_conversion:
@@ -57,9 +59,6 @@ exporters:
       mode: otel
     metrics_dynamic_index:
       enabled: true
-    sending_queue:
-      enabled: true
-      blocking: true
 
 service:
 #  extensions: [pprof]
@@ -68,5 +67,5 @@ service:
       receivers: [metricsgen]
       processors: [batch]
 #      exporters: [nop]
-#      exporters: [elasticsearch]
-      exporters: [otlphttp/victoriametrics]
+#      exporters: [elasticsearch] # do not use with batch processor. ES exporter is doing batching internally.
+      exporters: [otlphttp/victoriametrics] # only use with batch processor
