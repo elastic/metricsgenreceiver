@@ -16,12 +16,15 @@ receivers:
 #      scale: 1000
 #    - path: builtin/elasticapm-service-metrics
 #      scale: 100
+##      temporality_override: cumulative
 #    - path: builtin/elasticapm-span-destination-metrics
 #      scale: 100
+##      temporality_override: cumulative
 #      template_vars:
 #        destinations: 10
 #    - path: builtin/elasticapm-transaction-metrics
 #      scale: 1000
+##      temporality_override: cumulative
 #      template_vars:
 #        services: 100
 #        transactions: 50

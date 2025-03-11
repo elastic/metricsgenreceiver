@@ -89,6 +89,9 @@ Settings:
   * `template_vars`: the `<path>.json`/`<path>.yaml` file is rendered as a template.
     This option lets you specify variables that are available during template rendering.
     This allows, for example, to simulate a variable number of network devices by generating metric data points with different attributes.
+  * `temporality_override`: allows to override the temporality of the metrics in the scenario.
+    Supported values: `cumulative`, `delta`.
+    This can be used to accommodate backends that only support a specific temporality.
 
 Example configuration:
 ```yaml

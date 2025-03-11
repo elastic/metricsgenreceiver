@@ -66,6 +66,18 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		}
 		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
+			if scn.AggregationTemporalityOverride() != 0 {
+				switch m.Type() {
+				case pmetric.MetricTypeSum:
+					m.Sum().SetAggregationTemporality(scn.AggregationTemporalityOverride())
+				case pmetric.MetricTypeHistogram:
+					m.Histogram().SetAggregationTemporality(scn.AggregationTemporalityOverride())
+				case pmetric.MetricTypeExponentialHistogram:
+					m.ExponentialHistogram().SetAggregationTemporality(scn.AggregationTemporalityOverride())
+				default:
+					// no-op
+				}
+			}
 		})
 		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, r)
 		if err != nil {

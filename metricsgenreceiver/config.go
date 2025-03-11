@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/distribution"
 	"go.opentelemetry.io/collector/component"
+	"go.opentelemetry.io/collector/pdata/pmetric"
 	"time"
 )
 
@@ -22,11 +23,23 @@ type Config struct {
 }
 
 type ScenarioCfg struct {
-	Path         string         `mapstructure:"path"`
-	Scale        int            `mapstructure:"scale"`
-	Concurrency  int            `mapstructure:"concurrency"`
-	Churn        int            `mapstructure:"churn"`
-	TemplateVars map[string]any `mapstructure:"template_vars"`
+	Path                string         `mapstructure:"path"`
+	Scale               int            `mapstructure:"scale"`
+	Concurrency         int            `mapstructure:"concurrency"`
+	Churn               int            `mapstructure:"churn"`
+	TemplateVars        map[string]any `mapstructure:"template_vars"`
+	TemporalityOverride string         `mapstructure:"temporality_override"`
+}
+
+func (c ScenarioCfg) AggregationTemporalityOverride() pmetric.AggregationTemporality {
+	switch c.TemporalityOverride {
+	case "cumulative":
+		return pmetric.AggregationTemporalityCumulative
+	case "delta":
+		return pmetric.AggregationTemporalityDelta
+	default:
+		return pmetric.AggregationTemporalityUnspecified
+	}
 }
 
 func createDefaultConfig() component.Config {
