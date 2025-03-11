@@ -1,26 +1,26 @@
 receivers:
   metricsgen:
-    start_now_minus: 8h
+    start_now_minus: 1h
     interval: 2s
     real_time: false
     exit_after_end: false
     seed: 123
     scenarios:
-    - path: scenarios/tsbs-devops
+    - path: builtin/tsbs-devops
       scale: 100
-#    - path: scenarios/hostmetrics
+#    - path: builtin/hostmetrics
 #      scale: 100
-#    - path: scenarios/kubeletstats-node
+#    - path: builtin/kubeletstats-node
 #      scale: 10
-#    - path: scenarios/kubeletstats-pod
+#    - path: builtin/kubeletstats-pod
 #      scale: 1000
-#    - path: scenarios/elasticapm-service-metrics
+#    - path: builtin/elasticapm-service-metrics
 #      scale: 100
-#    - path: scenarios/elasticapm-span-destination-metrics
+#    - path: builtin/elasticapm-span-destination-metrics
 #      scale: 100
 #      template_vars:
 #        destinations: 10
-#    - path: scenarios/elasticapm-transaction-metrics
+#    - path: builtin/elasticapm-transaction-metrics
 #      scale: 1000
 #      template_vars:
 #        services: 100
@@ -43,6 +43,8 @@ exporters:
     encoding: proto
     endpoint: http://localhost:8428/opentelemetry
     sending_queue:
+      enabled: true
+      blocking: true
   prometheusremotewrite/victoriametrics:
     endpoint: "http://localhost:8428/api/v1/write"
     resource_to_telemetry_conversion:
@@ -56,13 +58,15 @@ exporters:
     metrics_dynamic_index:
       enabled: true
     sending_queue:
+      enabled: true
+      blocking: true
 
 service:
 #  extensions: [pprof]
   pipelines:
     metrics:
       receivers: [metricsgen]
-#      processors: [batch]
+      processors: [batch]
 #      exporters: [nop]
 #      exporters: [elasticsearch]
       exporters: [otlphttp/victoriametrics]
