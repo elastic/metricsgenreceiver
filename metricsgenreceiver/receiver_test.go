@@ -46,7 +46,7 @@ func TestReceiver(t *testing.T) {
 			path:            "testdata/metricstemplate",
 			dataPoints:      3,
 			resourceMetrics: 1,
-			customizer:      func(cfg *Config) { cfg.IntervalJitter = true },
+			customizer:      func(cfg *Config) { cfg.IntervalJitterStdDev = 5 * time.Millisecond },
 		},
 		{
 			name:            "hostmetrics",
@@ -146,7 +146,7 @@ func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.M
 				return true
 			})
 			require.Equal(t, cfg.StartTime, dp.StartTimestamp().AsTime())
-			require.WithinRange(t, dp.Timestamp().AsTime(), timestamp, timestamp.Add(20*time.Millisecond))
+			require.WithinRange(t, dp.Timestamp().AsTime(), timestamp, timestamp.Add(cfg.IntervalJitterStdDev*5))
 		})
 	}
 }

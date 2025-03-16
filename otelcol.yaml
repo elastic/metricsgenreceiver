@@ -2,14 +2,15 @@ receivers:
   metricsgen:
     start_now_minus: 1h
     interval: 2s
+    interval_jitter_std_dev: 1ms
     real_time: false
-    exit_after_end: false
+    exit_after_end: true
     seed: 123
     scenarios:
-    - path: builtin/tsbs-devops
-      scale: 100
-#    - path: builtin/hostmetrics
+#    - path: builtin/tsbs-devops
 #      scale: 100
+    - path: builtin/hostmetrics
+      scale: 100
 #    - path: builtin/kubeletstats-node
 #      scale: 10
 #    - path: builtin/kubeletstats-pod

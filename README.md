@@ -26,10 +26,11 @@ Settings:
   Note that when using this option, the data generation will not be deterministic.
 * `interval`: the interval at which the metrics are simulated.
   The minimum value is 1s.
-* `interval_jitter` (default `false`): when enabled, adds a 0-20ms jitter to the timestamps,
-  following a normal distribution with a median of 0ms and a standard deviation of 5ms.
-  This simulates the real-world scenario where metrics are not perfectly aligned with the configured interval.
-  When enabled, this can impact the effectiveness of the compression that a metric datastore may apply.
+* `interval_jitter_std_dev` (default `0`): when set to a non-zero value (such as `5ms`), a jitter is added to the interval.
+  The jitter is equal to the absolute value of a normal distribution with a median of 0ms and a standard deviation of the specified value.
+  It is capped by the interval, so that the next interval will never start at or before the previous one.
+  This simulates real-world scenarios where the collection interval is sometimes a bit late due to delays running the scheduled metric collection.
+  When set to a non-zero value, this can impact the effectiveness of the compression that a metric datastore may apply.
 * `real_time` (default `false`): by default, the receiver generates the metrics as fast as possible.
   When set to true, it will pause after each cycle according to the configured `interval`.
 * `exit_after_end` (default `false`): when set to true, will terminate the collector.
@@ -103,7 +104,7 @@ receivers:
     exit_after_end: true
     seed: 123
     scenarios:
-      - path: scenarios/hostmetrics
+      - path: builtin/hostmetrics
         scale: 100
 
 exporters:

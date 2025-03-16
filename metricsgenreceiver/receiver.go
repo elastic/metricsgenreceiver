@@ -123,10 +123,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 					zap.Float64("data_points_per_second", float64(dataPoints)/time.Now().Sub(start).Seconds()))
 				nextLog = nextLog.Add(10 * time.Second)
 			}
-			simulatedTime := currentTime
-			if r.cfg.IntervalJitter {
-				simulatedTime = addJitter(currentTime)
-			}
+			simulatedTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval)
 			dataPoints += r.produceMetrics(ctx, simulatedTime)
 			r.applyChurn(i, simulatedTime)
 
@@ -149,10 +146,15 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 	return nil
 }
 
-func addJitter(t time.Time) time.Time {
-	jitter := int64(math.Abs(rand.NormFloat64() * float64(5*time.Millisecond)))
-	jitter = min(jitter, int64(20*time.Millisecond))
-	return t.Add(time.Duration(jitter))
+func addJitter(t time.Time, stdDev time.Duration, interval time.Duration) time.Time {
+	if stdDev == 0 {
+		return t
+	}
+	jitter := time.Duration(int64(math.Abs(rand.NormFloat64() * float64(stdDev))))
+	if jitter >= interval {
+		jitter = interval - 1
+	}
+	return t.Add(jitter)
 }
 
 func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {

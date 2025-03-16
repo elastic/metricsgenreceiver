@@ -9,17 +9,17 @@ import (
 )
 
 type Config struct {
-	StartTime      time.Time                    `mapstructure:"start_time"`
-	StartNowMinus  time.Duration                `mapstructure:"start_now_minus"`
-	EndTime        time.Time                    `mapstructure:"end_time"`
-	EndNowMinus    time.Duration                `mapstructure:"end_now_minus"`
-	Interval       time.Duration                `mapstructure:"interval"`
-	IntervalJitter bool                         `mapstructure:"interval_jitter"`
-	RealTime       bool                         `mapstructure:"real_time"`
-	ExitAfterEnd   bool                         `mapstructure:"exit_after_end"`
-	Seed           int64                        `mapstructure:"seed"`
-	Scenarios      []ScenarioCfg                `mapstructure:"scenarios"`
-	Distribution   distribution.DistributionCfg `mapstructure:"distribution"`
+	StartTime            time.Time                    `mapstructure:"start_time"`
+	StartNowMinus        time.Duration                `mapstructure:"start_now_minus"`
+	EndTime              time.Time                    `mapstructure:"end_time"`
+	EndNowMinus          time.Duration                `mapstructure:"end_now_minus"`
+	Interval             time.Duration                `mapstructure:"interval"`
+	IntervalJitterStdDev time.Duration                `mapstructure:"interval_jitter_std_dev"`
+	RealTime             bool                         `mapstructure:"real_time"`
+	ExitAfterEnd         bool                         `mapstructure:"exit_after_end"`
+	Seed                 int64                        `mapstructure:"seed"`
+	Scenarios            []ScenarioCfg                `mapstructure:"scenarios"`
+	Distribution         distribution.DistributionCfg `mapstructure:"distribution"`
 }
 
 type ScenarioCfg struct {
