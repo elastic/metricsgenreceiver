@@ -101,6 +101,19 @@ func TestReceiver(t *testing.T) {
 				}
 			},
 		},
+		{
+			name:            "simple",
+			path:            "builtin/simple",
+			dataPoints:      3,
+			resourceMetrics: 1,
+			customizer: func(cfg *Config) {
+				cfg.Scenarios[0].TemplateVars = map[string]any{
+					"gauge_pct": 1,
+					"gauge_int": 1,
+					"counter":   1,
+				}
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

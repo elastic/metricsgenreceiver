@@ -1,0 +1,15 @@
+resourceMetrics:
+  - resource:
+      attributes:
+        - { key: host.name, value: { stringValue: "" } }
+    scopeMetrics:
+      - metrics:
+        {{ range $i := loop 1 .gauge_pct }}
+        - { name: "gauge_pct_{{$i}}", gauge: { dataPoints: [ { startTimeUnixNano: "0", timeUnixNano: "0", asDouble: "0.5" } ] } }
+        {{end}}
+        {{ range $i := loop 1 .gauge_int }}
+        - { name: "gauge_int_{{$i}}", gauge: { dataPoints: [ { startTimeUnixNano: "0", timeUnixNano: "0", asInt: "10" } ] } }
+        {{end}}
+        {{ range $i := loop 1 .counter }}
+        - { name: "counter_{{$i}}", sum: { dataPoints: [ { startTimeUnixNano: "0", timeUnixNano: "0", asInt: "1000000" } ], aggregationTemporality: 2, isMonotonic: true } }
+        {{end}}

@@ -1,7 +1,7 @@
 receivers:
   metricsgen:
     start_now_minus: 1h
-    interval: 2s
+    interval: 5s
     interval_jitter_std_dev: 1ms
     real_time: false
     exit_after_end: true
@@ -29,6 +29,12 @@ receivers:
 #      template_vars:
 #        services: 100
 #        transactions: 50
+#    - path: builtin/simple
+#      scale: 10000
+#      template_vars:
+#        counter: 1
+#        gauge_pct: 0
+#        gauge_int: 0
 
 processors:
   batch:
