@@ -2,7 +2,7 @@ package metricsgenreceiver
 
 import (
 	"context"
-	"github.com/felixbarny/metricsgenreceiver/internal/metadata"
+	"github.com/felixbarny/metricsgenreceiver/metricsgenreceiver/internal/metadata"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/receiver"

@@ -1,7 +1,7 @@
 package distribution
 
 import (
-	"github.com/felixbarny/metricsgenreceiver/internal/dp"
+	"github.com/felixbarny/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 	"math/rand"

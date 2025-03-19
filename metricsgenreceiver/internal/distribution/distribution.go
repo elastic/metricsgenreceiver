@@ -1,7 +1,7 @@
 package distribution
 
 import (
-	"github.com/felixbarny/metricsgenreceiver/internal/dp"
+	"github.com/felixbarny/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 	"math"
 	"math/rand"
