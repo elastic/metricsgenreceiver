@@ -2,7 +2,7 @@ package metricsgenreceiver
 
 import (
 	"fmt"
-	"github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver/internal/distribution"
+	"github.com/felixbarny/metricsgenreceiver/internal/distribution"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 	"time"

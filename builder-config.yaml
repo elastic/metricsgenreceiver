@@ -19,8 +19,8 @@ processors:
 receivers:
   - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.121.0
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver v0.121.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver v0.121.0
-    import: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/metricsgenreceiver
+  - gomod: github.com/felixbarny/metricsgenreceiver v0.121.0
+    import: github.com/felixbarny/metricsgenreceiver
     name: 'metricsgenreceiver'
     path: 'metricsgenreceiver'
 
