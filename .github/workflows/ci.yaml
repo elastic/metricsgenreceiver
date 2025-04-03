@@ -96,12 +96,6 @@ jobs:
         with:
           path: otelcol-dev
 
-      - name: Setup GitHub CLI
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-      - run: npm install -g @github/cli
-
       - name: Create Release
         id: create_release
         env:
