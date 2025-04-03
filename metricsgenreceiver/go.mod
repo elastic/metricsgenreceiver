@@ -1,4 +1,4 @@
-module github.com/felixbarny/metricsgenreceiver/metricsgenreceiver
+module github.com/elastic/metricsgenreceiver/metricsgenreceiver
 
 go 1.23.6
 

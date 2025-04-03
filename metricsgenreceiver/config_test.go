@@ -1,7 +1,7 @@
 package metricsgenreceiver
 
 import (
-	"github.com/felixbarny/metricsgenreceiver/metricsgenreceiver/internal/distribution"
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/distribution"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/confmap/confmaptest"
