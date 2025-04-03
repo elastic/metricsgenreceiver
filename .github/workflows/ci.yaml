@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'metricsgenreceiver/go.mod'
+
+      - name: Run tests
+        run: |
+          cd metricsgenreceiver
+          go test -v ./...
+
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [linux, windows, darwin]
+        arch: [amd64, arm64]
+        exclude:
+          - os: windows
+            arch: arm64
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'metricsgenreceiver/go.mod'
+
+      - name: Install OpenTelemetry builder
+        run: go install go.opentelemetry.io/collector/cmd/builder@v0.123.0
+
+      - name: Build binary
+        env:
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          PROJECT_NAME=$(basename $GITHUB_REPOSITORY)
+          EXT=""
+          if [ "${{ matrix.os }}" = "windows" ]; then
+            EXT=".exe"
+          fi
+          builder --config builder-config.yaml
+          mv otelcol-dev/otelcol "otelcol-dev/${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}${EXT}"
+
+      - name: Archive binary
+        run: |
+          PROJECT_NAME=$(basename $GITHUB_REPOSITORY)
+          cd otelcol-dev
+          if [ "${{ matrix.os }}" = "windows" ]; then
+            zip "${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}.zip" "${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}.exe"
+            echo "ARTIFACT_PATH=${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}.zip" >> $GITHUB_ENV
+          else
+            tar czf "${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}.tar.gz" "${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}"
+            echo "ARTIFACT_PATH=${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}.tar.gz" >> $GITHUB_ENV
+          fi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.arch }}-build
+          path: otelcol-dev/${{ env.ARTIFACT_PATH }}
+          if-no-files-found: error
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    # Only run this job when a tag is pushed
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: otelcol-dev
+
+      - name: Create Release
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Extract tag name without 'refs/tags/' prefix
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          echo "Tag name: $TAG_NAME"
+          
+          # Create release using GitHub CLI
+          gh release create "$TAG_NAME" \
+            --title "Release $TAG_NAME" \
+            --generate-notes
+          
+          echo "Created release for tag $TAG_NAME"
+
+      - name: Upload Release Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Extract tag name
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          
+          # Find all otelcol-dev and upload them
+          find otelcol-dev -type f | while read -r artifact; do
+            filename=$(basename "$artifact")
+            echo "Uploading $artifact as $filename"
+          
+            # Upload the asset using GitHub CLI
+            gh release upload "$TAG_NAME" "$artifact" --clobber
+          done
