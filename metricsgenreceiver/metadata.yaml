@@ -9,3 +9,5 @@ status:
     active: [felixbarny]
 
 tests:
+  config:
+    interval: 30000
