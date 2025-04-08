@@ -17,7 +17,44 @@ The datapoints for the metrics are individually simulated using a distribution t
 
 ## Getting Started
 
-Settings:
+### Building
+
+metricsgenreceiver is a receiver for the otel collector. To build the otelcollector, the tool
+[ocb](https://opentelemetry.io/docs/collector/custom-collector/) is needed. To install it on OS X, run
+
+```bash
+curl --proto '=https' --tlsv1.2 -fL -o ocb \
+https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv0.123.0/ocb_0.123.0_darwin_arm64
+chmod +x ocb
+```
+
+Be aware, currently this exact version is needed (0.123.0).
+
+Then run the following command:
+
+```bash
+./ocb --config builder-config.yaml
+```
+
+This will build the otel collector binary under `./otelcol-dev/otelcol`.
+
+You can start the Otel Collector with the predefined config:
+
+```
+./otelcol-dev/otelcol --config otelcol.yaml
+```
+
+
+### Receiver Settings
+
+It is possible to adjust the metricsgen receiver with the configs listed below to enable different scenarios. To do this, adjust the section below:
+
+```
+receivers:
+  metricsgen:
+    ...
+```
+
 * `start_time`: the start time of the generated metrics (inclusive).
 * `start_now_minus`: the duration to subtract from the current time to set the start time.
   Note that when using this option, the data generation will not be deterministic.
@@ -115,4 +152,24 @@ service:
     metrics:
       receivers: [metricsgen]
       exporters: [nop]
+```
+
+### Exporter settings
+
+Multiple exporter settings are already in the default config. Adjust the outputs needed. In case the metricsgenreceiver is sending data to a stack setup with elastic-package, the following exporter config
+for Elasticsearch has to be used (assuming it runs on localhost):
+
+```
+exporters:
+  elasticsearch:
+    endpoint: "https://localhost:9200"
+    mapping:
+      mode: otel
+    metrics_dynamic_index:
+      enabled: true
+    num_workers: 10
+    user: elastic
+    password: changeme
+    tls:
+      insecure_skip_verify: true
 ```
