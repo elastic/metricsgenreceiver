@@ -17,6 +17,10 @@ The datapoints for the metrics are individually simulated using a distribution t
 
 ## Getting Started
 
+### Quick Start
+
+To get started quickly, [check out the releases page](https://github.com/elastic/metricsgenreceiver/releases) for compiled binaries you can use to get started right away. 
+
 ### Building
 
 metricsgenreceiver is a receiver for the otel collector. To build the otelcollector, the tool
