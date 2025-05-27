@@ -197,10 +197,11 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		}
 
 		for i := 0; i < scn.config.Concurrency; i++ {
+			// Use a new random number generator for each goroutine to avoid race conditions
+			ra := r.getNewRand()
+
 			wg.Add(1)
 			go func() {
-				// Use a new random number generator for each goroutine to avoid race conditions
-				ra := r.getNewRand()
 				defer wg.Done()
 				for j := 0; j < scn.config.Scale/scn.config.Concurrency; j++ {
 					resource := scn.resources[j+i*scn.config.Scale/scn.config.Concurrency]
