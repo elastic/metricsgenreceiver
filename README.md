@@ -48,6 +48,8 @@ You can start the Otel Collector with the predefined config:
 ./otelcol-dev/otelcol --config otelcol.yaml
 ```
 
+For local development, you can use the `otelcol.dev.yaml` config file which is ignored by default.
+
 
 ### Receiver Settings
 

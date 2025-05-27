@@ -3,3 +3,6 @@ otelcol-dev
 .envrc
 .idea
 ocb
+
+# Ignore the development config file
+otelcol.dev.yaml
