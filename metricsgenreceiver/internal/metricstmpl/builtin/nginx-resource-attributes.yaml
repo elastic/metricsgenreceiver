@@ -1,0 +1,15 @@
+resourceMetrics:
+  - resource:
+      attributes:
+        - key: host.name
+          value:
+            stringValue: "nginx-host-{{.InstanceID}}"
+        - key: service.name
+          value:
+            stringValue: "nginx"
+        - key: host.ip
+          value:
+            arrayValue:
+              values:
+                - stringValue: "{{.RandomIPv4}}"
+                - stringValue: "{{.RandomIPv6}}"
