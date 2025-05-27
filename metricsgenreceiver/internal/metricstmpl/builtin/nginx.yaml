@@ -1,6 +1,19 @@
 # Nginx status metrics
 resourceMetrics:
-  - resource: {}
+  - resource:
+        attributes:
+          - key: host.id
+            value:
+              stringValue: "host-{{.InstanceID}}"
+          - key: service.name
+            value:
+               stringValue: "nginx"
+          - key: host.ip
+            value:
+              arrayValue:
+                values:
+                  - stringValue: "{{.RandomIPv4}}"
+                  - stringValue: "{{.RandomIPv6}}"
     scopeMetrics:
       - scope:
           name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/nginxreceiver
