@@ -48,6 +48,8 @@ You can start the Otel Collector with the predefined config:
 ./otelcol-dev/otelcol --config otelcol.yaml
 ```
 
+For local development, you can use the `otelcol.dev.yaml` config file which is ignored by default.
+
 
 ### Receiver Settings
 
@@ -108,6 +110,7 @@ receivers:
       * `builtin/elasticapm-transaction-metrics`: simulates aggregated transaction metrics from the `elasticapmconnector`. The scale influences how many service instances are simulated. Uses the `template_vars` option to customize the data generation:
         * `services`: the number of services to simulate. Does not affect the number of metrics.
         * `transactions`: the number of transactions to simulate per service instance. This affects the number of simulated metrics.
+    * `builtin/nginx`: Built in scenario for nginx connection metrics simulating the `nginxreceiver`.
     * Custom scenarios:
       Expects a `<path>.json` or `<path>.yaml` and a `<path>-resource-attributes.json` or `<path>-resource-attributes.yaml` file.
       The `<path>.json`/`<path>.yaml` file contains a single batch of resource metrics in JSON or YAML format, as produced by the `fileexporter`.
