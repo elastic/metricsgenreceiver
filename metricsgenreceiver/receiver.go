@@ -27,6 +27,7 @@ type MetricsGenReceiver struct {
 	obsreport *receiverhelper.ObsReport
 	settings  receiver.Settings
 
+	baseRand    *rand.Rand // base random number generator seeded with the configured seed
 	nextMetrics consumer.Metrics
 	cancel      context.CancelFunc
 	scenarios   []Scenario
@@ -56,7 +57,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		cfg.EndTime = nowish.Add(-cfg.EndNowMinus)
 	}
 
-	ra := rand.New(rand.NewSource(cfg.Seed))
+	baseRand := rand.New(rand.NewSource(cfg.Seed))
 
 	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
 	for _, scn := range cfg.Scenarios {
@@ -80,7 +81,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 				}
 			}
 		})
-		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, ra)
+		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, baseRand)
 		if err != nil {
 			return nil, err
 		}
@@ -94,6 +95,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	return &MetricsGenReceiver{
 		cfg:       cfg,
 		settings:  set,
+		baseRand:  baseRand,
 		obsreport: obsreport,
 		scenarios: scenarios,
 	}, nil
@@ -163,12 +165,10 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 			continue
 		}
 
-		ra := r.getRand()
-
 		startTime := simulatedTime.Format(time.RFC3339)
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
-			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, scn.config.TemplateVars, ra)
+			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, scn.config.TemplateVars, r.baseRand)
 			if err != nil {
 				r.settings.Logger.Error("failed to apply churn", zap.Error(err))
 			} else {
@@ -182,17 +182,16 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 	dataPoints := new(uint64)
 	wg := sync.WaitGroup{}
 	for _, scn := range r.scenarios {
-		ra := r.getRand()
 
 		// we don't keep track of the data points for each instance individually to reduce memory pressure
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		// this makes sure counters are increasing over time
 		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-			distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution)
+			distribution.AdvanceDataPoint(dp, r.baseRand, m, r.cfg.Distribution)
 		})
 		if scn.config.Concurrency == 0 {
 			for i := range scn.config.Scale {
-				*dataPoints += uint64(r.produceMetricsForInstance(ctx, currentTime, scn, scn.resources[i]))
+				*dataPoints += uint64(r.produceMetricsForInstance(ctx, r.baseRand, currentTime, scn, scn.resources[i]))
 			}
 			continue
 		}
@@ -200,11 +199,12 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		for i := 0; i < scn.config.Concurrency; i++ {
 			wg.Add(1)
 			go func() {
-
+				// Use a new random number generator for each goroutine to avoid race conditions
+				ra := r.getNewRand()
 				defer wg.Done()
 				for j := 0; j < scn.config.Scale/scn.config.Concurrency; j++ {
 					resource := scn.resources[j+i*scn.config.Scale/scn.config.Concurrency]
-					currentDataPoints := r.produceMetricsForInstance(ctx, currentTime, scn, resource)
+					currentDataPoints := r.produceMetricsForInstance(ctx, ra, currentTime, scn, resource)
 					atomic.AddUint64(dataPoints, uint64(currentDataPoints))
 				}
 			}()
@@ -214,7 +214,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 	return *dataPoints
 }
 
-func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, currentTime time.Time, scn Scenario, instanceResource pcommon.Resource) int {
+func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, ra *rand.Rand, currentTime time.Time, scn Scenario, instanceResource pcommon.Resource) int {
 	r.obsreport.StartMetricsOp(ctx)
 	metrics := pmetric.NewMetrics()
 	scn.metricsTemplate.CopyTo(metrics)
@@ -222,8 +222,6 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, curr
 	for j := 0; j < resourceMetrics.Len(); j++ {
 		overrideExistingAttributes(instanceResource, resourceMetrics.At(j).Resource())
 	}
-
-	ra := r.getRand()
 
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution)
@@ -253,8 +251,8 @@ func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {
 	return nil
 }
 
-// getRand returns a new random number generator seeded with the configured seed.
+// getNewRand returns a new random number generator seeded with the configured seed.
 // This is NOT thread-safe, so it should only be used in a single goroutine.
-func (r *MetricsGenReceiver) getRand() *rand.Rand {
-	return rand.New(rand.NewSource(r.cfg.Seed))
+func (r *MetricsGenReceiver) getNewRand() *rand.Rand {
+	return rand.New(rand.NewSource(r.baseRand.Int63()))
 }
