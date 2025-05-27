@@ -2,9 +2,9 @@
 resourceMetrics:
   - resource:
         attributes:
-          - key: host.id
+          - key: host.name
             value:
-              stringValue: "host-{{.InstanceID}}"
+              stringValue: "nginx-host"
           - key: service.name
             value:
                stringValue: "nginx"
@@ -12,8 +12,7 @@ resourceMetrics:
             value:
               arrayValue:
                 values:
-                  - stringValue: "{{.RandomIPv4}}"
-                  - stringValue: "{{.RandomIPv6}}"
+                  - stringValue: "172.18.0.2"
     scopeMetrics:
       - scope:
           name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/nginxreceiver
