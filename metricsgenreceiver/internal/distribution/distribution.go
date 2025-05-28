@@ -19,7 +19,8 @@ type DistributionCfg struct {
 	StdDev             float64 `mapstructure:"std_dev"`
 }
 
-func AdvanceDataPoint(dp dp.DataPoint, rand *rand.Rand, m pmetric.Metric, dist DistributionCfg) {
+func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg) {
+
 	switch v := dp.(type) {
 	case pmetric.NumberDataPoint:
 		switch v.ValueType() {
@@ -27,9 +28,9 @@ func AdvanceDataPoint(dp dp.DataPoint, rand *rand.Rand, m pmetric.Metric, dist D
 			value := v.DoubleValue()
 			if m.Type() == pmetric.MetricTypeGauge {
 				if value >= 0 && value <= 1 {
-					value = advanceZeroToOne(value, rand, dist)
+					value = advanceZeroToOne(value, r, dist)
 				} else {
-					value = advanceFloat(rand, m, value, dist)
+					value = advanceFloat(r, m, value, dist)
 					// avoid keeping the value locked between 0..1 in successive runs
 					if value >= 0 && value <= 1 {
 						if value < 0.5 {
@@ -40,19 +41,19 @@ func AdvanceDataPoint(dp dp.DataPoint, rand *rand.Rand, m pmetric.Metric, dist D
 					}
 				}
 			} else {
-				value = advanceFloat(rand, m, value, dist)
+				value = advanceFloat(r, m, value, dist)
 			}
 			v.SetDoubleValue(value)
 			break
 		case pmetric.NumberDataPointValueTypeInt:
-			v.SetIntValue(advanceInt(rand, m, v.IntValue(), dist))
+			v.SetIntValue(advanceInt(r, m, v.IntValue(), dist))
 			break
 		default:
 		}
 	case pmetric.HistogramDataPoint:
 		count := uint64(0)
 		for i := 0; i < v.BucketCounts().Len(); i++ {
-			val := uint64(advanceInt(rand, m, int64(v.BucketCounts().At(i)), dist))
+			val := uint64(advanceInt(r, m, int64(v.BucketCounts().At(i)), dist))
 			count += val
 			v.BucketCounts().SetAt(i, val)
 		}
