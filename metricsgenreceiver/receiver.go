@@ -45,13 +45,13 @@ type Scenario struct {
 type MetricsProgress struct {
 	Start      time.Time
 	End        time.Time
-	Datapoints uint64
+	Datapoints atomic.Uint64
 }
 
 func newMetricsProgress() *MetricsProgress {
 	return &MetricsProgress{
 		Start:      time.Now(),
-		Datapoints: uint64(0),
+		Datapoints: atomic.Uint64{},
 	}
 }
 
@@ -59,7 +59,7 @@ func (p *MetricsProgress) duration() time.Duration {
 	return time.Since(p.Start)
 }
 func (p *MetricsProgress) samplesPerSecond() float64 {
-	return float64(p.Datapoints) / p.duration().Seconds()
+	return float64(p.Datapoints.Load()) / p.duration().Seconds()
 }
 
 func (p *MetricsProgress) eta(progressPct float64) time.Duration {
@@ -148,13 +148,13 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 				r.settings.Logger.Info("generating metrics progress",
 					zap.Int("progress_percent", int(progressPct*100)),
 					zap.String("eta", r.progress.eta(progressPct).Round(time.Second).String()),
-					zap.Uint64("datapoints", r.progress.Datapoints),
+					zap.Uint64("datapoints", r.progress.Datapoints.Load()),
 					zap.Float64("data_points_per_second", r.progress.samplesPerSecond()),
 				)
 				nextLog = nextLog.Add(10 * time.Second)
 			}
 			simulatedTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval)
-			r.progress.Datapoints += r.produceMetrics(ctx, simulatedTime)
+			r.progress.Datapoints.Add(r.produceMetrics(ctx, simulatedTime))
 			r.applyChurn(i, simulatedTime)
 
 			if r.cfg.RealTime {
@@ -272,7 +272,7 @@ func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {
 		r.cancel()
 	}
 	r.settings.Logger.Info("finished generating metrics",
-		zap.Uint64("datapoints", r.progress.Datapoints),
+		zap.Uint64("datapoints", r.progress.Datapoints.Load()),
 		zap.String("duration", r.progress.duration().Round(time.Millisecond).String()),
 		zap.Float64("data_points_per_second", r.progress.samplesPerSecond()),
 	)
