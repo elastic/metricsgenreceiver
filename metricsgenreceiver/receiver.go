@@ -124,13 +124,13 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		baseRand:  baseRand,
 		obsreport: obsreport,
 		scenarios: scenarios,
+		progress:  newMetricsProgress(),
 	}, nil
 }
 
 func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) error {
 	ctx, cancel := context.WithCancel(ctx)
 	r.cancel = cancel
-	r.progress = newMetricsProgress()
 	go func() {
 		nextLog := r.progress.Start.Add(10 * time.Second)
 		ticker := time.NewTicker(r.cfg.Interval)
