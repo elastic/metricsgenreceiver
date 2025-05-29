@@ -63,6 +63,9 @@ func (p *MetricsProgress) samplesPerSecond() float64 {
 }
 
 func (p *MetricsProgress) eta(progressPct float64) time.Duration {
+	if progressPct == 0 {
+		return time.Duration(0)
+	}
 	return time.Duration(float64(p.duration().Nanoseconds())/progressPct) - p.duration()
 }
 
