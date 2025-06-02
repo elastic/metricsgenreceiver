@@ -57,7 +57,7 @@ func newMetricsProgress() *MetricsProgress {
 func (p *MetricsProgress) duration() time.Duration {
 	return time.Since(p.start)
 }
-func (p *MetricsProgress) samplesPerSecond() float64 {
+func (p *MetricsProgress) dataPointsPerSecond() float64 {
 	return float64(p.datapoints.Load()) / p.duration().Seconds()
 }
 
@@ -148,7 +148,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 					zap.Int("progress_percent", int(progressPct*100)),
 					zap.String("eta", r.progress.eta(progressPct).Round(time.Second).String()),
 					zap.Uint64("datapoints", r.progress.datapoints.Load()),
-					zap.Float64("data_points_per_second", r.progress.samplesPerSecond()),
+					zap.Float64("data_points_per_second", r.progress.dataPointsPerSecond()),
 				)
 				nextLog = nextLog.Add(10 * time.Second)
 			}
@@ -273,7 +273,7 @@ func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {
 	r.settings.Logger.Info("finished generating metrics",
 		zap.Uint64("datapoints", r.progress.datapoints.Load()),
 		zap.String("duration", r.progress.duration().Round(time.Millisecond).String()),
-		zap.Float64("data_points_per_second", r.progress.samplesPerSecond()),
+		zap.Float64("data_points_per_second", r.progress.dataPointsPerSecond()),
 	)
 	return nil
 }
