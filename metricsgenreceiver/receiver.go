@@ -3,6 +3,12 @@ package metricsgenreceiver
 import (
 	"context"
 	"errors"
+	"math"
+	"math/rand"
+	"sync"
+	"sync/atomic"
+	"time"
+
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/distribution"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/metadata"
@@ -15,11 +21,6 @@ import (
 	"go.opentelemetry.io/collector/receiver"
 	"go.opentelemetry.io/collector/receiver/receiverhelper"
 	"go.uber.org/zap"
-	"math"
-	"math/rand"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 type MetricsGenReceiver struct {
@@ -31,6 +32,7 @@ type MetricsGenReceiver struct {
 	nextMetrics consumer.Metrics
 	cancel      context.CancelFunc
 	scenarios   []Scenario
+	progress    *MetricsProgress
 }
 
 type Scenario struct {
@@ -38,6 +40,32 @@ type Scenario struct {
 	metricsTemplate            *pmetric.Metrics
 	resourceAttributesTemplate pcommon.Resource
 	resources                  []pcommon.Resource
+}
+
+type MetricsProgress struct {
+	start      time.Time
+	datapoints atomic.Uint64
+}
+
+func newMetricsProgress() *MetricsProgress {
+	return &MetricsProgress{
+		start:      time.Now(),
+		datapoints: atomic.Uint64{},
+	}
+}
+
+func (p *MetricsProgress) duration() time.Duration {
+	return time.Since(p.start)
+}
+func (p *MetricsProgress) dataPointsPerSecond() float64 {
+	return float64(p.datapoints.Load()) / p.duration().Seconds()
+}
+
+func (p *MetricsProgress) eta(progressPct float64) time.Duration {
+	if progressPct == 0 {
+		return time.Duration(0)
+	}
+	return time.Duration(float64(p.duration().Nanoseconds())/progressPct) - p.duration()
 }
 
 func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenReceiver, error) {
@@ -98,18 +126,17 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		baseRand:  baseRand,
 		obsreport: obsreport,
 		scenarios: scenarios,
+		progress:  newMetricsProgress(),
 	}, nil
 }
 
 func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) error {
-	ctx = context.Background()
-	ctx, r.cancel = context.WithCancel(ctx)
+	ctx, cancel := context.WithCancel(ctx)
+	r.cancel = cancel
 	go func() {
-		start := time.Now()
-		nextLog := start.Add(10 * time.Second)
+		nextLog := r.progress.start.Add(10 * time.Second)
 		ticker := time.NewTicker(r.cfg.Interval)
 		defer ticker.Stop()
-		dataPoints := uint64(0)
 		currentTime := r.cfg.StartTime
 		for i := 0; currentTime.UnixNano() < r.cfg.EndTime.UnixNano(); i++ {
 			if ctx.Err() != nil {
@@ -117,16 +144,16 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			}
 			if time.Now().After(nextLog) {
 				progressPct := currentTime.Sub(r.cfg.StartTime).Seconds() / r.cfg.EndTime.Sub(r.cfg.StartTime).Seconds()
-				duration := time.Now().Sub(start)
 				r.settings.Logger.Info("generating metrics progress",
 					zap.Int("progress_percent", int(progressPct*100)),
-					zap.String("eta", (time.Duration(float64(duration.Nanoseconds())/progressPct)-duration).Round(time.Second).String()),
-					zap.Uint64("datapoints", dataPoints),
-					zap.Float64("data_points_per_second", float64(dataPoints)/time.Now().Sub(start).Seconds()))
+					zap.String("eta", r.progress.eta(progressPct).Round(time.Second).String()),
+					zap.Uint64("datapoints", r.progress.datapoints.Load()),
+					zap.Float64("data_points_per_second", r.progress.dataPointsPerSecond()),
+				)
 				nextLog = nextLog.Add(10 * time.Second)
 			}
 			simulatedTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval)
-			dataPoints += r.produceMetrics(ctx, simulatedTime)
+			r.progress.datapoints.Add(r.produceMetrics(ctx, simulatedTime))
 			r.applyChurn(i, simulatedTime)
 
 			if r.cfg.RealTime {
@@ -134,12 +161,6 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			}
 			currentTime = currentTime.Add(r.cfg.Interval)
 		}
-		duration := time.Now().Sub(start)
-
-		r.settings.Logger.Info("finished generating metrics",
-			zap.Uint64("datapoints", dataPoints),
-			zap.String("duration", duration.Round(time.Millisecond).String()),
-			zap.Float64("data_points_per_second", float64(dataPoints)/duration.Seconds()))
 		if r.cfg.ExitAfterEnd {
 			componentstatus.ReportStatus(host, componentstatus.NewFatalErrorEvent(errors.New("exiting because exit_after_end is set to true")))
 		}
@@ -249,6 +270,11 @@ func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {
 	if r.cancel != nil {
 		r.cancel()
 	}
+	r.settings.Logger.Info("finished generating metrics",
+		zap.Uint64("datapoints", r.progress.datapoints.Load()),
+		zap.String("duration", r.progress.duration().Round(time.Millisecond).String()),
+		zap.Float64("data_points_per_second", r.progress.dataPointsPerSecond()),
+	)
 	return nil
 }
 
