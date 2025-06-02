@@ -1,6 +1,6 @@
 module github.com/elastic/metricsgenreceiver/metricsgenreceiver
 
-go 1.24.3
+go 1.24.2
 
 require (
 	github.com/google/uuid v1.6.0
