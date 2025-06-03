@@ -4,25 +4,25 @@ dist:
   output_path: ./otelcol-dev
 
 exporters:
-  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.123.0
-  - gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.123.0
-  - gomod: go.opentelemetry.io/collector/exporter/nopexporter v0.123.0
-  - gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.123.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/fileexporter v0.123.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/elasticsearchexporter v0.123.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter v0.123.0
+  - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.127.0
+  - gomod: go.opentelemetry.io/collector/exporter/otlpexporter v0.127.0
+  - gomod: go.opentelemetry.io/collector/exporter/nopexporter v0.127.0
+  - gomod: go.opentelemetry.io/collector/exporter/otlphttpexporter v0.127.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/fileexporter v0.127.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/elasticsearchexporter v0.127.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/exporter/prometheusremotewriteexporter v0.127.0
 
 processors:
-  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.123.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor v0.123.0
+  - gomod: go.opentelemetry.io/collector/processor/batchprocessor v0.127.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor v0.127.0
 
 receivers:
-  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.123.0
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver v0.123.0
-  - gomod: github.com/elastic/metricsgenreceiver/metricsgenreceiver v0.123.0
+  - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.127.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/otlpjsonfilereceiver v0.127.0
+  - gomod: github.com/elastic/metricsgenreceiver/metricsgenreceiver v0.127.0
     import: github.com/elastic/metricsgenreceiver/metricsgenreceiver
     name: 'metricsgenreceiver'
     path: 'metricsgenreceiver'
 
 extensions:
-  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension v0.123.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension v0.127.0
