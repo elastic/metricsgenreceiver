@@ -54,7 +54,7 @@ exporters:
     endpoint: http://localhost:8428/opentelemetry
     sending_queue:
       enabled: true
-      blocking: true
+      block_on_overflow: true
       queue_size: 10
       num_consumers: 10
   prometheusremotewrite/victoriametrics:
