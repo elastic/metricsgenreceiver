@@ -19,7 +19,6 @@ require (
 	go.uber.org/goleak v1.3.0
 	go.uber.org/zap v1.27.0
 	gopkg.in/yaml.v3 v3.0.1
-	github.com/ebitengine/purego v0.8.4
 )
 
 require (
