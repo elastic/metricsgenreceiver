@@ -77,6 +77,7 @@ receivers:
 * `real_time` (default `false`): by default, the receiver generates the metrics as fast as possible.
   When set to true, it will pause after each cycle according to the configured `interval`.
 * `exit_after_end` (default `false`): when set to true, will terminate the collector.
+* `exit_after_end_timeout` (default `0`): timeout in case exit_after_end is set to true before the collector is terminated.
 * `seed` (default `0`): seed value for the random number generator that's used for simulating the standard distribution. The seed makes sure that the data generation is deterministic.
 * `distribution`: the datapoints for the metrics are individually simulated by advancing their initial value using a standard distribution,
   taking into account the [temporality](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#temporality),

@@ -162,6 +162,16 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			currentTime = currentTime.Add(r.cfg.Interval)
 		}
 		if r.cfg.ExitAfterEnd {
+			// After the runner has finished generating metrics, we wait for the configured duration before exiting.
+			if r.cfg.ExitAfterEndTimeout > 0 {
+				r.settings.Logger.Info("finished generating metrics, waiting before exiting",
+					zap.Duration("exit_after_end_timeout", r.cfg.ExitAfterEndTimeout),
+				)
+				time.Sleep(r.cfg.ExitAfterEndTimeout)
+			} else {
+				r.settings.Logger.Info("finished generating metrics, exiting immediately")
+			}
+
 			componentstatus.ReportStatus(host, componentstatus.NewFatalErrorEvent(errors.New("exiting because exit_after_end is set to true")))
 		}
 	}()
