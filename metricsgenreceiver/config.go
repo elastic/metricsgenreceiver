@@ -17,6 +17,7 @@ type Config struct {
 	IntervalJitterStdDev time.Duration                `mapstructure:"interval_jitter_std_dev"`
 	RealTime             bool                         `mapstructure:"real_time"`
 	ExitAfterEnd         bool                         `mapstructure:"exit_after_end"`
+	ExitAfterEndTimeout  time.Duration                `mapstructure:"exit_after_end_timeout"`
 	Seed                 int64                        `mapstructure:"seed"`
 	Scenarios            []ScenarioCfg                `mapstructure:"scenarios"`
 	Distribution         distribution.DistributionCfg `mapstructure:"distribution"`
