@@ -6,7 +6,7 @@ status:
     development: [metrics]
   distributions: [contrib]
   codeowners:
-    active: [felixbarny]
+    active: [felixbarny, ruflin]
 
 tests:
   config:
