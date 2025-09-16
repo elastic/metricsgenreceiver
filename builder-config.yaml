@@ -27,3 +27,4 @@ receivers:
 
 extensions:
   - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/pprofextension v0.134.0
+  - gomod: github.com/open-telemetry/opentelemetry-collector-contrib/extension/basicauthextension v0.134.0
