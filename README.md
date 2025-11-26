@@ -32,7 +32,7 @@ https://github.com/open-telemetry/opentelemetry-collector-releases/releases/down
 chmod +x ocb
 ```
 
-Be aware, currently this exact version is needed (v0.134.0).
+Be aware, currently this exact version is needed (v0.139.0).
 
 Then run the following command:
 
