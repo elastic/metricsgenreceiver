@@ -139,26 +139,29 @@ func randomizeBuckets(r *rand.Rand, buckets pmetric.ExponentialHistogramDataPoin
 		originalLen := nonEmptyBuckets.BucketCounts().Len()
 		newBuckets := make([]uint64, originalLen+2)
 		// Copy original counts into new buckets, with a small probability of shifting them around
-		// and adjusting the count from 40% to 200%
+		// and adjusting the count from 40% to 160%
 
 		firstPopulatedIndex := len(newBuckets)
 		lastPopulatedIndex := -1
 		for i := 0; i < originalLen; i++ {
-			countScale := 0.4 + r.Float64()*1.6
-			newCount := uint64(math.Round(float64(nonEmptyBuckets.BucketCounts().At(i)) * countScale))
-			if newCount > 0 {
-				//40% chance of moving the bucket one to the left or right
-				shiftChance := r.Float64()
-				offset := 0
-				if shiftChance < 0.2 {
-					offset = -1
-				} else if shiftChance < 0.4 {
-					offset = 1
+			oldCount := nonEmptyBuckets.BucketCounts().At(i)
+			if oldCount > 0 {
+				countScale := 0.4 + r.Float64()*1.2
+				newCount := uint64(math.Round(float64(oldCount) * countScale))
+				if newCount > 0 {
+					//40% chance of moving the bucket one to the left or right
+					shiftChance := r.Float64()
+					offset := 0
+					if shiftChance < 0.2 {
+						offset = -1
+					} else if shiftChance < 0.4 {
+						offset = 1
+					}
+					index := i + 1 + offset
+					firstPopulatedIndex = min(firstPopulatedIndex, index)
+					lastPopulatedIndex = max(lastPopulatedIndex, index)
+					newBuckets[index] += newCount
 				}
-				index := i + 1 + offset
-				firstPopulatedIndex = min(firstPopulatedIndex, index)
-				lastPopulatedIndex = max(lastPopulatedIndex, index)
-				newBuckets[index] += newCount
 			}
 		}
 
