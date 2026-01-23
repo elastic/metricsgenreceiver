@@ -11,6 +11,7 @@ import (
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/distribution"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/metadata"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/metricstmpl"
 	"go.opentelemetry.io/collector/component"
@@ -29,6 +30,7 @@ type MetricsGenReceiver struct {
 	settings  receiver.Settings
 
 	baseRand    *rand.Rand // base random number generator seeded with the configured seed
+	expHistoGen *expohistogen.Generator
 	nextMetrics consumer.Metrics
 	cancel      context.CancelFunc
 	scenarios   []Scenario
@@ -86,6 +88,10 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	}
 
 	baseRand := rand.New(rand.NewSource(cfg.Seed))
+	expHistoGen, err := expohistogen.NewGenerator(cfg.ExponentialHistogramsTemplatePath)
+	if err != nil {
+		return nil, err
+	}
 
 	scenarios := make([]Scenario, 0, len(cfg.Scenarios))
 	for _, scn := range cfg.Scenarios {
@@ -94,20 +100,28 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		if err != nil {
 			return nil, err
 		}
+
+		dp.ForEachMetric(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric) {
+			applyHistogramOverride(scn, m)
+		})
 		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
-			if scn.AggregationTemporalityOverride() != 0 {
+			if scn.AggregationTemporalityOverride() != pmetric.AggregationTemporalityUnspecified {
 				switch m.Type() {
 				case pmetric.MetricTypeSum:
 					m.Sum().SetAggregationTemporality(scn.AggregationTemporalityOverride())
 				case pmetric.MetricTypeHistogram:
 					m.Histogram().SetAggregationTemporality(scn.AggregationTemporalityOverride())
-				case pmetric.MetricTypeExponentialHistogram:
-					m.ExponentialHistogram().SetAggregationTemporality(scn.AggregationTemporalityOverride())
 				default:
 					// no-op
 				}
 			}
+			// initialize exponential histograms with clean values and set their temporality to delta as we currently only support that
+			if m.Type() == pmetric.MetricTypeExponentialHistogram {
+				expHistoGen.GenerateInto(baseRand, dp.(pmetric.ExponentialHistogramDataPoint))
+				m.ExponentialHistogram().SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
+			}
+
 		})
 		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, baseRand)
 		if err != nil {
@@ -121,12 +135,13 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	}
 
 	return &MetricsGenReceiver{
-		cfg:       cfg,
-		settings:  set,
-		baseRand:  baseRand,
-		obsreport: obsreport,
-		scenarios: scenarios,
-		progress:  newMetricsProgress(),
+		cfg:         cfg,
+		settings:    set,
+		baseRand:    baseRand,
+		expHistoGen: expHistoGen,
+		obsreport:   obsreport,
+		scenarios:   scenarios,
+		progress:    newMetricsProgress(),
 	}, nil
 }
 
@@ -179,6 +194,50 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 	return nil
 }
 
+func applyHistogramOverride(scn ScenarioCfg, m pmetric.Metric) {
+	if scn.ForceExponentialHistograms() {
+		if m.Type() == pmetric.MetricTypeHistogram {
+			// Get the histogram data
+			histogram := m.Histogram()
+			histogramDPs := histogram.DataPoints()
+
+			// Store only the data point information declared in the DataPoint interface
+			type dpInfo struct {
+				startTimestamp pcommon.Timestamp
+				timestamp      pcommon.Timestamp
+				attributes     pcommon.Map
+			}
+
+			dpInfos := make([]dpInfo, histogramDPs.Len())
+			for i := 0; i < histogramDPs.Len(); i++ {
+				dp := histogramDPs.At(i)
+				dpInfos[i] = dpInfo{
+					startTimestamp: dp.StartTimestamp(),
+					timestamp:      dp.Timestamp(),
+					attributes:     dp.Attributes(),
+				}
+			}
+
+			// Convert to exponential histogram
+			expHist := m.SetEmptyExponentialHistogram()
+			expHist.SetAggregationTemporality(histogram.AggregationTemporality())
+
+			// Create exponential histogram data points preserving the series
+			expDPs := expHist.DataPoints()
+			expDPs.EnsureCapacity(len(dpInfos))
+
+			for _, info := range dpInfos {
+				expDP := expDPs.AppendEmpty()
+				expDP.SetStartTimestamp(info.startTimestamp)
+				expDP.SetTimestamp(info.timestamp)
+				info.attributes.CopyTo(expDP.Attributes())
+			}
+		}
+	}
+	// replace all exponential histograms with a freshly generated one and with delta temporality
+
+}
+
 func addJitter(t time.Time, stdDev time.Duration, interval time.Duration) time.Time {
 	if stdDev == 0 {
 		return t
@@ -218,7 +277,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		// this makes sure counters are increasing over time
 		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-			distribution.AdvanceDataPoint(dp, r.baseRand, m, r.cfg.Distribution)
+			distribution.AdvanceDataPoint(dp, r.baseRand, m, r.cfg.Distribution, r.expHistoGen)
 		})
 		if scn.config.Concurrency == 0 {
 			for i := range scn.config.Scale {
@@ -256,7 +315,7 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, ra *
 	}
 
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution)
+		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution, r.expHistoGen)
 		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
 	})
 	dataPoints := metrics.DataPointCount()
