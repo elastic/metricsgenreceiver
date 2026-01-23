@@ -62,6 +62,9 @@ func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist Dist
 		v.SetCount(count)
 		v.RemoveSum()
 	case pmetric.ExponentialHistogramDataPoint:
+		if m.ExponentialHistogram().AggregationTemporality() == pmetric.AggregationTemporalityCumulative {
+			panic("Cumulative exponential histograms not supported")
+		}
 		expHistoGen.GenerateInto(r, v)
 	}
 }

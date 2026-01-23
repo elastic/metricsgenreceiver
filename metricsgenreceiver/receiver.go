@@ -88,7 +88,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 	}
 
 	baseRand := rand.New(rand.NewSource(cfg.Seed))
-	expHistoGen, err := expohistogen.NewGenerator(cfg.ExponentialHistogramsTemplatePath)
+	expHistoGen, err := expohistogen.NewGenerator(cfg.GetExponentialHistogramsTemplatePath())
 	if err != nil {
 		return nil, err
 	}

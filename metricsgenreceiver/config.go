@@ -46,16 +46,22 @@ func (c ScenarioCfg) AggregationTemporalityOverride() pmetric.AggregationTempora
 	}
 }
 
+func (c Config) GetExponentialHistogramsTemplatePath() string {
+	if c.ExponentialHistogramsTemplatePath != "" {
+		return c.ExponentialHistogramsTemplatePath
+	}
+	return "builtin/exponential-histograms-low-frequency.ndjson"
+}
+
 func (c ScenarioCfg) ForceExponentialHistograms() bool {
 	return c.HistogramOverride == "exponential"
 }
 
 func createDefaultConfig() component.Config {
 	return &Config{
-		Seed:                              0,
-		Scenarios:                         make([]ScenarioCfg, 0),
-		Distribution:                      distribution.DefaultDistribution,
-		ExponentialHistogramsTemplatePath: "builtin/exponential-histograms-low-frequency.ndjson",
+		Seed:         0,
+		Scenarios:    make([]ScenarioCfg, 0),
+		Distribution: distribution.DefaultDistribution,
 	}
 }
 
