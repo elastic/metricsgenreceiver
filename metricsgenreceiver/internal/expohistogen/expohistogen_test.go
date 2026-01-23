@@ -6,6 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
 func TestLoadExponentialHistogramsFromFile_HighFrequency(t *testing.T) {
@@ -54,14 +55,15 @@ func TestLoadExponentialHistogramsFromFile_LowFrequency(t *testing.T) {
 	assert.Equal(t, 120, last.Positive().BucketCounts().Len(), "last histogram bucket count")
 }
 
-func TestExpoHistoGen_Generate_BasicValidation(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_BasicValidation(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(12345))
 
 	// Generate a histogram and verify basic properties
-	dp := gen.Generate(r)
+	dp := pmetric.NewExponentialHistogramDataPoint()
+	gen.GenerateInto(r, dp)
 
 	// Verify the histogram is valid
 	assert.Greater(t, dp.Count(), uint64(0), "histogram should have count > 0")
@@ -76,15 +78,16 @@ func TestExpoHistoGen_Generate_BasicValidation(t *testing.T) {
 	}
 }
 
-func TestExpoHistoGen_Generate_BucketCountMatchesTotalCount(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_BucketCountMatchesTotalCount(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(42))
 
 	// Generate multiple histograms and verify bucket counts sum to total count
 	for i := 0; i < 10; i++ {
-		dp := gen.Generate(r)
+		dp := pmetric.NewExponentialHistogramDataPoint()
+		gen.GenerateInto(r, dp)
 
 		// Sum up all positive bucket counts
 		var posSum uint64
@@ -104,8 +107,8 @@ func TestExpoHistoGen_Generate_BucketCountMatchesTotalCount(t *testing.T) {
 	}
 }
 
-func TestExpoHistoGen_Generate_ProducesDiverseHistograms(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_ProducesDiverseHistograms(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(99))
@@ -115,7 +118,8 @@ func TestExpoHistoGen_Generate_ProducesDiverseHistograms(t *testing.T) {
 	seenSums := make(map[float64]bool)
 
 	for i := 0; i < 100; i++ {
-		dp := gen.Generate(r)
+		dp := pmetric.NewExponentialHistogramDataPoint()
+		gen.GenerateInto(r, dp)
 		seenCounts[dp.Count()] = true
 		seenSums[dp.Sum()] = true
 	}
@@ -125,8 +129,8 @@ func TestExpoHistoGen_Generate_ProducesDiverseHistograms(t *testing.T) {
 	assert.Greater(t, len(seenSums), 50, "should generate diverse sums")
 }
 
-func TestExpoHistoGen_Generate_Reproducibility(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_Reproducibility(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r1 := rand.New(rand.NewSource(777))
@@ -134,8 +138,10 @@ func TestExpoHistoGen_Generate_Reproducibility(t *testing.T) {
 
 	// Generate histograms with the same seed
 	for i := 0; i < 10; i++ {
-		dp1 := gen.Generate(r1)
-		dp2 := gen.Generate(r2)
+		dp1 := pmetric.NewExponentialHistogramDataPoint()
+		gen.GenerateInto(r1, dp1)
+		dp2 := pmetric.NewExponentialHistogramDataPoint()
+		gen.GenerateInto(r2, dp2)
 
 		assert.Equal(t, dp1.Count(), dp2.Count(), "same seed should produce same count at iteration %d", i)
 		assert.Equal(t, dp1.Scale(), dp2.Scale(), "same seed should produce same scale at iteration %d", i)
@@ -145,8 +151,8 @@ func TestExpoHistoGen_Generate_Reproducibility(t *testing.T) {
 	}
 }
 
-func TestExpoHistoGen_Generate_DoesNotModifyOriginalSamples(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_DoesNotModifyOriginalSamples(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(888))
@@ -155,7 +161,8 @@ func TestExpoHistoGen_Generate_DoesNotModifyOriginalSamples(t *testing.T) {
 	originalCount := gen.samples[0].Count()
 
 	// Generate a histogram and modify it
-	dp1 := gen.Generate(r)
+	dp1 := pmetric.NewExponentialHistogramDataPoint()
+	gen.GenerateInto(r, dp1)
 	dp1.SetCount(99999)
 
 	// Verify the original sample wasn't modified
@@ -163,8 +170,8 @@ func TestExpoHistoGen_Generate_DoesNotModifyOriginalSamples(t *testing.T) {
 		"modifying generated histogram should not affect original samples")
 }
 
-func TestExpoHistoGen_Generate_RandomizationVariesFromOriginal(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_RandomizationVariesFromOriginal(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(555))
@@ -172,7 +179,8 @@ func TestExpoHistoGen_Generate_RandomizationVariesFromOriginal(t *testing.T) {
 	// Generate many histograms and check that at least some differ from originals
 	differentCount := 0
 	for i := 0; i < 50; i++ {
-		dp := gen.Generate(r)
+		dp := pmetric.NewExponentialHistogramDataPoint()
+		gen.GenerateInto(r, dp)
 
 		// Check if this differs from any original sample
 		isDifferent := true
@@ -192,14 +200,15 @@ func TestExpoHistoGen_Generate_RandomizationVariesFromOriginal(t *testing.T) {
 	assert.Greater(t, differentCount, 40, "most generated histograms should differ from original samples")
 }
 
-func TestExpoHistoGen_Generate_SumMatchesBucketDistribution(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_SumMatchesBucketDistribution(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(333))
 
 	// Generate a histogram
-	dp := gen.Generate(r)
+	dp := pmetric.NewExponentialHistogramDataPoint()
+	gen.GenerateInto(r, dp)
 
 	// The sum should be positive if we have positive buckets
 	if dp.Positive().BucketCounts().Len() > 0 {
@@ -216,15 +225,16 @@ func TestExpoHistoGen_Generate_SumMatchesBucketDistribution(t *testing.T) {
 	}
 }
 
-func TestExpoHistoGen_Generate_NeverGeneratesEmptyHistogram(t *testing.T) {
-	gen, err := NewExpoHistoGen("builtin/exponential-histograms-high-frequency.ndjson")
+func TestGenerator_Generate_NeverGeneratesEmptyHistogram(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
 	require.NoError(t, err)
 
 	r := rand.New(rand.NewSource(111))
 
 	// Generate many histograms and verify none are empty
 	for i := 0; i < 100; i++ {
-		dp := gen.Generate(r)
+		dp := pmetric.NewExponentialHistogramDataPoint()
+		gen.GenerateInto(r, dp)
 		assert.Greater(t, dp.Count(), uint64(0), "histogram %d should never be empty", i)
 
 		// At least one bucket should have counts

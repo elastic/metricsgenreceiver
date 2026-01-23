@@ -19,15 +19,15 @@ import (
 //go:embed builtin
 var fsys embed.FS
 
-// ExpoHistoGen generates random exponential histograms from a set of pre-loaded samples.
-type ExpoHistoGen struct {
+// Generator generates random exponential histograms from a set of pre-loaded samples.
+type Generator struct {
 	samples []pmetric.ExponentialHistogramDataPoint
 }
 
-// NewExpoHistoGen creates a new ExpoHistoGen by loading exponential histogram samples from the given file path.
+// NewGenerator creates a new Generator by loading exponential histogram samples from the given file path.
 // If the path starts with "builtin/", it loads from the embedded file system.
 // Otherwise, it loads from the file system.
-func NewExpoHistoGen(path string) (*ExpoHistoGen, error) {
+func NewGenerator(path string) (*Generator, error) {
 	samples, err := loadExponentialHistogramsFromFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load exponential histograms: %w", err)
@@ -37,13 +37,13 @@ func NewExpoHistoGen(path string) (*ExpoHistoGen, error) {
 		return nil, fmt.Errorf("no exponential histogram samples with delta temporality found in %s", path)
 	}
 
-	return &ExpoHistoGen{
+	return &Generator{
 		samples: samples,
 	}, nil
 }
 
 // Generate returns a random exponential histogram data point from the loaded samples.
-func (g *ExpoHistoGen) Generate(r *rand.Rand) pmetric.ExponentialHistogramDataPoint {
+func (g *Generator) GenerateInto(r *rand.Rand, target pmetric.ExponentialHistogramDataPoint) {
 	// Select a random sample
 	idx := r.Intn(len(g.samples))
 	sample := g.samples[idx]
@@ -54,40 +54,41 @@ func (g *ExpoHistoGen) Generate(r *rand.Rand) pmetric.ExponentialHistogramDataPo
 	negBuckets := randomizeBuckets(r, sample.Negative())
 	negSummary := randomizedBucketSummary(r, negBuckets, sample.Scale())
 
-	// Create the result data point by copying the sample and updating fields
-	result := pmetric.NewExponentialHistogramDataPoint()
-	sample.CopyTo(result)
+	target.SetScale(sample.Scale())
+	target.SetZeroCount(sample.ZeroCount())
+	target.SetZeroThreshold(sample.ZeroThreshold())
+	target.RemoveMin()
+	target.RemoveMax()
+	target.RemoveSum()
 
-	result.SetCount(posSummary.Count + negSummary.Count)
-	result.SetSum(posSummary.Sum - negSummary.Sum)
+	target.SetCount(posSummary.Count + negSummary.Count)
+	target.SetSum(posSummary.Sum - negSummary.Sum)
 
 	if negSummary.Count > 0 {
-		result.SetMin(-negSummary.Max)
+		target.SetMin(-negSummary.Max)
 	} else if posSummary.Count > 0 {
-		result.SetMin(posSummary.Min)
+		target.SetMin(posSummary.Min)
 	}
 	if posSummary.Count > 0 {
-		result.SetMax(posSummary.Max)
+		target.SetMax(posSummary.Max)
 	} else if negSummary.Count > 0 {
-		result.SetMax(-negSummary.Min)
+		target.SetMax(-negSummary.Min)
 	}
 
 	// Set the randomized buckets
-	posBuckets.CopyTo(result.Positive())
-	negBuckets.CopyTo(result.Negative())
-
-	return result
+	posBuckets.CopyTo(target.Positive())
+	negBuckets.CopyTo(target.Negative())
 }
 
-type BucketSummary struct {
+type bucketSummary struct {
 	Count uint64
 	Sum   float64
 	Min   float64
 	Max   float64
 }
 
-func randomizedBucketSummary(r *rand.Rand, buckets pmetric.ExponentialHistogramDataPointBuckets, scale int32) BucketSummary {
-	summary := BucketSummary{
+func randomizedBucketSummary(r *rand.Rand, buckets pmetric.ExponentialHistogramDataPointBuckets, scale int32) bucketSummary {
+	summary := bucketSummary{
 		Count: 0,
 		Min:   math.MaxFloat64,
 		Max:   -math.MaxFloat64,
