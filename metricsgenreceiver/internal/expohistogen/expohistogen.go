@@ -145,7 +145,7 @@ func randomizeBuckets(r *rand.Rand, buckets pmetric.ExponentialHistogramDataPoin
 		lastPopulatedIndex := -1
 		for i := 0; i < originalLen; i++ {
 			countScale := 0.4 + r.Float64()*1.6
-			newCount := uint64(float64(nonEmptyBuckets.BucketCounts().At(i)) * countScale)
+			newCount := uint64(math.Round(float64(nonEmptyBuckets.BucketCounts().At(i)) * countScale))
 			if newCount > 0 {
 				//40% chance of moving the bucket one to the left or right
 				shiftChance := r.Float64()
