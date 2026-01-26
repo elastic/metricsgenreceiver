@@ -101,9 +101,11 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 			return nil, err
 		}
 
-		dp.ForEachMetric(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric) {
-			applyHistogramOverride(scn, m)
-		})
+		if scn.ForceExponentialHistograms() {
+			dp.ForEachMetric(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric) {
+				replaceHistogramsWithExponentialHistograms(m)
+			})
+		}
 		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
 			if scn.AggregationTemporalityOverride() != pmetric.AggregationTemporalityUnspecified {
@@ -194,47 +196,44 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 	return nil
 }
 
-func applyHistogramOverride(scn ScenarioCfg, m pmetric.Metric) {
-	if scn.ForceExponentialHistograms() {
-		if m.Type() == pmetric.MetricTypeHistogram {
-			// Get the histogram data
-			histogram := m.Histogram()
-			histogramDPs := histogram.DataPoints()
+func replaceHistogramsWithExponentialHistograms(m pmetric.Metric) {
+	if m.Type() == pmetric.MetricTypeHistogram {
+		// Get the histogram data
+		histogram := m.Histogram()
+		histogramDPs := histogram.DataPoints()
 
-			// Store only the data point information declared in the DataPoint interface
-			type dpInfo struct {
-				startTimestamp pcommon.Timestamp
-				timestamp      pcommon.Timestamp
-				attributes     pcommon.Map
-			}
+		// Store only the data point information declared in the DataPoint interface
+		type dpInfo struct {
+			startTimestamp pcommon.Timestamp
+			timestamp      pcommon.Timestamp
+			attributes     pcommon.Map
+		}
 
-			dpInfos := make([]dpInfo, histogramDPs.Len())
-			for i := 0; i < histogramDPs.Len(); i++ {
-				dp := histogramDPs.At(i)
-				dpInfos[i] = dpInfo{
-					startTimestamp: dp.StartTimestamp(),
-					timestamp:      dp.Timestamp(),
-					attributes:     dp.Attributes(),
-				}
-			}
-
-			// Convert to exponential histogram
-			expHist := m.SetEmptyExponentialHistogram()
-			expHist.SetAggregationTemporality(histogram.AggregationTemporality())
-
-			// Create exponential histogram data points preserving the series
-			expDPs := expHist.DataPoints()
-			expDPs.EnsureCapacity(len(dpInfos))
-
-			for _, info := range dpInfos {
-				expDP := expDPs.AppendEmpty()
-				expDP.SetStartTimestamp(info.startTimestamp)
-				expDP.SetTimestamp(info.timestamp)
-				info.attributes.CopyTo(expDP.Attributes())
+		dpInfos := make([]dpInfo, histogramDPs.Len())
+		for i := 0; i < histogramDPs.Len(); i++ {
+			dp := histogramDPs.At(i)
+			dpInfos[i] = dpInfo{
+				startTimestamp: dp.StartTimestamp(),
+				timestamp:      dp.Timestamp(),
+				attributes:     dp.Attributes(),
 			}
 		}
+
+		// Convert to exponential histogram
+		expHist := m.SetEmptyExponentialHistogram()
+		expHist.SetAggregationTemporality(histogram.AggregationTemporality())
+
+		// Create exponential histogram data points preserving the series
+		expDPs := expHist.DataPoints()
+		expDPs.EnsureCapacity(len(dpInfos))
+
+		for _, info := range dpInfos {
+			expDP := expDPs.AppendEmpty()
+			expDP.SetStartTimestamp(info.startTimestamp)
+			expDP.SetTimestamp(info.timestamp)
+			info.attributes.CopyTo(expDP.Attributes())
+		}
 	}
-	// replace all exponential histograms with a freshly generated one and with delta temporality
 
 }
 
