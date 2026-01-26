@@ -1,14 +1,15 @@
 package metricsgenreceiver
 
 import (
+	"path/filepath"
+	"testing"
+	"time"
+
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/distribution"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/confmap/confmaptest"
 	"go.opentelemetry.io/collector/confmap/xconfmap"
-	"path/filepath"
-	"testing"
-	"time"
 )
 
 func TestLoadConfig(t *testing.T) {
@@ -45,4 +46,53 @@ func testdataConfigYamlAsMap() *Config {
 			StdDev:             1.0,
 		},
 	}
+}
+
+func TestConfig_ExponentialHistogramsTemplatePath(t *testing.T) {
+	t.Run("custom path", func(t *testing.T) {
+		cfg := &Config{
+			ExponentialHistogramsTemplatePath: "custom/path/histograms.ndjson",
+		}
+		assert.Equal(t, "custom/path/histograms.ndjson", cfg.GetExponentialHistogramsTemplatePath())
+	})
+
+	t.Run("default path when empty", func(t *testing.T) {
+		cfg := &Config{
+			ExponentialHistogramsTemplatePath: "",
+		}
+		assert.Equal(t, "builtin/exponential-histograms-low-frequency.ndjson", cfg.GetExponentialHistogramsTemplatePath())
+	})
+
+	t.Run("default path when not set", func(t *testing.T) {
+		cfg := &Config{}
+		assert.Equal(t, "builtin/exponential-histograms-low-frequency.ndjson", cfg.GetExponentialHistogramsTemplatePath())
+	})
+}
+
+func TestScenarioCfg_ForceExponentialHistograms(t *testing.T) {
+	t.Run("histogram_override set to exponential", func(t *testing.T) {
+		scenario := ScenarioCfg{
+			HistogramOverride: "exponential",
+		}
+		assert.True(t, scenario.ForceExponentialHistograms())
+	})
+
+	t.Run("histogram_override set to other value", func(t *testing.T) {
+		scenario := ScenarioCfg{
+			HistogramOverride: "normal",
+		}
+		assert.False(t, scenario.ForceExponentialHistograms())
+	})
+
+	t.Run("histogram_override empty", func(t *testing.T) {
+		scenario := ScenarioCfg{
+			HistogramOverride: "",
+		}
+		assert.False(t, scenario.ForceExponentialHistograms())
+	})
+
+	t.Run("histogram_override not set", func(t *testing.T) {
+		scenario := ScenarioCfg{}
+		assert.False(t, scenario.ForceExponentialHistograms())
+	})
 }

@@ -1,0 +1,92 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "test-service"
+            }
+          },
+          {
+            "key": "service.instance.id",
+            "value": {
+              "stringValue": "instance-1"
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "scope": {
+            "name": "test.scope",
+            "version": "1.0.0"
+          },
+          "metrics": [
+            {
+              "name": "test.histogram",
+              "description": "Test histogram metric",
+              "unit": "ms",
+              "histogram": {
+                "aggregationTemporality": 1,
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "test.attribute",
+                        "value": {
+                          "stringValue": "histogram_value"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1000000",
+                    "timeUnixNano": "1000000",
+                    "count": "80",
+                    "sum": 5000,
+                    "bucketCounts": ["10", "20", "30", "15", "5"],
+                    "explicitBounds": [10, 50, 100, 500]
+                  }
+                ]
+              }
+            },
+            {
+              "name": "test.exponential_histogram",
+              "description": "Test exponential histogram metric",
+              "unit": "ms",
+              "exponentialHistogram": {
+                "aggregationTemporality": 2,
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "test.attribute",
+                        "value": {
+                          "stringValue": "expo_histogram_value"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1000000",
+                    "timeUnixNano": "1000000",
+                    "count": "100",
+                    "sum": 8000,
+                    "zeroCount": "5",
+                    "scale": 4,
+                    "positive": {
+                      "offset": 10,
+                      "bucketCounts": ["15", "25", "30", "20", "5"]
+                    },
+                    "negative": {
+                      "offset": -5,
+                      "bucketCounts": ["0"]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

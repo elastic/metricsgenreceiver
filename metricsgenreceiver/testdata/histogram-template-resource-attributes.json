@@ -1,0 +1,22 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "service.name",
+            "value": {
+              "stringValue": "test-service"
+            }
+          },
+          {
+            "key": "service.instance.id",
+            "value": {
+              "stringValue": "instance-{{.InstanceID}}"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

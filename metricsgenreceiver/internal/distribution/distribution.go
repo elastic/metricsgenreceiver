@@ -1,10 +1,12 @@
 package distribution
 
 import (
-	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
-	"go.opentelemetry.io/collector/pdata/pmetric"
 	"math"
 	"math/rand"
+
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
+	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
 var DefaultDistribution = DistributionCfg{
@@ -19,7 +21,7 @@ type DistributionCfg struct {
 	StdDev             float64 `mapstructure:"std_dev"`
 }
 
-func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg) {
+func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg, expHistoGen *expohistogen.Generator) {
 
 	switch v := dp.(type) {
 	case pmetric.NumberDataPoint:
@@ -59,6 +61,11 @@ func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist Dist
 		}
 		v.SetCount(count)
 		v.RemoveSum()
+	case pmetric.ExponentialHistogramDataPoint:
+		if m.ExponentialHistogram().AggregationTemporality() == pmetric.AggregationTemporalityCumulative {
+			panic("Cumulative exponential histograms not supported")
+		}
+		expHistoGen.GenerateInto(r, v)
 	}
 }
 

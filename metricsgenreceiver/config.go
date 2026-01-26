@@ -2,25 +2,27 @@ package metricsgenreceiver
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/distribution"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/pdata/pmetric"
-	"time"
 )
 
 type Config struct {
-	StartTime            time.Time                    `mapstructure:"start_time"`
-	StartNowMinus        time.Duration                `mapstructure:"start_now_minus"`
-	EndTime              time.Time                    `mapstructure:"end_time"`
-	EndNowMinus          time.Duration                `mapstructure:"end_now_minus"`
-	Interval             time.Duration                `mapstructure:"interval"`
-	IntervalJitterStdDev time.Duration                `mapstructure:"interval_jitter_std_dev"`
-	RealTime             bool                         `mapstructure:"real_time"`
-	ExitAfterEnd         bool                         `mapstructure:"exit_after_end"`
-	ExitAfterEndTimeout  time.Duration                `mapstructure:"exit_after_end_timeout"`
-	Seed                 int64                        `mapstructure:"seed"`
-	Scenarios            []ScenarioCfg                `mapstructure:"scenarios"`
-	Distribution         distribution.DistributionCfg `mapstructure:"distribution"`
+	StartTime                         time.Time                    `mapstructure:"start_time"`
+	StartNowMinus                     time.Duration                `mapstructure:"start_now_minus"`
+	EndTime                           time.Time                    `mapstructure:"end_time"`
+	EndNowMinus                       time.Duration                `mapstructure:"end_now_minus"`
+	Interval                          time.Duration                `mapstructure:"interval"`
+	IntervalJitterStdDev              time.Duration                `mapstructure:"interval_jitter_std_dev"`
+	RealTime                          bool                         `mapstructure:"real_time"`
+	ExitAfterEnd                      bool                         `mapstructure:"exit_after_end"`
+	ExitAfterEndTimeout               time.Duration                `mapstructure:"exit_after_end_timeout"`
+	Seed                              int64                        `mapstructure:"seed"`
+	Scenarios                         []ScenarioCfg                `mapstructure:"scenarios"`
+	Distribution                      distribution.DistributionCfg `mapstructure:"distribution"`
+	ExponentialHistogramsTemplatePath string                       `mapstructure:"exponential_histograms_template_path"`
 }
 
 type ScenarioCfg struct {
@@ -30,6 +32,7 @@ type ScenarioCfg struct {
 	Churn               int            `mapstructure:"churn"`
 	TemplateVars        map[string]any `mapstructure:"template_vars"`
 	TemporalityOverride string         `mapstructure:"temporality_override"`
+	HistogramOverride   string         `mapstructure:"histogram_override"`
 }
 
 func (c ScenarioCfg) AggregationTemporalityOverride() pmetric.AggregationTemporality {
@@ -41,6 +44,17 @@ func (c ScenarioCfg) AggregationTemporalityOverride() pmetric.AggregationTempora
 	default:
 		return pmetric.AggregationTemporalityUnspecified
 	}
+}
+
+func (c Config) GetExponentialHistogramsTemplatePath() string {
+	if c.ExponentialHistogramsTemplatePath != "" {
+		return c.ExponentialHistogramsTemplatePath
+	}
+	return "builtin/exponential-histograms-low-frequency.ndjson"
+}
+
+func (c ScenarioCfg) ForceExponentialHistograms() bool {
+	return c.HistogramOverride == "exponential"
 }
 
 func createDefaultConfig() component.Config {

@@ -29,6 +29,12 @@ receivers:
 #      template_vars:
 #        services: 100
 #        transactions: 50
+#    - path: builtin/elasticapm-transaction-metrics
+#      scale: 1000
+##      histogram_override: exponential
+#      template_vars:
+#        services: 100
+#        transactions: 50
 #    - path: builtin/simple
 #      scale: 10000
 #      template_vars:

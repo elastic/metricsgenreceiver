@@ -1,11 +1,13 @@
 package distribution
 
 import (
-	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
-	"github.com/stretchr/testify/assert"
-	"go.opentelemetry.io/collector/pdata/pmetric"
 	"math/rand"
 	"testing"
+
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
+	"github.com/stretchr/testify/assert"
+	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
 var r = rand.New(rand.NewSource(1))
@@ -129,10 +131,41 @@ func TestAdvanceDataPoint(t *testing.T) {
 		assert.Equal(t, dp.BucketCounts().Len(), 3)
 		assert.NotEqual(t, dp.Count(), 6)
 	})
+
+	t.Run("delta exponential histogram", func(t *testing.T) {
+		// Create exponential histogram generator with builtin template
+		expHistoGen, err := expohistogen.NewGenerator("builtin/exponential-histograms-low-frequency.ndjson")
+		assert.NoError(t, err)
+		assert.NotNil(t, expHistoGen)
+
+		metric := pmetric.NewMetric()
+		metric.SetName("test_exponential_histogram")
+		metric.SetEmptyExponentialHistogram()
+		metric.ExponentialHistogram().SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
+		dp := metric.ExponentialHistogram().DataPoints().AppendEmpty()
+
+		// Set initial values
+		dp.SetScale(2)
+		dp.SetZeroCount(5)
+		dp.Positive().SetOffset(0)
+		dp.Positive().BucketCounts().FromRaw([]uint64{10, 20, 30})
+		dp.SetCount(65)
+
+		initialCount := dp.Count()
+
+		// Advance the exponential histogram
+		AdvanceDataPoint(dp, r, metric, DefaultDistribution, expHistoGen)
+
+		// Verify the exponential histogram was generated from the template
+		assert.Greater(t, dp.Count(), uint64(0), "count should be positive")
+		assert.Greater(t, dp.Positive().BucketCounts().Len(), 0, "should have positive buckets")
+		// The data point should be replaced with values from the template
+		assert.NotEqual(t, dp.Count(), initialCount, "count should change from the template")
+	})
 }
 
 func advanceDataPointNTimes(dp dp.DataPoint, r *rand.Rand, metric pmetric.Metric, n int) {
 	for i := 0; i < n; i++ {
-		AdvanceDataPoint(dp, r, metric, DefaultDistribution)
+		AdvanceDataPoint(dp, r, metric, DefaultDistribution, nil)
 	}
 }
