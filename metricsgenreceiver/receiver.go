@@ -42,6 +42,7 @@ type Scenario struct {
 	metricsTemplate            *pmetric.Metrics
 	resourceAttributesTemplate pcommon.Resource
 	resources                  []pcommon.Resource
+	precision                  map[string]int
 }
 
 type MetricsProgress struct {
@@ -133,6 +134,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 			config:          scn,
 			metricsTemplate: &metrics,
 			resources:       resources,
+			precision:       distribution.InferPrecision(&metrics),
 		})
 	}
 
@@ -276,7 +278,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		// this makes sure counters are increasing over time
 		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-			distribution.AdvanceDataPoint(dp, r.baseRand, m, r.cfg.Distribution, r.expHistoGen)
+			distribution.AdvanceDataPoint(dp, r.baseRand, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
 		})
 		if scn.config.Concurrency == 0 {
 			for i := range scn.config.Scale {
@@ -314,7 +316,7 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, ra *
 	}
 
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution, r.expHistoGen)
+		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
 		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
 	})
 	dataPoints := metrics.DataPointCount()
