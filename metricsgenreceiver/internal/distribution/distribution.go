@@ -16,9 +16,23 @@ var DefaultDistribution = DistributionCfg{
 }
 
 type DistributionCfg struct {
-	MedianMonotonicSum uint    `mapstructure:"median_monotonic_sum"`
-	StdDevGaugePct     float64 `mapstructure:"std_dev_gauge_pct"`
-	StdDev             float64 `mapstructure:"std_dev"`
+	MedianMonotonicSum uint           `mapstructure:"median_monotonic_sum"`
+	StdDevGaugePct     float64        `mapstructure:"std_dev_gauge_pct"`
+	StdDev             float64        `mapstructure:"std_dev"`
+	Precision          *int           `mapstructure:"precision"`
+	PrecisionOverrides map[string]int `mapstructure:"precision_overrides"`
+}
+
+func (d DistributionCfg) GetPrecision(metricName string) *int {
+	if v, ok := d.PrecisionOverrides[metricName]; ok {
+		return &v
+	}
+	return d.Precision
+}
+
+func roundToPrecision(v float64, decimals int) float64 {
+	mult := math.Pow(10, float64(decimals))
+	return math.Round(v*mult) / mult
 }
 
 func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg, expHistoGen *expohistogen.Generator) {
@@ -44,6 +58,9 @@ func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist Dist
 				}
 			} else {
 				value = advanceFloat(r, m, value, dist)
+			}
+			if p := dist.GetPrecision(m.Name()); p != nil {
+				value = roundToPrecision(value, *p)
 			}
 			v.SetDoubleValue(value)
 			break

@@ -1,6 +1,7 @@
 package distribution
 
 import (
+	"math"
 	"math/rand"
 	"testing"
 
@@ -163,6 +164,95 @@ func TestAdvanceDataPoint(t *testing.T) {
 		assert.NotEqual(t, dp.Count(), initialCount, "count should change from the template")
 	})
 }
+
+func TestRoundToPrecision(t *testing.T) {
+	assert.Equal(t, 1.23, roundToPrecision(1.23456, 2))
+	assert.Equal(t, 1.2346, roundToPrecision(1.23456, 4))
+	assert.Equal(t, 1.0, roundToPrecision(1.23456, 0))
+	assert.Equal(t, 0.0, roundToPrecision(0.004, 2))
+	assert.Equal(t, 0.01, roundToPrecision(0.005, 2))
+	assert.Equal(t, -1.23, roundToPrecision(-1.23456, 2))
+	assert.Equal(t, -0.01, roundToPrecision(-0.005, 2))
+	assert.Equal(t, -1.0, roundToPrecision(-1.23456, 0))
+	assert.Equal(t, 1.5, roundToPrecision(1.5, 2))
+	assert.Equal(t, 1.5, roundToPrecision(1.5, 4))
+	assert.Equal(t, 100.0, roundToPrecision(100.0, 2))
+	assert.Equal(t, 0.12, roundToPrecision(0.12, 3))
+}
+
+func TestGetPrecision(t *testing.T) {
+	dist := DistributionCfg{
+		Precision:          intPtr(2),
+		PrecisionOverrides: map[string]int{"special_metric": 4},
+	}
+
+	assert.Equal(t, 2, *dist.GetPrecision("regular_metric"))
+	assert.Equal(t, 4, *dist.GetPrecision("special_metric"))
+
+	dist.Precision = nil
+	assert.Nil(t, dist.GetPrecision("regular_metric"))
+}
+
+func TestPrecisionAppliedToDoubles(t *testing.T) {
+	rng := rand.New(rand.NewSource(42))
+
+	t.Run("default precision", func(t *testing.T) {
+		dist := DistributionCfg{
+			MedianMonotonicSum: 100,
+			StdDevGaugePct:     0.01,
+			StdDev:             1.0,
+			Precision:          intPtr(2),
+		}
+		metric := pmetric.NewMetric()
+		metric.SetName("test_gauge")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetDoubleValue(0.5)
+
+		for i := 0; i < 100; i++ {
+			AdvanceDataPoint(dp, rng, metric, dist, nil)
+			assert.Equal(t, math.Round(dp.DoubleValue()*100)/100, dp.DoubleValue())
+		}
+	})
+
+	t.Run("per-metric override", func(t *testing.T) {
+		dist := DistributionCfg{
+			MedianMonotonicSum: 100,
+			StdDevGaugePct:     0.01,
+			StdDev:             1.0,
+			Precision:          intPtr(2),
+			PrecisionOverrides: map[string]int{"high_precision_gauge": 4},
+		}
+		metric := pmetric.NewMetric()
+		metric.SetName("high_precision_gauge")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetDoubleValue(0.5)
+
+		for i := 0; i < 100; i++ {
+			AdvanceDataPoint(dp, rng, metric, dist, nil)
+			assert.Equal(t, math.Round(dp.DoubleValue()*10000)/10000, dp.DoubleValue())
+		}
+	})
+
+	t.Run("no precision configured", func(t *testing.T) {
+		metric := pmetric.NewMetric()
+		metric.SetName("test_gauge")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetDoubleValue(0.5)
+
+		for i := 0; i < 100; i++ {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil)
+			if math.Round(dp.DoubleValue()*100)/100 != dp.DoubleValue() {
+				return
+			}
+		}
+		t.Fatal("expected at least one value with more than 2 decimal places")
+	})
+}
+
+func intPtr(v int) *int { return &v }
 
 func advanceDataPointNTimes(dp dp.DataPoint, r *rand.Rand, metric pmetric.Metric, n int) {
 	for i := 0; i < n; i++ {
