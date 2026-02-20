@@ -317,9 +317,7 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 	instanceTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval, rng)
 
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
-		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
-		distribution.AdvanceDataPoint(dp, rng, m, r.cfg.Distribution, r.expHistoGen)
+		distribution.AdvanceDataPoint(dp, rng, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
 		dp.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
 	})
 	dataPoints := metrics.DataPointCount()
