@@ -3,9 +3,12 @@ package distribution
 import (
 	"math"
 	"math/rand"
+	"strconv"
+	"strings"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
+	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
@@ -21,7 +24,40 @@ type DistributionCfg struct {
 	StdDev             float64 `mapstructure:"std_dev"`
 }
 
-func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg, expHistoGen *expohistogen.Generator) {
+func InferPrecision(metrics *pmetric.Metrics) map[string]int {
+	precision := make(map[string]int)
+	dp.ForEachDataPoint(metrics, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, d dp.DataPoint) {
+		ndp, ok := d.(pmetric.NumberDataPoint)
+		if !ok || ndp.ValueType() != pmetric.NumberDataPointValueTypeDouble {
+			return
+		}
+		v := ndp.DoubleValue()
+		if v == 0 {
+			return
+		}
+		places := decimalPlaces(v)
+		if current, exists := precision[m.Name()]; !exists || places > current {
+			precision[m.Name()] = places
+		}
+	})
+	return precision
+}
+
+func decimalPlaces(v float64) int {
+	s := strconv.FormatFloat(v, 'f', -1, 64)
+	i := strings.IndexByte(s, '.')
+	if i < 0 {
+		return 0
+	}
+	return len(s) - i - 1
+}
+
+func roundToPrecision(v float64, decimals int) float64 {
+	mul := math.Pow(10, float64(decimals))
+	return math.Round(v*mul) / mul
+}
+
+func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg, expHistoGen *expohistogen.Generator, precision map[string]int) {
 
 	switch v := dp.(type) {
 	case pmetric.NumberDataPoint:
@@ -44,6 +80,9 @@ func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist Dist
 				}
 			} else {
 				value = advanceFloat(r, m, value, dist)
+			}
+			if p, ok := precision[m.Name()]; ok {
+				value = roundToPrecision(value, p)
 			}
 			v.SetDoubleValue(value)
 			break
