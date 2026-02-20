@@ -171,9 +171,8 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 				)
 				nextLog = nextLog.Add(10 * time.Second)
 			}
-			simulatedTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval)
-			r.progress.datapoints.Add(r.produceMetrics(ctx, simulatedTime))
-			r.applyChurn(i, simulatedTime)
+			r.progress.datapoints.Add(r.produceMetrics(ctx, currentTime))
+			r.applyChurn(i, currentTime)
 
 			if r.cfg.RealTime {
 				<-ticker.C
@@ -239,11 +238,11 @@ func replaceHistogramsWithExponentialHistograms(m pmetric.Metric) {
 
 }
 
-func addJitter(t time.Time, stdDev time.Duration, interval time.Duration) time.Time {
+func addJitter(t time.Time, stdDev time.Duration, interval time.Duration, ra *rand.Rand) time.Time {
 	if stdDev == 0 {
 		return t
 	}
-	jitter := time.Duration(int64(math.Abs(rand.NormFloat64() * float64(stdDev))))
+	jitter := time.Duration(int64(math.Abs(ra.NormFloat64() * float64(stdDev))))
 	if jitter >= interval {
 		jitter = interval - 1
 	}
@@ -289,14 +288,14 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 
 		for i := 0; i < scn.config.Concurrency; i++ {
 			// Use a new random number generator for each goroutine to avoid race conditions
-			ra := r.getNewRand()
+			rng := r.getNewRand()
 
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
 				for j := 0; j < scn.config.Scale/scn.config.Concurrency; j++ {
 					resource := scn.resources[j+i*scn.config.Scale/scn.config.Concurrency]
-					currentDataPoints := r.produceMetricsForInstance(ctx, ra, currentTime, scn, resource)
+					currentDataPoints := r.produceMetricsForInstance(ctx, rng, currentTime, scn, resource)
 					atomic.AddUint64(dataPoints, uint64(currentDataPoints))
 				}
 			}()
@@ -306,7 +305,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 	return *dataPoints
 }
 
-func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, ra *rand.Rand, currentTime time.Time, scn Scenario, instanceResource pcommon.Resource) int {
+func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng *rand.Rand, currentTime time.Time, scn Scenario, instanceResource pcommon.Resource) int {
 	r.obsreport.StartMetricsOp(ctx)
 	metrics := pmetric.NewMetrics()
 	scn.metricsTemplate.CopyTo(metrics)
@@ -315,9 +314,13 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, ra *
 		overrideExistingAttributes(instanceResource, resourceMetrics.At(j).Resource())
 	}
 
+	instanceTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval, rng)
+
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 		distribution.AdvanceDataPoint(dp, ra, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
 		dp.SetTimestamp(pcommon.NewTimestampFromTime(currentTime))
+		distribution.AdvanceDataPoint(dp, rng, m, r.cfg.Distribution, r.expHistoGen)
+		dp.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
 	})
 	dataPoints := metrics.DataPointCount()
 	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)
