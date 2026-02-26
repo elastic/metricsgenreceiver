@@ -2,6 +2,10 @@ package metricsgenreceiver
 
 import (
 	"context"
+	"regexp"
+	"sort"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -383,4 +387,195 @@ func TestHistogramRandomizationDiversity(t *testing.T) {
 
 	assert.True(t, histogramDifferent || exponentialHistogramDifferent,
 		"at least one histogram type should have different counts between intervals, indicating randomization is working")
+}
+
+func TestSeedBasedInstanceIDs(t *testing.T) {
+	// Table-driven tests for single-run validations
+	type testCase struct {
+		name            string
+		seed            int64
+		scale           int
+		expectedScale   int
+		expectedPattern string
+		validateIDs     bool
+	}
+
+	tests := []testCase{
+		{
+			name:          "scale=1",
+			seed:          789,
+			scale:         1,
+			expectedScale: 1,
+		},
+		{
+			name:          "scale=5",
+			seed:          789,
+			scale:         5,
+			expectedScale: 5,
+		},
+		{
+			name:          "scale=10",
+			seed:          789,
+			scale:         10,
+			expectedScale: 10,
+		},
+		{
+			name:          "scale=20",
+			seed:          789,
+			scale:         20,
+			expectedScale: 20,
+		},
+		{
+			name:            "host names follow expected format",
+			seed:            555,
+			scale:           3,
+			expectedScale:   3,
+			expectedPattern: `^host-555-\d+$`,
+			validateIDs:     true,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			sink := new(consumertest.MetricsSink)
+			factory := NewFactory()
+			cfg := testdataConfigYamlAsMap()
+			cfg.WithSeedAwareInstanceIDs = true
+			cfg.Scenarios[0].Path = "builtin/simple"
+			cfg.Scenarios[0].Scale = tc.scale
+			cfg.Seed = tc.seed
+			cfg.Scenarios[0].TemplateVars = map[string]any{"gauge_pct": 1, "gauge_int": 0, "counter": 0}
+
+			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+			require.NoError(t, err)
+			err = rcv.Start(context.Background(), nil)
+			require.NoError(t, err)
+
+			require.EventuallyWithT(t, func(c *assert.CollectT) {
+				require.Greater(c, sink.DataPointCount(), 0)
+			}, 2*time.Second, time.Millisecond)
+			require.NoError(t, rcv.Shutdown(context.Background()))
+
+			hosts := collectHostNames(sink.AllMetrics())
+			require.NotEmpty(t, hosts)
+
+			// Verify unique host count against scale
+			uniqueHosts := make(map[string]bool)
+			for _, host := range hosts {
+				uniqueHosts[host] = true
+			}
+			assert.Equal(t, tc.expectedScale, len(uniqueHosts), "number of unique hosts should equal scale")
+
+			// Verify pattern if specified
+			if tc.expectedPattern != "" {
+				hostPattern := regexp.MustCompile(tc.expectedPattern)
+				for _, host := range hosts {
+					assert.Regexp(t, hostPattern, host, "host name should match expected format")
+				}
+			}
+
+			// Verify sequential IDs if requested
+			if tc.validateIDs {
+				ids := make([]int, 0, len(hosts))
+				for _, h := range hosts {
+					parts := strings.Split(h, "-")
+					// Expecting format host-{seed}-{id}
+					if len(parts) >= 3 {
+						if id, err := strconv.Atoi(parts[2]); err == nil {
+							ids = append(ids, id)
+						}
+					}
+				}
+				expectedIDs := make([]int, tc.scale)
+				for i := 0; i < tc.scale; i++ {
+					expectedIDs[i] = i
+				}
+				assert.ElementsMatch(t, expectedIDs, ids, "instance IDs should be sequential starting from 0")
+			}
+		})
+	}
+
+	// Comparison tests (multiple runs)
+	t.Run("different_seeds_produce_different_host_prefixes", func(t *testing.T) {
+		t.Parallel()
+
+		runWithSeed := func(seed int64) []string {
+			sink := new(consumertest.MetricsSink)
+			factory := NewFactory()
+			cfg := testdataConfigYamlAsMap()
+			cfg.WithSeedAwareInstanceIDs = true
+			cfg.Scenarios[0].Path = "builtin/simple"
+			cfg.Scenarios[0].Scale = 5
+			cfg.Seed = seed
+			cfg.Scenarios[0].TemplateVars = map[string]any{"gauge_pct": 1, "gauge_int": 0, "counter": 0}
+
+			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+			require.NoError(t, err)
+			err = rcv.Start(context.Background(), nil)
+			require.NoError(t, err)
+			require.EventuallyWithT(t, func(c *assert.CollectT) {
+				require.Greater(c, sink.DataPointCount(), 0)
+			}, 2*time.Second, time.Millisecond)
+			require.NoError(t, rcv.Shutdown(context.Background()))
+			return collectHostNames(sink.AllMetrics())
+		}
+
+		hosts1 := runWithSeed(123)
+		hosts2 := runWithSeed(456)
+
+		require.NotEmpty(t, hosts1)
+		require.NotEmpty(t, hosts2)
+		assert.NotEqual(t, hosts1[0], hosts2[0], "different seeds should produce different host names")
+	})
+
+	t.Run("same_seed_produces_identical_host_names", func(t *testing.T) {
+		t.Parallel()
+
+		runWithSeed := func(seed int64) []string {
+			sink := new(consumertest.MetricsSink)
+			factory := NewFactory()
+			cfg := testdataConfigYamlAsMap()
+			cfg.WithSeedAwareInstanceIDs = true
+			cfg.Scenarios[0].Path = "builtin/simple"
+			cfg.Scenarios[0].Scale = 5
+			cfg.Seed = seed
+			cfg.Scenarios[0].TemplateVars = map[string]any{"gauge_pct": 1, "gauge_int": 0, "counter": 0}
+
+			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+			require.NoError(t, err)
+			err = rcv.Start(context.Background(), nil)
+			require.NoError(t, err)
+			require.EventuallyWithT(t, func(c *assert.CollectT) {
+				require.Greater(c, sink.DataPointCount(), 0)
+			}, 2*time.Second, time.Millisecond)
+			require.NoError(t, rcv.Shutdown(context.Background()))
+			return collectHostNames(sink.AllMetrics())
+		}
+
+		hosts1 := runWithSeed(999)
+		hosts2 := runWithSeed(999)
+
+		require.Equal(t, hosts1, hosts2, "same seed should produce identical host names")
+	})
+}
+
+func collectHostNames(allMetrics []pmetric.Metrics) []string {
+	hostSet := make(map[string]bool)
+	for _, metrics := range allMetrics {
+		for i := 0; i < metrics.ResourceMetrics().Len(); i++ {
+			rm := metrics.ResourceMetrics().At(i)
+			if hostVal, ok := rm.Resource().Attributes().Get("host.name"); ok {
+				hostSet[hostVal.Str()] = true
+			}
+		}
+	}
+
+	hosts := make([]string, 0, len(hostSet))
+	for host := range hostSet {
+		hosts = append(hosts, host)
+	}
+	sort.Strings(hosts)
+	return hosts
 }

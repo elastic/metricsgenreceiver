@@ -6,13 +6,13 @@
           {
             "key": "k8s.node.name",
             "value": {
-              "stringValue": "kind-control-plane-{{.InstanceID}}"
+              "stringValue": "kind-control-plane-{{.GetInstanceID}}"
             }
           },
           {
             "key": "host.name",
             "value": {
-              "stringValue": "kind-control-plane-{{.InstanceID}}"
+              "stringValue": "kind-control-plane-{{.GetInstanceID}}"
             }
           },
           {

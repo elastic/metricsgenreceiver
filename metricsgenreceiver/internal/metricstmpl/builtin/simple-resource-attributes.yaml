@@ -1,4 +1,4 @@
 resourceMetrics:
   - resource:
       attributes:
-        - { key: host.name, value: { stringValue: "host-{{.InstanceID}}" } }
+        - { key: host.name, value: { stringValue: "host-{{.GetInstanceID}}" } }
