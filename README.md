@@ -128,8 +128,8 @@ receivers:
       These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
       Supported placeholders:
       * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
-      * `{{.SeedBasedInstanceID}}` (returns `"{seed_prefix}-{id}"` where `seed_prefix` is a 4-character hex string derived from the configured seed using FNV-1a hash, and `id` is the `InstanceID`. Designed to be used with a prefix in the template, e.g., `"host-{{.SeedBasedInstanceID}}"` produces `"host-d77e-0"`. Only effective when `seed_randomizer_enabled` is set to `true`)
-      * `{{.WithSeedAwareInstanceIDs}}` (a boolean indicating whether seed-based randomization is enabled, useful for conditional logic in templates)
+      * `{{.GetInstanceID}}` (returns the seed aware instance ID or `{{.InstanceID}}` if the respective feature flag is disabled)
+      * `{{.WithSeedAwareInstanceIDs}}` (a boolean indicating whether the seed aware instance ID generation is enabled or not)
       * `{{.RandomIPv4}}`
       * `{{.RandomIPv6}}`
       * `{{.RandomMAC}}`
