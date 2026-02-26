@@ -3,7 +3,7 @@
     {
       "resource": {
         "attributes": [
-          {"key": "hostname", "value": { "stringValue": "host_{{.InstanceID}}"}},
+          {"key": "hostname", "value": { "stringValue": "host_{{.GetInstanceID}}"}},
           {"key": "region", "value": { "stringValue": "us-{{.RandomFrom `west` `east` `central`}}-{{.RandomIntn 2}}"}},
           {"key": "datacenter", "value": { "stringValue": "us-{{.RandomFrom `west` `east` `central`}}-{{.RandomIntn 2}}{{.RandomFrom `a` `b` `c`}}"}},
           {"key": "rack", "value": { "stringValue": "rack-{{.RandomIntn 100}}"}},

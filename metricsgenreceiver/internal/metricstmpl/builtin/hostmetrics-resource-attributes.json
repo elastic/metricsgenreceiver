@@ -6,7 +6,7 @@
           {
             "key": "host.name",
             "value": {
-              "stringValue": "host-{{.InstanceID}}"
+              "stringValue": "host-{{.GetInstanceID}}"
             }
           },
           {

@@ -20,6 +20,7 @@ type Config struct {
 	ExitAfterEnd                      bool                         `mapstructure:"exit_after_end"`
 	ExitAfterEndTimeout               time.Duration                `mapstructure:"exit_after_end_timeout"`
 	Seed                              int64                        `mapstructure:"seed"`
+	WithSeedAwareInstanceIDs          bool                         `mapstructure:"with_seed_aware_instance_ids"`
 	Scenarios                         []ScenarioCfg                `mapstructure:"scenarios"`
 	Distribution                      distribution.DistributionCfg `mapstructure:"distribution"`
 	ExponentialHistogramsTemplatePath string                       `mapstructure:"exponential_histograms_template_path"`
@@ -59,9 +60,10 @@ func (c ScenarioCfg) ForceExponentialHistograms() bool {
 
 func createDefaultConfig() component.Config {
 	return &Config{
-		Seed:         0,
-		Scenarios:    make([]ScenarioCfg, 0),
-		Distribution: distribution.DefaultDistribution,
+		Seed:                     0,
+		WithSeedAwareInstanceIDs: false,
+		Scenarios:                make([]ScenarioCfg, 0),
+		Distribution:             distribution.DefaultDistribution,
 	}
 }
 

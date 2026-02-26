@@ -6,17 +6,17 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"gopkg.in/yaml.v3"
 	"math/rand"
+	"net"
 	"path/filepath"
 	"strings"
 	"text/template"
 	"time"
 
-	"net"
+	"github.com/google/uuid"
+	"go.opentelemetry.io/collector/pdata/pcommon"
+	"go.opentelemetry.io/collector/pdata/pmetric"
+	"gopkg.in/yaml.v3"
 )
 
 //go:embed builtin
@@ -72,11 +72,11 @@ func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, err
 	return pmetric.Metrics{}, fmt.Errorf("no .json/.yaml/.yml template file found for %s", path)
 }
 
-func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand) ([]pcommon.Resource, error) {
+func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand, seed int64, seedRandomizerEnabled bool) ([]pcommon.Resource, error) {
 	startTimeString := startTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scale)
 	for i := 0; i < scale; i++ {
-		resource, err := RenderResource(path, i, startTimeString, vars, r)
+		resource, err := RenderResource(path, i, startTimeString, vars, r, seed, seedRandomizerEnabled)
 		if err != nil {
 			return nil, err
 		}
@@ -85,12 +85,14 @@ func GetResources(path string, startTime time.Time, scale int, vars map[string]a
 	return resources, nil
 }
 
-func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand) (pcommon.Resource, error) {
+func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, seed int64, seedRandomizerEnabled bool) (pcommon.Resource, error) {
 	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes", &resourceTemplateModel{
-		InstanceID:        id,
-		InstanceStartTime: startTimeString,
-		Vars:              vars,
-		rand:              r,
+		InstanceID:            id,
+		InstanceStartTime:     startTimeString,
+		Vars:                  vars,
+		rand:                  r,
+		seed:                  seed,
+		seedRandomizerEnabled: seedRandomizerEnabled,
 	})
 	if err != nil {
 		return pcommon.Resource{}, err
@@ -102,12 +104,23 @@ type resourceTemplateModel struct {
 	InstanceID int
 	Vars       map[string]any
 
-	InstanceStartTime string
-	rand              *rand.Rand
+	InstanceStartTime     string
+	rand                  *rand.Rand
+	seed                  int64
+	seedRandomizerEnabled bool
 }
 
 func (m *resourceTemplateModel) randByte() byte {
 	return byte(m.rand.Int())
+}
+
+// GetInstanceID returns the instance ID based on the seed randomizer.
+func (t *resourceTemplateModel) GetInstanceID() string {
+	if !t.seedRandomizerEnabled {
+		return fmt.Sprintf("%d", t.InstanceID)
+	}
+
+	return fmt.Sprintf("%d-%d", t.seed, t.InstanceID)
 }
 
 func (t *resourceTemplateModel) RandomIPv4() string {

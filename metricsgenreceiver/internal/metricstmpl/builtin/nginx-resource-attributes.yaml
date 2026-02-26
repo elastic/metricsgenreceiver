@@ -3,7 +3,7 @@ resourceMetrics:
       attributes:
         - key: host.name
           value:
-            stringValue: "nginx-host-{{.InstanceID}}"
+            stringValue: "nginx-host-{{.GetInstanceID}}"
         - key: service.name
           value:
             stringValue: "nginx"
