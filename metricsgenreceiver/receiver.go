@@ -126,7 +126,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 			}
 
 		})
-		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, baseRand, cfg.Seed, cfg.InstanceOffset)
+		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, baseRand, cfg.InstanceOffset)
 		if err != nil {
 			return nil, err
 		}

@@ -72,7 +72,7 @@ func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, err
 	return pmetric.Metrics{}, fmt.Errorf("no .json/.yaml/.yml template file found for %s", path)
 }
 
-func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand, seed int64, instanceOffset uint) ([]pcommon.Resource, error) {
+func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand, instanceOffset uint) ([]pcommon.Resource, error) {
 	startTimeString := startTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scale)
 	for i := 0; i < scale; i++ {
