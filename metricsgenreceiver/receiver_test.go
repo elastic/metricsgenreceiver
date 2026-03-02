@@ -52,7 +52,7 @@ func TestReceiver(t *testing.T) {
 		{
 			name:            "hostmetrics",
 			path:            "builtin/hostmetrics",
-			dataPoints:      139,
+			dataPoints:      239,
 			resourceMetrics: 8,
 		},
 		{
