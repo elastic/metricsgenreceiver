@@ -138,8 +138,8 @@ receivers:
         * `{{.ModFrom <n> <list>}}` (an element from the list at index `n % len(list)`)
         * `{{.RandomIntn <n>}}` (a random integer in the range `[0, n)`)
         * `{{.Mod <x> <y>}}` (the result of `x % y`)
-    * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
-      Time series churn may have an impact on the performance of the backend.
+  * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
+    Time series churn may have an impact on the performance of the backend.
   * `template_vars`: the `<path>.json`/`<path>.yaml` file is rendered as a template.
     This option lets you specify variables that are available during template rendering.
     This allows, for example, to simulate a variable number of network devices by generating metric data points with different attributes.
