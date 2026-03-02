@@ -258,7 +258,7 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 		startTime := simulatedTime.Format(time.RFC3339)
 		for i := 0; i < scn.config.Churn; i++ {
 			id := scn.config.Scale + interval*scn.config.Churn + i
-			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, scn.config.TemplateVars, r.baseRand, r.cfg.Seed, r.cfg.InstanceOffset)
+			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, scn.config.TemplateVars, r.baseRand, r.cfg.InstanceOffset)
 			if err != nil {
 				r.settings.Logger.Error("failed to apply churn", zap.Error(err))
 			} else {

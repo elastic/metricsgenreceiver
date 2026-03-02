@@ -76,7 +76,7 @@ func GetResources(path string, startTime time.Time, scale int, vars map[string]a
 	startTimeString := startTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scale)
 	for i := 0; i < scale; i++ {
-		resource, err := RenderResource(path, i, startTimeString, vars, r, seed, instanceOffset)
+		resource, err := RenderResource(path, i, startTimeString, vars, r, instanceOffset)
 		if err != nil {
 			return nil, err
 		}
@@ -85,13 +85,12 @@ func GetResources(path string, startTime time.Time, scale int, vars map[string]a
 	return resources, nil
 }
 
-func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, seed int64, instanceOffset uint) (pcommon.Resource, error) {
+func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, instanceOffset uint) (pcommon.Resource, error) {
 	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes", &resourceTemplateModel{
 		instanceID:        id,
 		InstanceStartTime: startTimeString,
 		Vars:              vars,
 		rand:              r,
-		seed:              seed,
 		instanceOffset:    instanceOffset,
 	})
 	if err != nil {
@@ -106,7 +105,6 @@ type resourceTemplateModel struct {
 
 	InstanceStartTime string
 	rand              *rand.Rand
-	seed              int64
 	instanceOffset    uint
 }
 
