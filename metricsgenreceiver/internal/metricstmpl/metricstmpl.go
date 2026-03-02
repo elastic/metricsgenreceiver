@@ -6,17 +6,17 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/google/uuid"
+	"go.opentelemetry.io/collector/pdata/pcommon"
+	"go.opentelemetry.io/collector/pdata/pmetric"
+	"gopkg.in/yaml.v3"
 	"math/rand"
-	"net"
 	"path/filepath"
 	"strings"
 	"text/template"
 	"time"
 
-	"github.com/google/uuid"
-	"go.opentelemetry.io/collector/pdata/pcommon"
-	"go.opentelemetry.io/collector/pdata/pmetric"
-	"gopkg.in/yaml.v3"
+	"net"
 )
 
 //go:embed builtin
