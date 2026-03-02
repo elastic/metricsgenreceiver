@@ -2,6 +2,9 @@ package metricsgenreceiver
 
 import (
 	"context"
+	"sort"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -383,4 +386,96 @@ func TestHistogramRandomizationDiversity(t *testing.T) {
 
 	assert.True(t, histogramDifferent || exponentialHistogramDifferent,
 		"at least one histogram type should have different counts between intervals, indicating randomization is working")
+}
+
+func TestInstanceIDWithOffset(t *testing.T) {
+	type testCase struct {
+		name           string
+		scale          int
+		instanceOffset uint
+		expectedIDs    []int
+	}
+
+	tests := []testCase{
+		{
+			name:           "scale=3, no-offset",
+			scale:          3,
+			instanceOffset: 0,
+			expectedIDs:    []int{0, 1, 2},
+		},
+		{
+			name:           "scale=3, offset-1000",
+			scale:          3,
+			instanceOffset: 1000,
+			expectedIDs:    []int{1000, 1001, 1002},
+		},
+		{
+			name:           "scale=2, large-offset",
+			scale:          2,
+			instanceOffset: 9999,
+			expectedIDs:    []int{9999, 10000},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			sink := new(consumertest.MetricsSink)
+			factory := NewFactory()
+			cfg := testdataConfigYamlAsMap()
+			cfg.Scenarios[0].Path = "builtin/simple"
+			cfg.Scenarios[0].Scale = tc.scale
+			cfg.InstanceOffset = tc.instanceOffset
+			cfg.Scenarios[0].TemplateVars = map[string]any{"gauge_pct": 1, "gauge_int": 0, "counter": 0}
+
+			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+			require.NoError(t, err)
+			err = rcv.Start(context.Background(), nil)
+			require.NoError(t, err)
+
+			require.EventuallyWithT(t, func(c *assert.CollectT) {
+				require.Greater(c, sink.DataPointCount(), 0)
+			}, 2*time.Second, time.Millisecond)
+			require.NoError(t, rcv.Shutdown(context.Background()))
+
+			hosts := collectHostNames(sink.AllMetrics())
+			require.Len(t, hosts, tc.scale)
+
+			ids := make([]int, 0, len(hosts))
+
+			for _, h := range hosts {
+				parts := strings.Split(h, "-")
+				require.Len(t, parts, 2, "host name should have two parts")
+
+				hostID, errParse := strconv.Atoi(parts[1])
+				require.NoError(t, errParse, "host ID should be an integer")
+
+				ids = append(ids, hostID)
+			}
+			sort.Ints(ids)
+			assert.Equal(t, tc.expectedIDs, ids, "instance IDs should match expected range reflecting the offset")
+		})
+	}
+}
+
+func collectHostNames(allMetrics []pmetric.Metrics) []string {
+	hostSet := make(map[string]bool)
+
+	for _, metrics := range allMetrics {
+		for i := 0; i < metrics.ResourceMetrics().Len(); i++ {
+			rm := metrics.ResourceMetrics().At(i)
+			if hostVal, ok := rm.Resource().Attributes().Get("host.name"); ok {
+				hostSet[hostVal.Str()] = true
+			}
+		}
+	}
+
+	hosts := make([]string, 0, len(hostSet))
+
+	for host := range hostSet {
+		hosts = append(hosts, host)
+	}
+
+	sort.Strings(hosts)
+
+	return hosts
 }

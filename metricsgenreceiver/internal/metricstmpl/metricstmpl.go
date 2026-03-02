@@ -72,11 +72,11 @@ func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, err
 	return pmetric.Metrics{}, fmt.Errorf("no .json/.yaml/.yml template file found for %s", path)
 }
 
-func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand) ([]pcommon.Resource, error) {
+func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand, instanceOffset uint) ([]pcommon.Resource, error) {
 	startTimeString := startTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scale)
 	for i := 0; i < scale; i++ {
-		resource, err := RenderResource(path, i, startTimeString, vars, r)
+		resource, err := RenderResource(path, i, startTimeString, vars, r, instanceOffset)
 		if err != nil {
 			return nil, err
 		}
@@ -85,12 +85,13 @@ func GetResources(path string, startTime time.Time, scale int, vars map[string]a
 	return resources, nil
 }
 
-func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand) (pcommon.Resource, error) {
+func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, instanceOffset uint) (pcommon.Resource, error) {
 	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes", &resourceTemplateModel{
-		InstanceID:        id,
+		instanceID:        id,
 		InstanceStartTime: startTimeString,
 		Vars:              vars,
 		rand:              r,
+		instanceOffset:    instanceOffset,
 	})
 	if err != nil {
 		return pcommon.Resource{}, err
@@ -99,15 +100,21 @@ func RenderResource(path string, id int, startTimeString string, vars map[string
 }
 
 type resourceTemplateModel struct {
-	InstanceID int
+	instanceID int
 	Vars       map[string]any
 
 	InstanceStartTime string
 	rand              *rand.Rand
+	instanceOffset    uint
 }
 
 func (m *resourceTemplateModel) randByte() byte {
 	return byte(m.rand.Int())
+}
+
+// InstanceID returns the instance ID based on the instance offset.
+func (t *resourceTemplateModel) InstanceID() int {
+	return t.instanceID + int(t.instanceOffset)
 }
 
 func (t *resourceTemplateModel) RandomIPv4() string {

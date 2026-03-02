@@ -20,6 +20,7 @@ type Config struct {
 	ExitAfterEnd                      bool                         `mapstructure:"exit_after_end"`
 	ExitAfterEndTimeout               time.Duration                `mapstructure:"exit_after_end_timeout"`
 	Seed                              int64                        `mapstructure:"seed"`
+	InstanceOffset                    uint                         `mapstructure:"instance_offset"`
 	Scenarios                         []ScenarioCfg                `mapstructure:"scenarios"`
 	Distribution                      distribution.DistributionCfg `mapstructure:"distribution"`
 	ExponentialHistogramsTemplatePath string                       `mapstructure:"exponential_histograms_template_path"`
