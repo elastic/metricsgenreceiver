@@ -72,11 +72,11 @@ func RenderMetricsTemplate(path string, templateModel any) (pmetric.Metrics, err
 	return pmetric.Metrics{}, fmt.Errorf("no .json/.yaml/.yml template file found for %s", path)
 }
 
-func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand, seed int64, seedRandomizerEnabled bool) ([]pcommon.Resource, error) {
+func GetResources(path string, startTime time.Time, scale int, vars map[string]any, r *rand.Rand, seed int64, instanceOffset uint) ([]pcommon.Resource, error) {
 	startTimeString := startTime.Format(time.RFC3339)
 	resources := make([]pcommon.Resource, scale)
 	for i := 0; i < scale; i++ {
-		resource, err := RenderResource(path, i, startTimeString, vars, r, seed, seedRandomizerEnabled)
+		resource, err := RenderResource(path, i, startTimeString, vars, r, seed, instanceOffset)
 		if err != nil {
 			return nil, err
 		}
@@ -85,14 +85,14 @@ func GetResources(path string, startTime time.Time, scale int, vars map[string]a
 	return resources, nil
 }
 
-func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, seed int64, seedRandomizerEnabled bool) (pcommon.Resource, error) {
+func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, seed int64, instanceOffset uint) (pcommon.Resource, error) {
 	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes", &resourceTemplateModel{
-		InstanceID:            id,
-		InstanceStartTime:     startTimeString,
-		Vars:                  vars,
-		rand:                  r,
-		seed:                  seed,
-		seedRandomizerEnabled: seedRandomizerEnabled,
+		InstanceID:        id,
+		InstanceStartTime: startTimeString,
+		Vars:              vars,
+		rand:              r,
+		seed:              seed,
+		instanceOffset:    instanceOffset,
 	})
 	if err != nil {
 		return pcommon.Resource{}, err
@@ -104,10 +104,10 @@ type resourceTemplateModel struct {
 	InstanceID int
 	Vars       map[string]any
 
-	InstanceStartTime     string
-	rand                  *rand.Rand
-	seed                  int64
-	seedRandomizerEnabled bool
+	InstanceStartTime string
+	rand              *rand.Rand
+	seed              int64
+	instanceOffset    uint
 }
 
 func (m *resourceTemplateModel) randByte() byte {
@@ -115,12 +115,8 @@ func (m *resourceTemplateModel) randByte() byte {
 }
 
 // GetInstanceID returns the instance ID based on the seed randomizer.
-func (t *resourceTemplateModel) GetInstanceID() string {
-	if !t.seedRandomizerEnabled {
-		return fmt.Sprintf("%d", t.InstanceID)
-	}
-
-	return fmt.Sprintf("%d-%d", t.seed, t.InstanceID)
+func (t *resourceTemplateModel) GetInstanceID() int {
+	return t.InstanceID + int(t.instanceOffset)
 }
 
 func (t *resourceTemplateModel) RandomIPv4() string {
