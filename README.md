@@ -128,8 +128,6 @@ receivers:
       These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
       Supported placeholders:
       * `{{.InstanceID}}` (an integer equal to the number of the simulated instance, starting with `0`)
-      * `{{.GetInstanceID}}` (returns the seed aware instance ID or `{{.InstanceID}}` if the respective feature flag is disabled)
-      * `{{.WithSeedAwareInstanceIDs}}` (a boolean indicating whether the seed aware instance ID generation is enabled or not)
       * `{{.RandomIPv4}}`
       * `{{.RandomIPv6}}`
       * `{{.RandomMAC}}`

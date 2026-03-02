@@ -87,7 +87,7 @@ func GetResources(path string, startTime time.Time, scale int, vars map[string]a
 
 func RenderResource(path string, id int, startTimeString string, vars map[string]any, r *rand.Rand, seed int64, instanceOffset uint) (pcommon.Resource, error) {
 	metricsTemplate, err := RenderMetricsTemplate(path+"-resource-attributes", &resourceTemplateModel{
-		InstanceID:        id,
+		instanceID:        id,
 		InstanceStartTime: startTimeString,
 		Vars:              vars,
 		rand:              r,
@@ -101,7 +101,7 @@ func RenderResource(path string, id int, startTimeString string, vars map[string
 }
 
 type resourceTemplateModel struct {
-	InstanceID int
+	instanceID int
 	Vars       map[string]any
 
 	InstanceStartTime string
@@ -114,9 +114,9 @@ func (m *resourceTemplateModel) randByte() byte {
 	return byte(m.rand.Int())
 }
 
-// GetInstanceID returns the instance ID based on the seed randomizer.
-func (t *resourceTemplateModel) GetInstanceID() int {
-	return t.InstanceID + int(t.instanceOffset)
+// InstanceID returns the instance ID based on the instance offset.
+func (t *resourceTemplateModel) InstanceID() int {
+	return t.instanceID + int(t.instanceOffset)
 }
 
 func (t *resourceTemplateModel) RandomIPv4() string {
