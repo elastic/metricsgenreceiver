@@ -80,48 +80,6 @@
                 ]
               }
             }
-          },
-          {
-            "key": "host.cpu.cache.l2.size",
-            "value": {
-              "intValue": "4194304"
-            }
-          },
-          {
-            "key": "host.cpu.family",
-            "value": {
-              "stringValue": "6"
-            }
-          },
-          {
-            "key": "host.cpu.model.id",
-            "value": {
-              "stringValue": "106"
-            }
-          },
-          {
-            "key": "host.cpu.model.name",
-            "value": {
-              "stringValue": "Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz"
-            }
-          },
-          {
-            "key": "host.cpu.stepping",
-            "value": {
-              "stringValue": "6"
-            }
-          },
-          {
-            "key": "host.cpu.vendor.id",
-            "value": {
-              "stringValue": "GenuineIntel"
-            }
-          },
-          {
-            "key": "os.description",
-            "value": {
-              "stringValue": "Linux 5.15.0-1050-aws #55~20.04.1-Ubuntu SMP Mon Mar 27 15:36:25 UTC 2023 x86_64"
-            }
           }
         ]
       }
