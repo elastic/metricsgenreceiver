@@ -55,8 +55,8 @@ func TestReceiver(t *testing.T) {
 		{
 			name:            "hostmetrics",
 			path:            "builtin/hostmetrics",
-			dataPoints:      139,
-			resourceMetrics: 8,
+			dataPoints:      170,
+			resourceMetrics: 7,
 		},
 		{
 			name:            "kubeletstats-node",

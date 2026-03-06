@@ -2256,341 +2256,6 @@
       "resource": {
         "attributes": [
           {
-            "key": "process.pid",
-            "value": {
-              "intValue": "1"
-            }
-          },
-          {
-            "key": "process.parent_pid",
-            "value": {
-              "intValue": "0"
-            }
-          },
-          {
-            "key": "process.executable.name",
-            "value": {
-              "stringValue": "otelcol-contrib"
-            }
-          },
-          {
-            "key": "process.executable.path",
-            "value": {
-              "stringValue": "/otelcol-contrib"
-            }
-          },
-          {
-            "key": "process.command",
-            "value": {
-              "stringValue": "/otelcol-contrib"
-            }
-          },
-          {
-            "key": "process.command_line",
-            "value": {
-              "stringValue": "/otelcol-contrib --config /etc/otelcol-contrib/config.yaml"
-            }
-          },
-          {
-            "key": "host.name",
-            "value": {
-              "stringValue": "51e1b9694eda"
-            }
-          },
-          {
-            "key": "os.type",
-            "value": {
-              "stringValue": "linux"
-            }
-          },
-          {
-            "key": "host.arch",
-            "value": {
-              "stringValue": "arm64"
-            }
-          },
-          {
-            "key": "host.ip",
-            "value": {
-              "arrayValue": {
-                "values": [
-                  {
-                    "stringValue": "172.18.0.2"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "key": "host.mac",
-            "value": {
-              "arrayValue": {
-                "values": [
-                  {
-                    "stringValue": "02-42-AC-12-00-02"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "key": "os.description",
-            "value": {
-              "stringValue": "Linux 51e1b9694eda 5.15.49-linuxkit-pr #1 SMP PREEMPT Thu May 25 07:27:39 UTC 2023 aarch64"
-            }
-          },
-          {
-            "key": "host.cpu.vendor.id",
-            "value": {
-              "stringValue": "Apple"
-            }
-          },
-          {
-            "key": "host.cpu.family",
-            "value": {
-              "stringValue": ""
-            }
-          },
-          {
-            "key": "host.cpu.model.id",
-            "value": {
-              "stringValue": "0x000"
-            }
-          },
-          {
-            "key": "host.cpu.model.name",
-            "value": {
-              "stringValue": ""
-            }
-          },
-          {
-            "key": "host.cpu.stepping",
-            "value": {
-              "stringValue": "0"
-            }
-          },
-          {
-            "key": "host.cpu.cache.l2.size",
-            "value": {
-              "intValue": "0"
-            }
-          }
-        ]
-      },
-      "scopeMetrics": [
-        {
-          "scope": {
-            "name": "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/hostmetricsreceiver/internal/scraper/processscraper",
-            "version": "0.115.0"
-          },
-          "metrics": [
-            {
-              "name": "process.cpu.time",
-              "description": "Total CPU seconds broken down by different states.",
-              "unit": "s",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "attributes": [
-                      {
-                        "key": "state",
-                        "value": {
-                          "stringValue": "user"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asDouble": 0.05
-                  },
-                  {
-                    "attributes": [
-                      {
-                        "key": "state",
-                        "value": {
-                          "stringValue": "system"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asDouble": 0.07
-                  },
-                  {
-                    "attributes": [
-                      {
-                        "key": "state",
-                        "value": {
-                          "stringValue": "wait"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asDouble": 0
-                  }
-                ],
-                "aggregationTemporality": 2,
-                "isMonotonic": true
-              }
-            },
-            {
-              "name": "process.disk.io",
-              "description": "Disk bytes transferred.",
-              "unit": "By",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "attributes": [
-                      {
-                        "key": "direction",
-                        "value": {
-                          "stringValue": "read"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "81829"
-                  },
-                  {
-                    "attributes": [
-                      {
-                        "key": "direction",
-                        "value": {
-                          "stringValue": "write"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "7045"
-                  }
-                ],
-                "aggregationTemporality": 2,
-                "isMonotonic": true
-              }
-            },
-            {
-              "name": "process.disk.operations",
-              "description": "Number of disk operations performed by the process.",
-              "unit": "{operations}",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "attributes": [
-                      {
-                        "key": "direction",
-                        "value": {
-                          "stringValue": "read"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "159"
-                  },
-                  {
-                    "attributes": [
-                      {
-                        "key": "direction",
-                        "value": {
-                          "stringValue": "write"
-                        }
-                      }
-                    ],
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "18"
-                  }
-                ],
-                "aggregationTemporality": 2,
-                "isMonotonic": true
-              }
-            },
-            {
-              "name": "process.memory.usage",
-              "description": "The amount of physical memory in use.",
-              "unit": "By",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "157122560"
-                  }
-                ],
-                "aggregationTemporality": 2
-              }
-            },
-            {
-              "name": "process.memory.utilization",
-              "description": "Percentage of total physical memory that is used by the process.",
-              "unit": "1",
-              "gauge": {
-                "dataPoints": [
-                  {
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asDouble": 3.809659957885742
-                  }
-                ]
-              }
-            },
-            {
-              "name": "process.memory.virtual",
-              "description": "Virtual memory size.",
-              "unit": "By",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "1524121600"
-                  }
-                ],
-                "aggregationTemporality": 2
-              }
-            },
-            {
-              "name": "process.open_file_descriptors",
-              "description": "Number of file descriptors in use by the process.",
-              "unit": "{count}",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "11"
-                  }
-                ],
-                "aggregationTemporality": 2
-              }
-            },
-            {
-              "name": "process.threads",
-              "description": "Process threads count.",
-              "unit": "{threads}",
-              "sum": {
-                "dataPoints": [
-                  {
-                    "startTimeUnixNano": "1734355527010000000",
-                    "timeUnixNano": "1734355528690252216",
-                    "asInt": "10"
-                  }
-                ],
-                "aggregationTemporality": 2
-              }
-            }
-          ]
-        }
-      ],
-      "schemaUrl": "https://opentelemetry.io/schemas/1.9.0"
-    },
-    {
-      "resource": {
-        "attributes": [
-          {
             "key": "host.name",
             "value": {
               "stringValue": "51e1b9694eda"
@@ -2875,6 +2540,79 @@
                   }
                 ],
                 "aggregationTemporality": 2
+              }
+            },
+            {
+              "name": "system.disk.merged",
+              "description": "The number of disk reads/writes merged into single physical disk access operations.",
+              "unit": "{operations}",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "disk0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "read"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1744966894000000000",
+                    "timeUnixNano": "1746794624624360000",
+                    "asInt": "222392354816"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "disk0"
+                        }
+                      },
+                      {
+                        "key": "direction",
+                        "value": {
+                          "stringValue": "write"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1744966894000000000",
+                    "timeUnixNano": "1746794624624360000",
+                    "asInt": "193681118003"
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
+              }
+            },
+            {
+              "name": "system.disk.weighted_io_time",
+              "description": "Time disk operations have taken, weighted by the number of pending operations.",
+              "unit": "s",
+              "sum": {
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "device",
+                        "value": {
+                          "stringValue": "disk0"
+                        }
+                      }
+                    ],
+                    "startTimeUnixNano": "1744966894000000000",
+                    "timeUnixNano": "1746794624624360000",
+                    "asDouble": 81114.114
+                  }
+                ],
+                "aggregationTemporality": 2,
+                "isMonotonic": true
               }
             }
           ]
@@ -3762,6 +3500,735 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
+              }
+            },
+            {
+              "name": "system.cpu.utilization",
+              "description": "Difference in system.cpu.time since the last measurement, divided by the elapsed time and number of logical CPUs.",
+              "unit": "1",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu0"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu0"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu0"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu0"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu1"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu1"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu1"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu1"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu2"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu2"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu2"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu2"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu3"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu3"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu3"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu3"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu4"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu4"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu4"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu4"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu5"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu5"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu5"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu5"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu6"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu6"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu6"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu6"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu7"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu7"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu7"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu7"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu8"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu8"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu8"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu8"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu9"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "user"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.08
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu9"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "system"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.04
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu9"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "idle"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.85
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "key": "cpu",
+                        "value": {
+                          "stringValue": "cpu9"
+                        }
+                      },
+                      {
+                        "key": "state",
+                        "value": {
+                          "stringValue": "interrupt"
+                        }
+                      }
+                    ],
+                    "timeUnixNano": "1746794624630617000",
+                    "asDouble": 0.001
+                  }
+                ]
               }
             }
           ]
