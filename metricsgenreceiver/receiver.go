@@ -33,6 +33,7 @@ type MetricsGenReceiver struct {
 	expHistoGen *expohistogen.Generator
 	nextMetrics consumer.Metrics
 	cancel      context.CancelFunc
+	wg          sync.WaitGroup
 	scenarios   []Scenario
 	progress    *MetricsProgress
 }
@@ -80,12 +81,16 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		return nil, err
 	}
 
-	nowish := time.Now().Truncate(time.Second)
+	nowish := time.Now()
 	if cfg.StartTime.IsZero() {
 		cfg.StartTime = nowish.Add(-cfg.StartNowMinus)
 	}
 	if cfg.EndTime.IsZero() {
-		cfg.EndTime = nowish.Add(-cfg.EndNowMinus)
+		if cfg.RealTime && cfg.EndNowMinus == 0 {
+			cfg.EndTime = time.Unix(math.MaxInt64/int64(time.Second), 0) // run indefinitely
+		} else {
+			cfg.EndTime = nowish.Add(-cfg.EndNowMinus)
+		}
 	}
 
 	baseRand := rand.New(rand.NewSource(cfg.Seed))
@@ -152,12 +157,14 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) error {
 	ctx, cancel := context.WithCancel(ctx)
 	r.cancel = cancel
+	r.wg.Add(1)
 	go func() {
+		defer r.wg.Done()
 		nextLog := r.progress.start.Add(10 * time.Second)
 		ticker := time.NewTicker(r.cfg.Interval)
 		defer ticker.Stop()
 		currentTime := r.cfg.StartTime
-		for i := 0; currentTime.UnixNano() < r.cfg.EndTime.UnixNano(); i++ {
+		for i := 0; currentTime.Before(r.cfg.EndTime); i++ {
 			if ctx.Err() != nil {
 				return
 			}
@@ -175,7 +182,11 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			r.applyChurn(i, currentTime)
 
 			if r.cfg.RealTime {
-				<-ticker.C
+				select {
+				case <-ticker.C:
+				case <-ctx.Done():
+					return
+				}
 			}
 			currentTime = currentTime.Add(r.cfg.Interval)
 		}
@@ -341,6 +352,7 @@ func (r *MetricsGenReceiver) Shutdown(_ context.Context) error {
 	if r.cancel != nil {
 		r.cancel()
 	}
+	r.wg.Wait()
 	r.settings.Logger.Info("finished generating metrics",
 		zap.Uint64("datapoints", r.progress.datapoints.Load()),
 		zap.String("duration", r.progress.duration().Round(time.Millisecond).String()),

@@ -5,12 +5,14 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/consumer/consumertest"
 	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/pmetric"
@@ -455,6 +457,151 @@ func TestInstanceIDWithOffset(t *testing.T) {
 			assert.Equal(t, tc.expectedIDs, ids, "instance IDs should match expected range reflecting the offset")
 		})
 	}
+}
+
+// TestRealtimeDefaultsToRunningIndefinitely verifies that a real_time receiver with no
+// end_time or end_now_minus configured does not exit immediately.
+func TestRealtimeDefaultsToRunningIndefinitely(t *testing.T) {
+	interval := 100 * time.Millisecond
+	sink := new(consumertest.MetricsSink)
+
+	factory := NewFactory()
+	cfg := &Config{
+		Interval: interval,
+		RealTime: true,
+		Seed:     42,
+		Scenarios: []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
+	}
+
+	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+	require.NoError(t, err)
+	err = rcv.Start(context.Background(), nil)
+	require.NoError(t, err)
+
+	// Receiver should keep producing metrics across multiple intervals.
+	require.EventuallyWithT(t, func(c *assert.CollectT) {
+		require.Greater(c, sink.DataPointCount(), 3)
+	}, 2*time.Second, time.Millisecond)
+
+	require.NoError(t, rcv.Shutdown(context.Background()))
+}
+
+// TestRealtimeTimestampsTrackWallClock verifies that metric timestamps stay in sync with
+// wall clock time in realtime mode. Each batch of metrics should have a timestamp close
+// to the wall clock time at which it was produced.
+func TestRealtimeTimestampsTrackWallClock(t *testing.T) {
+	const (
+		interval  = 200 * time.Millisecond
+		batches   = 5
+		tolerance = interval
+	)
+
+	type observation struct {
+		wallClock       time.Time
+		metricTimestamp time.Time
+	}
+	var (
+		mu   sync.Mutex
+		obs  []observation
+	)
+
+	consumer := &timestampRecordingConsumer{
+		onConsume: func(md pmetric.Metrics) {
+			wall := time.Now()
+			var metricTs time.Time
+			dp.ForEachDataPoint(&md, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, _ pmetric.Metric, d dp.DataPoint) {
+				if metricTs.IsZero() {
+					metricTs = d.Timestamp().AsTime()
+				}
+			})
+			mu.Lock()
+			obs = append(obs, observation{wallClock: wall, metricTimestamp: metricTs})
+			mu.Unlock()
+		},
+	}
+
+	factory := NewFactory()
+	cfg := &Config{
+		Interval: interval,
+		RealTime: true,
+		Seed:     42,
+		Scenarios: []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
+	}
+
+	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, consumer)
+	require.NoError(t, err)
+	require.NoError(t, rcv.Start(context.Background(), nil))
+
+	require.EventuallyWithT(t, func(c *assert.CollectT) {
+		mu.Lock()
+		defer mu.Unlock()
+		require.GreaterOrEqual(c, len(obs), batches)
+	}, 5*time.Second, time.Millisecond)
+
+	require.NoError(t, rcv.Shutdown(context.Background()))
+
+	mu.Lock()
+	defer mu.Unlock()
+	for i, o := range obs[:batches] {
+		diff := o.wallClock.Sub(o.metricTimestamp)
+		if diff < 0 {
+			diff = -diff
+		}
+		assert.LessOrEqualf(t, diff, tolerance,
+			"batch %d: metric timestamp %v is %v away from wall clock %v",
+			i, o.metricTimestamp, diff, o.wallClock)
+	}
+}
+
+type timestampRecordingConsumer struct {
+	onConsume func(pmetric.Metrics)
+}
+
+func (c *timestampRecordingConsumer) ConsumeMetrics(_ context.Context, md pmetric.Metrics) error {
+	c.onConsume(md)
+	return nil
+}
+
+func (c *timestampRecordingConsumer) Capabilities() consumer.Capabilities {
+	return consumer.Capabilities{}
+}
+
+// TestRealtimeShutdownCompletesPromptly verifies that Shutdown unblocks the goroutine
+// immediately via context cancellation rather than waiting for the next ticker tick.
+// Without the select on ctx.Done() the goroutine stays blocked on <-ticker.C for up
+// to one full interval after Shutdown is called, causing the receiver to stall.
+func TestRealtimeShutdownCompletesPromptly(t *testing.T) {
+	interval := 500 * time.Millisecond
+	sink := new(consumertest.MetricsSink)
+
+	factory := NewFactory()
+	now := time.Now()
+	cfg := &Config{
+		StartTime: now,
+		EndTime:   now.Add(10 * time.Minute),
+		Interval:  interval,
+		RealTime:  true,
+		Seed:      42,
+		Scenarios: []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
+	}
+
+	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+	require.NoError(t, err)
+	err = rcv.Start(context.Background(), nil)
+	require.NoError(t, err)
+
+	// Wait until the first batch is produced; the goroutine is now blocked on ticker.C.
+	require.EventuallyWithT(t, func(c *assert.CollectT) {
+		require.Greater(c, sink.DataPointCount(), 0)
+	}, interval*3, time.Millisecond)
+
+	// Shutdown must complete well within one interval.
+	// Without the ctx.Done() select branch, Shutdown blocks until the next tick fires
+	// (up to `interval` away), causing a stall when multiple receivers are running.
+	shutdownStart := time.Now()
+	require.NoError(t, rcv.Shutdown(context.Background()))
+	require.Less(t, time.Since(shutdownStart), interval/2,
+		"Shutdown stalled - goroutine was not unblocked by context cancellation")
 }
 
 func collectHostNames(allMetrics []pmetric.Metrics) []string {
