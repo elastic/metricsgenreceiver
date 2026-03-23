@@ -81,15 +81,15 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		return nil, err
 	}
 
-	nowish := time.Now()
+	now := time.Now()
 	if cfg.StartTime.IsZero() {
-		cfg.StartTime = nowish.Add(-cfg.StartNowMinus)
+		cfg.StartTime = now.Add(-cfg.StartNowMinus)
 	}
 	if cfg.EndTime.IsZero() {
-		if cfg.RealTime && cfg.EndNowMinus == 0 {
-			cfg.EndTime = time.Unix(math.MaxInt64/int64(time.Second), 0) // run indefinitely
+		if cfg.RunIndefinitely {
+			cfg.EndTime = time.Unix(math.MaxInt64/int64(time.Second), 0)
 		} else {
-			cfg.EndTime = nowish.Add(-cfg.EndNowMinus)
+			cfg.EndTime = now.Add(-cfg.EndNowMinus)
 		}
 	}
 

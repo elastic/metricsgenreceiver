@@ -459,18 +459,19 @@ func TestInstanceIDWithOffset(t *testing.T) {
 	}
 }
 
-// TestRealtimeDefaultsToRunningIndefinitely verifies that a real_time receiver with no
-// end_time or end_now_minus configured does not exit immediately.
-func TestRealtimeDefaultsToRunningIndefinitely(t *testing.T) {
+// TestRunIndefinitely verifies that a receiver with run_indefinitely set does not exit
+// immediately but keeps producing metrics across multiple intervals.
+func TestRunIndefinitely(t *testing.T) {
 	interval := 100 * time.Millisecond
 	sink := new(consumertest.MetricsSink)
 
 	factory := NewFactory()
 	cfg := &Config{
-		Interval: interval,
-		RealTime: true,
-		Seed:     42,
-		Scenarios: []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
+		Interval:        interval,
+		RealTime:        true,
+		RunIndefinitely: true,
+		Seed:            42,
+		Scenarios:       []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
 	}
 
 	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
@@ -522,10 +523,11 @@ func TestRealtimeTimestampsTrackWallClock(t *testing.T) {
 
 	factory := NewFactory()
 	cfg := &Config{
-		Interval: interval,
-		RealTime: true,
-		Seed:     42,
-		Scenarios: []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
+		Interval:        interval,
+		RealTime:        true,
+		RunIndefinitely: true,
+		Seed:            42,
+		Scenarios:       []ScenarioCfg{{Path: "testdata/metricstemplate", Scale: 1}},
 	}
 
 	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, consumer)
