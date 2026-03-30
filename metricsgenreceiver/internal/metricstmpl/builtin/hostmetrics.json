@@ -1358,7 +1358,7 @@
                     ],
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689057549",
-                    "asDouble": 0.12862568203441407
+                    "asDouble": 0.128625682
                   },
                   {
                     "attributes": [
@@ -1371,7 +1371,7 @@
                     ],
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689057549",
-                    "asDouble": 0.4894956272333089
+                    "asDouble": 0.4894956272
                   },
                   {
                     "attributes": [
@@ -1384,7 +1384,7 @@
                     ],
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689057549",
-                    "asDouble": 0.015693495174364445
+                    "asDouble": 0.01569349517
                   },
                   {
                     "attributes": [
@@ -1397,7 +1397,7 @@
                     ],
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689057549",
-                    "asDouble": 0.36618519555791257
+                    "asDouble": 0.3661851956
                   },
                   {
                     "attributes": [
@@ -1410,7 +1410,7 @@
                     ],
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689057549",
-                    "asDouble": 0.014319991578228131
+                    "asDouble": 0.01431999158
                   },
                   {
                     "attributes": [
@@ -1423,7 +1423,7 @@
                     ],
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689057549",
-                    "asDouble": 0.008484339278230316
+                    "asDouble": 0.008484339278
                   }
                 ]
               }
@@ -2214,7 +2214,7 @@
                   {
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689759382",
-                    "asDouble": 0
+                    "asDouble": 0.02
                   }
                 ]
               }
@@ -2228,7 +2228,7 @@
                   {
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689759382",
-                    "asDouble": 0
+                    "asDouble": 0.01
                   }
                 ]
               }
@@ -2242,7 +2242,7 @@
                   {
                     "startTimeUnixNano": "1734346477000000000",
                     "timeUnixNano": "1734355528689759382",
-                    "asDouble": 0
+                    "asDouble": 0.02
                   }
                 ]
               }
