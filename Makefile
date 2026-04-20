@@ -1,4 +1,8 @@
 # This currently only works for OS X ARM64.
+.PHONY: test
+test:
+	cd metricsgenreceiver && go test ./...
+
 .PHONY: install-ocb
 install-ocb:
 	curl --proto '=https' --tlsv1.2 -fL -o ocb \

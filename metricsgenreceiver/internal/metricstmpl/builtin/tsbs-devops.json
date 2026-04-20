@@ -161,9 +161,9 @@
             {"name": "mem_free", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
             {"name": "mem_cached", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
             {"name": "mem_buffered", "sum": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asInt": "0"}],"aggregationTemporality": 2}},
-            {"name": "mem_used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
-            {"name": "mem_available_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}},
-            {"name": "mem_buffered_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0"}]}}
+            {"name": "mem_used_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0.62"}]}},
+            {"name": "mem_available_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0.34"}]}},
+            {"name": "mem_buffered_percent", "gauge": {"dataPoints": [{"startTimeUnixNano": "0","timeUnixNano": "0","asDouble": "0.04"}]}}
           ]
         }
       ]
