@@ -1,0 +1,9 @@
+resourceMetrics:
+  - resource:
+      attributes:
+        - key: job
+          value:
+            stringValue: node
+        - key: instance
+          value:
+            stringValue: host-{{.InstanceID}}:9100

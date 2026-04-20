@@ -14,6 +14,24 @@ type builtInScenarioTestCase struct {
 	templateVars map[string]any
 }
 
+var allowedAllZeroDoubleMetricFamilies = map[string]string{
+	// Pressure stall time can legitimately remain zero on an otherwise healthy, lightly loaded host.
+	"node_pressure_memory_stalled_seconds_total": "healthy hosts may report no stalled memory pressure time",
+	// Pressure wait time can legitimately remain zero on an otherwise healthy, lightly loaded host.
+	"node_pressure_memory_waiting_seconds_total": "healthy hosts may report no waiting memory pressure time",
+	// A UTC-configured host can legitimately have a zero timezone offset.
+	"node_time_zone_offset_seconds": "UTC hosts legitimately report a zero timezone offset",
+	// A synchronized clock can legitimately have no observable offset at the capture instant.
+	"node_timex_offset_seconds": "a synchronized clock may report zero current offset",
+	// PPS-related metrics stay at zero when no PPS source is configured.
+	"node_timex_pps_frequency_hertz": "hosts without a PPS source legitimately keep this at zero",
+	"node_timex_pps_jitter_seconds":  "hosts without a PPS source legitimately keep this at zero",
+	"node_timex_pps_shift_seconds":   "hosts without a PPS source legitimately keep this at zero",
+	"node_timex_pps_stability_hertz": "hosts without a PPS source legitimately keep this at zero",
+	// Many hosts run with no TAI offset configured.
+	"node_timex_tai_offset_seconds": "hosts without TAI offset configuration legitimately report zero",
+}
+
 func builtInScenarioTestCases() []builtInScenarioTestCase {
 	return []builtInScenarioTestCase{
 		{name: "hostmetrics", path: "builtin/hostmetrics"},
@@ -46,6 +64,7 @@ func builtInScenarioTestCases() []builtInScenarioTestCase {
 			},
 		},
 		{name: "nginx", path: "builtin/nginx"},
+		{name: "node-exporter", path: "builtin/node-exporter"},
 	}
 }
 
@@ -111,6 +130,9 @@ func TestBuiltInScenariosAvoidAllZeroDoubleMetricFamilies(t *testing.T) {
 					continue
 				}
 				if seenNonZeroDouble[metricName] {
+					continue
+				}
+				if _, ok := allowedAllZeroDoubleMetricFamilies[metricName]; ok {
 					continue
 				}
 				assert.Falsef(t, allZeroDouble[metricName], "metric family %q is double-valued but all initial values are zero", metricName)

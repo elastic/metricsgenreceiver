@@ -119,7 +119,8 @@ receivers:
       * `builtin/elasticapm-transaction-metrics`: simulates aggregated transaction metrics from the `elasticapmconnector`. The scale influences how many service instances are simulated. Uses the `template_vars` option to customize the data generation:
         * `services`: the number of services to simulate. Does not affect the number of metrics.
         * `transactions`: the number of transactions to simulate per service instance. This affects the number of simulated metrics.
-    * `builtin/nginx`: Built in scenario for nginx connection metrics simulating the `nginxreceiver`.
+      * `builtin/nginx`: built-in scenario for nginx connection metrics simulating the `nginxreceiver`.
+      * `builtin/node-exporter`: simulates a typical Linux Prometheus `node_exporter` host while keeping Prometheus metric names and target identity keys like `job` and `instance`. The built-in is trimmed to a host shape similar to `builtin/hostmetrics`.
     * Custom scenarios:
       Expects a `<path>.json` or `<path>.yaml` and a `<path>-resource-attributes.json` or `<path>-resource-attributes.yaml` file.
       The `<path>.json`/`<path>.yaml` file contains a single batch of resource metrics in JSON or YAML format, as produced by the `fileexporter`.
