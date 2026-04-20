@@ -74,8 +74,10 @@ receivers:
   It is capped by the interval, so that the next interval will never start at or before the previous one.
   This simulates real-world scenarios where the collection interval is sometimes a bit late due to delays running the scheduled metric collection.
   When set to a non-zero value, this can impact the effectiveness of the compression that a metric datastore may apply.
-* `real_time` (default `false`): by default, the receiver generates the metrics as fast as possible.
-  When set to true, it will pause after each cycle according to the configured `interval`.
+* `real_time` (default `false`): when set to true, the receiver will pace metric emission
+  to the configured `interval` instead of generating as fast as possible.
+* `run_indefinitely` (default `false`): when set to true, the receiver will generate metrics
+  indefinitely until stopped. Cannot be combined with `end_time` or `end_now_minus`.
 * `exit_after_end` (default `false`): when set to true, will terminate the collector.
 * `exit_after_end_timeout` (default `0`): timeout in case exit_after_end is set to true before the collector is terminated.
 * `seed` (default `0`): seed value for the random number generator that's used for simulating the standard distribution. The seed makes sure that the data generation is deterministic.
@@ -158,6 +160,28 @@ receivers:
     end_time: "2025-01-01T01:00:00Z"
     interval: 10s
     exit_after_end: true
+    seed: 123
+    scenarios:
+      - path: builtin/hostmetrics
+        scale: 100
+
+exporters:
+  nop:
+
+service:
+  pipelines:
+    metrics:
+      receivers: [metricsgen]
+      exporters: [nop]
+```
+
+Real-time mode, running indefinitely:
+```yaml
+receivers:
+  metricsgen:
+    interval: 10s
+    real_time: true
+    run_indefinitely: true
     seed: 123
     scenarios:
       - path: builtin/hostmetrics

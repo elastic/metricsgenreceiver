@@ -17,6 +17,7 @@ type Config struct {
 	Interval                          time.Duration                `mapstructure:"interval"`
 	IntervalJitterStdDev              time.Duration                `mapstructure:"interval_jitter_std_dev"`
 	RealTime                          bool                         `mapstructure:"real_time"`
+	RunIndefinitely                   bool                         `mapstructure:"run_indefinitely"`
 	ExitAfterEnd                      bool                         `mapstructure:"exit_after_end"`
 	ExitAfterEndTimeout               time.Duration                `mapstructure:"exit_after_end_timeout"`
 	Seed                              int64                        `mapstructure:"seed"`
@@ -73,6 +74,14 @@ func (cfg *Config) Validate() error {
 
 	if cfg.StartTime.After(cfg.EndTime) {
 		return fmt.Errorf("start_time must be before end_time")
+	}
+
+	if cfg.RealTime && cfg.StartNowMinus > 0 {
+		return fmt.Errorf("start_now_minus cannot be used with real_time: true (results in permanent timestamp lag)")
+	}
+
+	if cfg.RunIndefinitely && (!cfg.EndTime.IsZero() || cfg.EndNowMinus > 0) {
+		return fmt.Errorf("run_indefinitely cannot be combined with end_time or end_now_minus")
 	}
 
 	for _, scn := range cfg.Scenarios {
