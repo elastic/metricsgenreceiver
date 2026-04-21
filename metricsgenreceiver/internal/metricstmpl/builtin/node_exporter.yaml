@@ -1,3 +1,4 @@
+---
 resourceMetrics:
 - resource:
     attributes:
@@ -8,7 +9,7 @@ resourceMetrics:
       value:
         stringValue: host-0:9100
   scopeMetrics:
-  - scope:
+  - scope: &1
       name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
       version: 0.139.0
     metrics:
@@ -19,31 +20,17 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '37'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '9024'
         - attributes:
           - key: device
             value:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '5226'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -55,7 +42,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '23439'
+          asInt: '25028'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -66,7 +54,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4194304'
+          asInt: '4719826'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -76,7 +65,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2068484096'
+          asInt: '356352'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -86,7 +76,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1003'
+          asInt: '2062'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -98,27 +89,15 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '4867'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '4867'
+          asInt: '4099'
         - attributes:
           - key: device
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '4867'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '4867'
+          asInt: '9'
       metadata:
       - key: prometheus.type
         value:
@@ -128,7 +107,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 1776631127.1493413
+          asDouble: 1776679300.079596
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -140,10 +120,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '6038856'
+          asInt: '20134'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -155,7 +135,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '101306368'
+          asInt: '69808128'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -166,6 +147,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -175,7 +157,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -187,14 +170,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -202,13 +178,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -222,174 +191,282 @@ resourceMetrics:
       description: 'node_exporter: Whether a collector succeeded.'
       gauge:
         dataPoints:
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: arp
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bcache
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bonding
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: btrfs
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: conntrack
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: cpu
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: cpufreq
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: diskstats
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: dmi
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: edac
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: entropy
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: fibrechannel
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: filefd
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: filesystem
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
-              stringValue: kernel_hung
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
+              stringValue: hwmon
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: infiniband
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: ipvs
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: loadavg
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: mdadm
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: meminfo
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: netclass
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: netdev
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: netstat
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfs
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfsd
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nvme
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: os
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: powersupplyclass
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: pressure
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: rapl
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: schedstat
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: selinux
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: sockstat
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: softnet
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: stat
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: tapestats
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: textfile
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: thermal_zone
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: time
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: timex
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: udp_queues
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: uname
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: vmstat
-          timeUnixNano: '1776631194895000000'
           asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: watchdog
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: xfs
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: zfs
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -399,7 +476,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '9'
+          asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -410,6 +488,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -419,7 +498,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '32768'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -429,7 +509,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '45846528'
+          asInt: '40730624'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -439,7 +520,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '197124096'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -451,13 +533,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          timeUnixNano: '1776631194895000000'
-          asInt: '2'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '2'
         - attributes:
@@ -465,13 +541,7 @@ resourceMetrics:
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '2'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '2'
+          asInt: '1'
       metadata:
       - key: prometheus.type
         value:
@@ -483,14 +553,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -498,13 +561,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -521,6 +577,7 @@ resourceMetrics:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asDouble: 0.0
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -532,7 +589,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '55459840'
+          asInt: '29077504'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -542,7 +600,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '3231088640'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -552,7 +611,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '42'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -563,6 +623,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -572,7 +633,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4'
+          asInt: '14'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -605,42 +667,6 @@ resourceMetrics:
               stringValue: '3'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -662,7 +688,7 @@ resourceMetrics:
               stringValue: '1'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '41'
+          asInt: '0'
         - attributes:
           - key: cpu
             value:
@@ -677,48 +703,6 @@ resourceMetrics:
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '41'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '41'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '41'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '41'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '41'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '41'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -730,7 +714,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1337'
+          asInt: '256'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -740,7 +725,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '77017088'
+          asInt: '2592768'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -750,7 +736,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '32768'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -760,7 +747,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '9'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -772,6 +760,7 @@ resourceMetrics:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -783,7 +772,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '904245248'
+          asInt: '169848832'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -794,7 +784,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2082592'
+          asInt: '3317352'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -804,7 +795,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2613248'
+          asInt: '2924544'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -814,7 +806,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0.39
+          asDouble: 0.01
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -825,6 +818,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -836,10 +830,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 2069221.364
+          asDouble: 163.725
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -851,7 +845,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '6210940928'
+          asInt: '8389771264'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -862,6 +857,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -871,7 +867,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0
+          asDouble: 0.001816917
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -886,7 +883,7 @@ resourceMetrics:
               stringValue: '200'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '168'
         - attributes:
           - key: code
             value:
@@ -913,7 +910,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4423680'
+          asInt: '3031040'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -925,9 +923,9 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '3'
+          asInt: '1'
       metadata:
       - key: prometheus.type
         value:
@@ -939,10 +937,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '16727491584'
+          asInt: '356013568'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -955,6 +953,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -964,7 +963,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2320168809'
+          asInt: '848085'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -974,7 +974,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '507162'
+          asInt: '1832'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -986,6 +987,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -997,42 +999,21 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '22000'
+          asInt: '2707707'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
           stringValue: counter
-    - name: node_disk_info
-      description: Info of /sys/block/<block_device>.
-      gauge:
-        dataPoints:
-        - attributes:
-          - key: device
-            value:
-              stringValue: vda
-          - key: major
-            value:
-              stringValue: '254'
-          - key: minor
-            value:
-              stringValue: '0'
-          - key: rotational
-            value:
-              stringValue: '0'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-      metadata:
-      - key: prometheus.type
-        value:
-          stringValue: gauge
     - name: node_load1
       description: 1m load average.
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0.21
+          asDouble: 0.08
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1044,31 +1025,17 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '27'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '6141'
         - attributes:
           - key: device
             value:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '5226'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -1081,7 +1048,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1447513'
+          asInt: '1504779'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1125,7 +1093,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '4'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1135,7 +1104,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '88542'
+          asInt: '124'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1147,10 +1117,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 11.13
+          asDouble: 1.559
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -1163,6 +1133,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1174,14 +1145,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -1189,13 +1153,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -1212,13 +1169,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '1'
         - attributes:
@@ -1226,13 +1177,7 @@ resourceMetrics:
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -1242,7 +1187,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0
+          asDouble: 0.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1253,6 +1199,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1262,7 +1209,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '5'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1273,6 +1221,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1282,7 +1231,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '7344136'
+          asInt: '347669'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1294,6 +1244,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '81600'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1303,7 +1254,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '57252008'
+          asInt: '13581'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1313,7 +1265,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 2
+          asDouble: 6.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1323,7 +1276,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '64'
+          asInt: '8193'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1335,10 +1289,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '109382369280'
+          asInt: '1324196352'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -1352,14 +1306,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -1367,13 +1314,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -1389,6 +1329,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1398,7 +1339,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1305571328'
+          asInt: '1273257984'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1410,25 +1352,13 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
               stringValue: lo
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           timeUnixNano: '1776631194895000000'
           asInt: '0'
       metadata:
@@ -1441,7 +1371,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 159.886802
+          asDouble: 7.754983
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -1452,174 +1383,282 @@ resourceMetrics:
       description: 'node_exporter: Duration of a collector scrape.'
       gauge:
         dataPoints:
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: arp
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.00072225
-        - attributes:
+          asDouble: 0.000231777
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bcache
+          asDouble: 1.2789e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bonding
+          asDouble: 1.405e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: btrfs
+          asDouble: 0.000304818
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: conntrack
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000203917
-        - attributes:
+          asDouble: 2.1189e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: cpu
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.00067475
-        - attributes:
+          asDouble: 0.000550114
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: cpufreq
-          timeUnixNano: '1776631194895000000'
-          asDouble: 6.0542e-05
-        - attributes:
+          asDouble: 8.9066e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: diskstats
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.019796333
-        - attributes:
+          asDouble: 0.001109008
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: dmi
-          timeUnixNano: '1776631194895000000'
-          asDouble: 4.58e-07
-        - attributes:
+          asDouble: 1.8473e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: edac
-          timeUnixNano: '1776631194895000000'
-          asDouble: 1.3459e-05
-        - attributes:
+          asDouble: 1.2112e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: entropy
-          timeUnixNano: '1776631194895000000'
-          asDouble: 6.525e-05
-        - attributes:
+          asDouble: 0.000103044
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: fibrechannel
+          asDouble: 1.081e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: filefd
-          timeUnixNano: '1776631194895000000'
-          asDouble: 3.9625e-05
-        - attributes:
+          asDouble: 3.7989e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: filesystem
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.002954792
-        - attributes:
+          asDouble: 0.003203587
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
-              stringValue: kernel_hung
-          timeUnixNano: '1776631194895000000'
-          asDouble: 5.7709e-05
-        - attributes:
+              stringValue: hwmon
+          asDouble: 1.082e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: infiniband
+          asDouble: 1.0336e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: ipvs
+          asDouble: 1.4421e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: loadavg
-          timeUnixNano: '1776631194895000000'
-          asDouble: 6.925e-05
-        - attributes:
+          asDouble: 3.5144e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: mdadm
+          asDouble: 2.1428e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: meminfo
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000166708
-        - attributes:
+          asDouble: 0.000180524
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: netclass
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.003279
-        - attributes:
+          asDouble: 0.001478359
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: netdev
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000454708
-        - attributes:
+          asDouble: 0.000258266
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: netstat
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000493709
-        - attributes:
+          asDouble: 0.000722071
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfs
+          asDouble: 2.1431e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfsd
+          asDouble: 2.0781e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nvme
+          asDouble: 1.8543e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: os
-          timeUnixNano: '1776631194895000000'
-          asDouble: 7.4459e-05
-        - attributes:
+          asDouble: 6.0016e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: powersupplyclass
+          asDouble: 4.9209e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: pressure
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000219458
-        - attributes:
+          asDouble: 0.000148996
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: rapl
+          asDouble: 1.9048e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: schedstat
-          timeUnixNano: '1776631194895000000'
-          asDouble: 2.0958e-05
-        - attributes:
+          asDouble: 8.5256e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: selinux
+          asDouble: 1.882e-06
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: sockstat
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000134792
-        - attributes:
+          asDouble: 0.000171614
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: softnet
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000123625
-        - attributes:
+          asDouble: 7.7566e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: stat
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000116792
-        - attributes:
+          asDouble: 0.000125921
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: tapestats
+          asDouble: 1.399e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: textfile
-          timeUnixNano: '1776631194895000000'
-          asDouble: 2.55e-05
-        - attributes:
+          asDouble: 2.6767e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: thermal_zone
+          asDouble: 0.000331476
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: time
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000114208
-        - attributes:
+          asDouble: 0.000114449
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: timex
-          timeUnixNano: '1776631194895000000'
-          asDouble: 4.5667e-05
-        - attributes:
+          asDouble: 1.9778e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: udp_queues
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000141958
-        - attributes:
+          asDouble: 0.000182481
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: uname
-          timeUnixNano: '1776631194895000000'
-          asDouble: 4.7375e-05
-        - attributes:
+          asDouble: 1.051e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: collector
             value:
               stringValue: vmstat
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.000119417
+          asDouble: 0.000150966
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: watchdog
+          asDouble: 4.2315e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: xfs
+          asDouble: 1.4766e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: zfs
+          asDouble: 1.0952e-05
       metadata:
       - key: prometheus.type
         value:
@@ -1629,7 +1668,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1644,70 +1684,28 @@ resourceMetrics:
               stringValue: '0'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
         - attributes:
           - key: cpu
             value:
               stringValue: '1'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '10'
+          asInt: '0'
         - attributes:
           - key: cpu
             value:
               stringValue: '2'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '85'
+          asInt: '0'
         - attributes:
           - key: cpu
             value:
               stringValue: '3'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '50'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '10'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '85'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '50'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '10'
+          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -1720,7 +1718,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '26442'
+          asInt: '7087'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -1732,7 +1731,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '9'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1744,13 +1744,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          timeUnixNano: '1776631194895000000'
-          asInt: '2'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '2'
         - attributes:
@@ -1758,13 +1752,7 @@ resourceMetrics:
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '2'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '2'
+          asInt: '1'
       metadata:
       - key: prometheus.type
         value:
@@ -1776,25 +1764,13 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1000'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '1000'
         - attributes:
           - key: device
             value:
               stringValue: lo
-          timeUnixNano: '1776631194895000000'
-          asInt: '1000'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           timeUnixNano: '1776631194895000000'
           asInt: '1000'
       metadata:
@@ -1808,24 +1784,6 @@ resourceMetrics:
         - attributes:
           - key: address
             value:
-              stringValue: 00:00:00:00
-          - key: adminstate
-            value:
-              stringValue: down
-          - key: broadcast
-            value:
-              stringValue: 00:00:00:00
-          - key: device
-            value:
-              stringValue: tunl0
-          - key: operstate
-            value:
-              stringValue: down
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: address
-            value:
               stringValue: 00:00:00:00:00:00
           - key: adminstate
             value:
@@ -1836,6 +1794,12 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
+          - key: duplex
+            value:
+              stringValue: ''
+          - key: ifalias
+            value:
+              stringValue: ''
           - key: operstate
             value:
               stringValue: unknown
@@ -1844,25 +1808,7 @@ resourceMetrics:
         - attributes:
           - key: address
             value:
-              stringValue: 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
-          - key: adminstate
-            value:
-              stringValue: down
-          - key: broadcast
-            value:
-              stringValue: 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          - key: operstate
-            value:
-              stringValue: down
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: address
-            value:
-              stringValue: 8e:00:0c:30:16:cb
+              stringValue: 42:01:84:c0:a6:f9
           - key: adminstate
             value:
               stringValue: up
@@ -1871,10 +1817,13 @@ resourceMetrics:
               stringValue: ff:ff:ff:ff:ff:ff
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           - key: duplex
             value:
-              stringValue: full
+              stringValue: unknown
+          - key: ifalias
+            value:
+              stringValue: ''
           - key: operstate
             value:
               stringValue: up
@@ -1890,6 +1839,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1899,7 +1849,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 1776631194.92715
+          asDouble: 1776679315.32512
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1909,7 +1860,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1024'
+          asInt: '896'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1919,7 +1871,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '460'
+          asInt: '2133398'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -1931,14 +1884,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -1946,13 +1892,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -1994,48 +1933,6 @@ resourceMetrics:
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -2047,7 +1944,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '608092160'
+          asInt: '495616'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2057,7 +1955,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4294963200'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2069,15 +1968,15 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
         - attributes:
           - key: device
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -2088,6 +1987,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2098,6 +1998,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2107,7 +2008,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2296'
+          asInt: '1208'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2117,7 +2019,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '227'
+          asInt: '6'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2129,9 +2032,9 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '2'
+          asInt: '4'
         - attributes:
           - key: device
             value:
@@ -2149,14 +2052,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -2164,13 +2060,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -2185,7 +2074,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '17'
+          asInt: '22'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2222,48 +2112,6 @@ resourceMetrics:
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -2275,7 +2123,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '5939200'
+          asInt: '2654208'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -2287,10 +2136,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '15386'
+          asInt: '1656'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -2303,7 +2152,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '38014093'
+          asInt: '685042'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -2323,7 +2173,7 @@ resourceMetrics:
               stringValue: idle
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 10870.69
+          asDouble: 3184.77
         - attributes:
           - key: cpu
             value:
@@ -2333,7 +2183,7 @@ resourceMetrics:
               stringValue: iowait
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 2.2
+          asDouble: 3.98
         - attributes:
           - key: cpu
             value:
@@ -2343,7 +2193,7 @@ resourceMetrics:
               stringValue: irq
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.01
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -2351,26 +2201,6 @@ resourceMetrics:
           - key: mode
             value:
               stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.19
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '0'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 34.1
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '0'
-          - key: mode
-            value:
-              stringValue: steal
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asDouble: 0.0
@@ -2380,10 +2210,30 @@ resourceMetrics:
               stringValue: '0'
           - key: mode
             value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.96
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.16
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
               stringValue: system
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 210.45
+          asDouble: 4.52
         - attributes:
           - key: cpu
             value:
@@ -2393,7 +2243,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 444.9
+          asDouble: 6.62
         - attributes:
           - key: cpu
             value:
@@ -2403,7 +2253,7 @@ resourceMetrics:
               stringValue: idle
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 11107.87
+          asDouble: 3184.53
         - attributes:
           - key: cpu
             value:
@@ -2413,7 +2263,7 @@ resourceMetrics:
               stringValue: iowait
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 5.91
+          asDouble: 3.24
         - attributes:
           - key: cpu
             value:
@@ -2433,26 +2283,6 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.23
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '1'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.46
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '1'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
           asDouble: 0.0
         - attributes:
           - key: cpu
@@ -2460,10 +2290,30 @@ resourceMetrics:
               stringValue: '1'
           - key: mode
             value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.77
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.17
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
               stringValue: system
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 164.74
+          asDouble: 4.39
         - attributes:
           - key: cpu
             value:
@@ -2473,7 +2323,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 478.69
+          asDouble: 6.76
         - attributes:
           - key: cpu
             value:
@@ -2483,7 +2333,7 @@ resourceMetrics:
               stringValue: idle
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 11123.21
+          asDouble: 3179.36
         - attributes:
           - key: cpu
             value:
@@ -2493,7 +2343,7 @@ resourceMetrics:
               stringValue: iowait
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 4.41
+          asDouble: 6.16
         - attributes:
           - key: cpu
             value:
@@ -2513,26 +2363,6 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.36
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '2'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 3.26
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '2'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
           asDouble: 0.0
         - attributes:
           - key: cpu
@@ -2540,10 +2370,30 @@ resourceMetrics:
               stringValue: '2'
           - key: mode
             value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.65
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.16
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
               stringValue: system
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 159.16
+          asDouble: 4.31
         - attributes:
           - key: cpu
             value:
@@ -2553,7 +2403,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 465.04
+          asDouble: 10.43
         - attributes:
           - key: cpu
             value:
@@ -2563,7 +2413,7 @@ resourceMetrics:
               stringValue: idle
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 11132.3
+          asDouble: 3186.97
         - attributes:
           - key: cpu
             value:
@@ -2573,7 +2423,7 @@ resourceMetrics:
               stringValue: iowait
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 5.33
+          asDouble: 4.08
         - attributes:
           - key: cpu
             value:
@@ -2593,26 +2443,6 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 1.02
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '3'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.6
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '3'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
           asDouble: 0.0
         - attributes:
           - key: cpu
@@ -2620,10 +2450,30 @@ resourceMetrics:
               stringValue: '3'
           - key: mode
             value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.98
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.18
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
               stringValue: system
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 156.83
+          asDouble: 4.23
         - attributes:
           - key: cpu
             value:
@@ -2633,487 +2483,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 470.54
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: idle
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 11403.21
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: iowait
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 2.17
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: irq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.25
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.08
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: system
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 107.76
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 284.13
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: idle
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 11362.7
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: iowait
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 6.72
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: irq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 1.01
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.3
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: system
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 115.86
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 292.71
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: idle
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 11397.21
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: iowait
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 3.19
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: irq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.36
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.29
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: system
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 102.76
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 291.52
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: idle
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 11392.82
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: iowait
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 5.55
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: irq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 2.68
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.31
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.0
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: system
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 101.64
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 290.98
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: idle
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.36
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: iowait
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 3.26
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: irq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 159.16
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 465.04
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 11132.3
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 5.33
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: system
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 1.02
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.6
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: idle
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 156.83
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: iowait
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 470.54
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: irq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 11403.21
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 2.17
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: softirq
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.25
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: steal
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.08
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: system
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 107.76
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 284.13
+          asDouble: 4.0
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3125,7 +2495,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '218533888'
+          asInt: '197111808'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3136,6 +2507,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3146,6 +2518,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '65536'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3156,6 +2529,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asDouble: 0.01
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3165,7 +2539,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1476'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3176,7 +2551,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '3473408'
+          asInt: '4702208'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3188,39 +2564,63 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
-          asInt: '66592170'
+          asInt: '540451'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
-          asInt: '66592170'
+          asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
           timeUnixNano: '1776631194895000000'
-          asInt: '66592170'
+          asInt: '2047784'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '2048281'
       metadata:
       - key: prometheus.type
         value:
@@ -3230,7 +2630,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '120'
+          asInt: '7'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3242,6 +2643,7 @@ resourceMetrics:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3253,7 +2655,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 1776631120.88
+          asDouble: 1776676822.19
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3290,10 +2693,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '20711856'
+          asInt: '36421'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3306,6 +2709,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3315,7 +2719,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '12'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3327,27 +2732,15 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '3'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '3'
+          asInt: '0'
         - attributes:
           - key: device
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '3'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '3'
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -3359,14 +2752,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3374,13 +2760,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3395,7 +2774,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0
+          asDouble: 0.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3405,7 +2785,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1631329'
+          asInt: '9223372036854775807'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3416,6 +2797,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3425,7 +2807,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '120'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3437,7 +2820,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '6181888'
+          asInt: '246011864'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3449,7 +2833,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 1418183276.0
+          asDouble: 1776676112.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3461,10 +2846,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1925173784'
+          asInt: '2681080'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3476,7 +2861,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '4'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3488,27 +2874,15 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '32'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '32'
+          asInt: '0'
         - attributes:
           - key: device
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '32'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '32'
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -3520,7 +2894,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '125000000'
       metadata:
@@ -3533,6 +2907,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3543,6 +2918,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3554,7 +2930,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3571,14 +2947,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3586,13 +2955,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3608,6 +2970,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3619,6 +2982,7 @@ resourceMetrics:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3631,6 +2995,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3640,7 +3005,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '8'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3650,7 +3016,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '7'
+          asInt: '8'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3661,7 +3028,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '32144'
+          asInt: '15704'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3673,10 +3041,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '68851'
+          asInt: '3315'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3689,6 +3057,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3699,6 +3068,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3710,14 +3080,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3725,13 +3088,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -3747,6 +3103,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3757,7 +3114,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 14.036781000000001
+          asDouble: 1.598672
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3772,6 +3130,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3781,7 +3140,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '953229312'
+          asInt: '995049472'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3791,7 +3151,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '3831959552'
+          asInt: '16779542528'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3805,7 +3166,7 @@ resourceMetrics:
             value:
               stringValue: UTC
           timeUnixNano: '1776631194895000000'
-          asDouble: 0
+          asDouble: 0.0
       metadata:
       - key: prometheus.type
         value:
@@ -3815,7 +3176,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '35045'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3825,7 +3187,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '536'
+          asInt: '2134562'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3834,15 +3197,33 @@ resourceMetrics:
       description: Available clocksources read from '/sys/devices/system/clocksource'.
       gauge:
         dataPoints:
-        - attributes:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
           - key: clocksource
             value:
-              stringValue: arch_sys_counter
+              stringValue: acpi_pm
           - key: device
             value:
               stringValue: '0'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 1.0
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: clocksource
+            value:
+              stringValue: kvm-clock
+          - key: device
+            value:
+              stringValue: '0'
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: clocksource
+            value:
+              stringValue: tsc
+          - key: device
+            value:
+              stringValue: '0'
+          asInt: '1'
       metadata:
       - key: prometheus.type
         value:
@@ -3853,7 +3234,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1250'
+          asInt: '160713350'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -3865,7 +3247,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 18446744073709552000
+          asDouble: 1.8446744073709552e+19
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3877,39 +3260,63 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
-          asInt: '1010623520768'
+          asInt: '7347445760'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
-          asInt: '1010623520768'
+          asInt: '117594112'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
           timeUnixNano: '1776631194895000000'
-          asInt: '1010623520768'
+          asInt: '1677459456'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '5242880'
       metadata:
       - key: prometheus.type
         value:
@@ -3920,6 +3327,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '35184372087808'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3931,7 +3339,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '1'
         - attributes:
@@ -3949,7 +3357,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '4'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3961,7 +3370,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 9223372036854776000
+          asDouble: 9.223372036854776e+18
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3971,7 +3381,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '8'
+          asInt: '18'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3981,7 +3392,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '131'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -3991,7 +3403,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '6'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4002,6 +3415,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4011,7 +3425,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4023,39 +3438,63 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
-          asInt: '67108864'
+          asInt: '647168'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
-          asInt: '67108864'
+          asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
           timeUnixNano: '1776631194895000000'
-          asInt: '67108864'
+          asInt: '2048284'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '2048284'
       metadata:
       - key: prometheus.type
         value:
@@ -4065,7 +3504,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '53028'
+          asInt: '125'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4091,7 +3531,7 @@ resourceMetrics:
             value:
               stringValue: tx
           timeUnixNano: '1776631194895000000'
-          asInt: '21'
+          asInt: '0'
         - attributes:
           - key: ip
             value:
@@ -4100,7 +3540,7 @@ resourceMetrics:
             value:
               stringValue: rx
           timeUnixNano: '1776631194895000000'
-          asInt: '21'
+          asInt: '0'
         - attributes:
           - key: ip
             value:
@@ -4109,7 +3549,7 @@ resourceMetrics:
             value:
               stringValue: tx
           timeUnixNano: '1776631194895000000'
-          asInt: '21'
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -4119,7 +3559,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '8'
+          asInt: '9'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4129,7 +3570,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4096'
+          asInt: '256'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4140,6 +3582,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4149,7 +3592,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '3556'
+          asInt: '2127'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4160,6 +3604,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4169,7 +3614,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '8'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4180,6 +3626,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '123'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4189,7 +3636,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '35183963009024'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4200,6 +3648,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4210,7 +3659,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '3057904'
+          asInt: '3308816'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4220,7 +3670,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '5'
+          asInt: '8'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4230,7 +3681,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '7281385472'
+          asInt: '16181948416'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4242,10 +3694,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 2077872.2280000001
+          asDouble: 171.452
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4257,7 +3709,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '8023486464'
+          asInt: '671002624'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4269,14 +3722,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '1'
@@ -4286,14 +3732,7 @@ resourceMetrics:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4307,13 +3746,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
           asInt: '1'
         - attributes:
@@ -4321,13 +3754,7 @@ resourceMetrics:
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '772'
       metadata:
       - key: prometheus.type
         value:
@@ -4342,70 +3769,28 @@ resourceMetrics:
               stringValue: '0'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '299641'
+          asInt: '1636'
         - attributes:
           - key: cpu
             value:
               stringValue: '1'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '916354'
+          asInt: '3153'
         - attributes:
           - key: cpu
             value:
               stringValue: '2'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '5577791'
+          asInt: '2649'
         - attributes:
           - key: cpu
             value:
               stringValue: '3'
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '3113785'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '299641'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '916354'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '5577791'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '3113785'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '299641'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '916354'
+          asInt: '6825'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4417,7 +3802,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0.37
+          asDouble: 0.02
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4428,6 +3814,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4438,6 +3825,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4450,7 +3838,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '45439'
+          asInt: '2732735'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4462,7 +3851,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '720239'
+          asInt: '977365'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4472,7 +3862,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '149172224'
+          asInt: '839135232'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4483,6 +3874,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4494,10 +3886,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 41614.592000000004
+          asDouble: 15.58
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4512,37 +3904,61 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
       metadata:
@@ -4554,7 +3970,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2298032128'
+          asInt: '167813120'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4564,7 +3981,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '17'
+          asInt: '6'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4574,7 +3992,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '13728008'
+          asInt: '14244104'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4586,39 +4005,63 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
-          asInt: '955631214592'
+          asInt: '6800564224'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
-          asInt: '955631214592'
+          asInt: '117594112'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
           timeUnixNano: '1776631194895000000'
-          asInt: '955631214592'
+          asInt: '1677459456'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '5242880'
       metadata:
       - key: prometheus.type
         value:
@@ -4630,14 +4073,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -4645,13 +4081,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -4667,6 +4096,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4677,7 +4107,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '491520'
+          asInt: '622592'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4695,7 +4126,7 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.01
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4705,7 +4136,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.02
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4715,7 +4146,7 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.02
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4725,7 +4156,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.03
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4735,7 +4166,7 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.03
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4745,7 +4176,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.04
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4755,7 +4186,7 @@ resourceMetrics:
               stringValue: nice
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.04
+          asDouble: 0.0
         - attributes:
           - key: cpu
             value:
@@ -4765,127 +4196,7 @@ resourceMetrics:
               stringValue: user
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.05
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.05
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.06
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.06
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.07
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.07
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.08
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.08
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.09
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.01
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.02
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: nice
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.02
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          - key: mode
-            value:
-              stringValue: user
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asDouble: 0.03
+          asDouble: 0.0
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4899,10 +4210,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 8655.768
+          asDouble: 5.4670000000000005
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -4914,7 +4225,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '115'
+          asInt: '6'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -4926,46 +4238,61 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: major
             value:
-              stringValue: '254'
+              stringValue: '8'
           - key: minor
             value:
               stringValue: '1'
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
           asInt: '1'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: major
             value:
-              stringValue: '254'
+              stringValue: '8'
           - key: minor
             value:
-              stringValue: '1'
+              stringValue: '15'
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
           asInt: '1'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: major
             value:
-              stringValue: '254'
+              stringValue: '0'
           - key: minor
             value:
-              stringValue: '1'
+              stringValue: '23'
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: major
+            value:
+              stringValue: '0'
+          - key: minor
+            value:
+              stringValue: '25'
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
           timeUnixNano: '1776631194895000000'
           asInt: '1'
       metadata:
@@ -4979,6 +4306,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '7'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5003,7 +4331,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '491520'
+          asInt: '622592'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5014,7 +4343,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '8885917'
+          asInt: '457955'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5028,31 +4358,17 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '3396'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '160621474'
         - attributes:
           - key: device
             value:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '2365990'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5067,6 +4383,7 @@ resourceMetrics:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asDouble: 0.0
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5078,7 +4395,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '24031232'
+          asInt: '23912448'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5090,37 +4408,61 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
       metadata:
@@ -5133,6 +4475,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5142,7 +4485,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '6286396970'
+          asInt: '160713350'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5154,14 +4498,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -5169,13 +4506,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -5190,7 +4520,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2'
+          asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5200,7 +4531,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1541180581'
+          asInt: '1293160'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5212,10 +4544,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1555'
+          asInt: '8836'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5228,6 +4560,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5238,6 +4571,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5264,7 +4598,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1077248'
+          asInt: '114688'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5274,7 +4609,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '104'
+          asInt: '7'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5285,6 +4621,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5296,14 +4633,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '2'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '2'
@@ -5313,14 +4643,7 @@ resourceMetrics:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '2'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '2'
+          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5332,7 +4655,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 16
+          asDouble: 0.46
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5344,39 +4668,63 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
-          asInt: '1081100128256'
+          asInt: '10330861568'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
-          asInt: '1081100128256'
+          asInt: '129718272'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
           timeUnixNano: '1776631194895000000'
-          asInt: '1081100128256'
+          asInt: '1677955072'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '5242880'
       metadata:
       - key: prometheus.type
         value:
@@ -5388,31 +4736,17 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '113513'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '857919'
         - attributes:
           - key: device
             value:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
+          asInt: '2365990'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5426,14 +4760,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -5441,13 +4768,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -5463,6 +4783,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '53'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5470,26 +4791,70 @@ resourceMetrics:
     - name: go_gc_duration_seconds
       description: A summary of the wall-time pause (stop-the-world) duration in garbage
         collection cycles.
-      summary:
+      gauge:
         dataPoints:
-        - startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          count: '2'
-          sum: 8.4626e-05
-          quantileValues:
-          - value: 2.0625e-05
-          - quantile: 0.25
-            value: 2.0625e-05
-          - quantile: 0.5
-            value: 6.4001e-05
-          - quantile: 0.75
-            value: 6.4001e-05
-          - quantile: 1
-            value: 6.4001e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0'
+          asDouble: 2.0625e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0.25'
+          asDouble: 2.0625e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0.5'
+          asDouble: 6.4001e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0.75'
+          asDouble: 6.4001e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '1'
+          asDouble: 6.4001e-05
       metadata:
       - key: prometheus.type
         value:
-          stringValue: summary
+          stringValue: gauge
+    - name: go_gc_duration_seconds_sum
+      description: Total pause duration of garbage collection cycles.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 8.4626e-05
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_gc_duration_seconds_count
+      description: Total number of garbage collection cycles.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          attributes: []
+          asInt: '2'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
     - name: node_network_receive_frame_total
       description: Network device statistic receive_frame.
       sum:
@@ -5497,14 +4862,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -5512,13 +4870,6 @@ resourceMetrics:
           - key: device
             value:
               stringValue: lo
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
@@ -5534,6 +4885,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5543,7 +4895,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5553,7 +4906,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 16
+          asDouble: 0.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5563,7 +4917,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '22568960'
+          asInt: '41693184'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5574,6 +4929,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5583,7 +4939,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '229'
+          asInt: '168'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5595,6 +4952,7 @@ resourceMetrics:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5606,7 +4964,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1053417472'
+          asInt: '1008984064'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5616,7 +4975,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '3440640'
+          asInt: '1835008'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5627,7 +4987,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2082592'
+          asInt: '3317352'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5638,6 +4999,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5649,7 +5011,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '7897088'
+          asInt: '7733248'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5660,6 +5023,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5671,27 +5035,15 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
         - attributes:
           - key: device
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
       metadata:
       - key: prometheus.type
         value:
@@ -5728,48 +5080,6 @@ resourceMetrics:
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '4'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '5'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '6'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '7'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '8'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
-        - attributes:
-          - key: cpu
-            value:
-              stringValue: '9'
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5782,7 +5092,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 0.1
+          asDouble: 2.79
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5795,7 +5106,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '112995'
+          asInt: '986873'
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5809,6 +5121,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '89738'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5819,6 +5132,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5828,7 +5142,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 1
+          asDouble: 1.000035940032959
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5838,7 +5153,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1048576'
+          asInt: '524287'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5851,6 +5167,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '100'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5862,10 +5179,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 1.944
+          asDouble: 0.7000000000000001
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5878,6 +5195,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '2097152'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5887,7 +5205,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '230883328'
+          asInt: '15384461312'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5899,7 +5218,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           timeUnixNano: '1776631194895000000'
           asInt: '0'
       metadata:
@@ -5911,7 +5230,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2786264347'
+          asInt: '986873'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5922,6 +5242,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5933,14 +5254,7 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
+              stringValue: ens4
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
           asInt: '1'
@@ -5950,14 +5264,7 @@ resourceMetrics:
               stringValue: lo
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          startTimeUnixNano: '1776631194895000000'
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '0'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -5969,7 +5276,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '4096'
+          asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -5979,36 +5287,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0
-      metadata:
-      - key: prometheus.type
-        value:
-          stringValue: gauge
-    - name: node_uname_info
-      description: Labeled system information as provided by the uname system call.
-      gauge:
-        dataPoints:
-        - attributes:
-          - key: domainname
-            value:
-              stringValue: "(none)"
-          - key: machine
-            value:
-              stringValue: aarch64
-          - key: nodename
-            value:
-              stringValue: 91c0907234ba
-          - key: release
-            value:
-              stringValue: 6.12.76-linuxkit
-          - key: sysname
-            value:
-              stringValue: Linux
-          - key: version
-            value:
-              stringValue: "#1 SMP Sun Mar  8 14:41:59 UTC 2026"
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asDouble: 0.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6020,10 +5300,10 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: vda
+              stringValue: sda
           startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asInt: '1775784'
+          asInt: '6031'
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -6037,37 +5317,61 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda1"
           - key: fstype
             value:
               stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hostname"
+              stringValue: "/"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: "/dev/sda15"
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/hosts"
+              stringValue: "/boot/efi"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
         - attributes:
           - key: device
             value:
-              stringValue: "/dev/vda1"
+              stringValue: tmpfs
           - key: fstype
             value:
-              stringValue: ext4
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
           - key: mountpoint
             value:
-              stringValue: "/etc/resolv.conf"
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
           timeUnixNano: '1776631194895000000'
           asInt: '0'
       metadata:
@@ -6080,6 +5384,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6089,7 +5394,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '1'
+          asInt: '2'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6099,7 +5405,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '54915039'
+          asInt: '10838'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6109,7 +5416,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0
+          asDouble: 0.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6119,7 +5427,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '68640'
+          asInt: '63840'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6129,7 +5438,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '2287017984'
+          asInt: '197468160'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6139,7 +5449,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '361308160'
+          asInt: '9670656'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6149,7 +5460,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '230'
+          asInt: '5'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6159,7 +5471,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asInt: '244961280'
+          asInt: '209625088'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6171,27 +5484,15 @@ resourceMetrics:
         - attributes:
           - key: device
             value:
-              stringValue: eth0
+              stringValue: ens4
           timeUnixNano: '1776631194895000000'
-          asInt: '1500'
-        - attributes:
-          - key: device
-            value:
-              stringValue: ip6tnl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1500'
+          asInt: '1460'
         - attributes:
           - key: device
             value:
               stringValue: lo
           timeUnixNano: '1776631194895000000'
-          asInt: '1500'
-        - attributes:
-          - key: device
-            value:
-              stringValue: tunl0
-          timeUnixNano: '1776631194895000000'
-          asInt: '1500'
+          asInt: '65536'
       metadata:
       - key: prometheus.type
         value:
@@ -6203,7 +5504,8 @@ resourceMetrics:
         dataPoints:
         - startTimeUnixNano: '1776631194895000000'
           timeUnixNano: '1776631194895000000'
-          asDouble: 159.229614
+          asDouble: 7.546516
+          attributes: []
         aggregationTemporality: 2
         isMonotonic: true
       metadata:
@@ -6216,6 +5518,7 @@ resourceMetrics:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
           asInt: '0'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6225,7 +5528,8 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
-          asDouble: 0
+          asDouble: 0.0
+          attributes: []
       metadata:
       - key: prometheus.type
         value:
@@ -6235,7 +5539,613 @@ resourceMetrics:
       gauge:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          asInt: '96468992'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_cooling_device_cur_state
+      description: Current throttle state of the cooling device.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '0'
+          - key: type
+            value:
+              stringValue: Processor
           asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '1'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '2'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '3'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_cooling_device_max_state
+      description: Maximum throttle state of the cooling device.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '0'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '1'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '2'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '3'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_DirectMap1G_bytes
+      description: Memory information field DirectMap1G_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 12884901888.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_DirectMap2M_bytes
+      description: Memory information field DirectMap2M_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 6345981952.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_DirectMap4k_bytes
+      description: Memory information field DirectMap4k_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 93118464.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_schedstat_running_seconds_total
+      description: Running time in seconds.
+      sum:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          asDouble: 12.699380784
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          asDouble: 13.195776544
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          asDouble: 16.403577445
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          asDouble: 10.355849672
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_schedstat_timeslices_total
+      description: Number of timeslices executed.
+      sum:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          asInt: '89363'
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          asInt: '90698'
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          asInt: '79350'
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          asInt: '103914'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_schedstat_waiting_seconds_total
+      description: Waiting time in seconds.
+      sum:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          asDouble: 1.355486921
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          asDouble: 1.24701163
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          asDouble: 1.085039163
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          asDouble: 1.289371459
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_selinux_enabled
+      description: SELinux is enabled, 1 is true, 0 is false.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+  - resource:
+      attributes:
+      - key: job
+        value:
+          stringValue: node
+      - key: instance
+        value:
+          stringValue: host-0:9100
+      - key: model
+        value:
+          stringValue: PersistentDisk
+      - key: path
+        value:
+          stringValue: pci-0000:00:03.0-scsi-0:0:0:0
+      - key: revision
+        value:
+          stringValue: '1'
+      - key: serial
+        value:
+          stringValue: disk-0
+      - key: wwn
+        value:
+          stringValue: ''
+    scopeMetrics:
+    - scope:
+        name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+        version: 0.139.0
+      metrics:
+      - name: node_disk_info
+        description: Info of /sys/block/<block_device>.
+        gauge:
+          dataPoints:
+          - attributes:
+            - key: device
+              value:
+                stringValue: sda
+            - key: major
+              value:
+                stringValue: '8'
+            - key: minor
+              value:
+                stringValue: '0'
+            - key: rotational
+              value:
+                stringValue: '0'
+            timeUnixNano: '1776631194895000000'
+            asInt: '1'
+        metadata:
+        - key: prometheus.type
+          value:
+            stringValue: gauge
+  - resource: 
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: nodename
+      value:
+        stringValue: host-0
+    scopeMetrics:
+    - scope:
+        name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+        version: 0.139.0
+      metrics:
+      - name: node_uname_info
+      description: Labeled system information as provided by the uname system call.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: domainname
+            value:
+              stringValue: "(none)"
+          - key: machine
+            value:
+              stringValue: x86_64
+          - key: release
+            value:
+              stringValue: 6.1.0-cloud-amd64
+          - key: sysname
+            value:
+              stringValue: Linux
+          - key: version
+            value:
+              stringValue: "#1 SMP PREEMPT_DYNAMIC"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: model
+      value:
+        stringValue: PersistentDisk
+    - key: path
+      value:
+        stringValue: pci-0000:00:03.0-scsi-0:0:1:0
+    - key: revision
+      value:
+        stringValue: '1'
+    - key: serial
+      value:
+        stringValue: disk-0
+    - key: wwn
+      value:
+        stringValue: ''
+  scopeMetrics:
+  - scope: *1
+    metrics:
+    - name: node_disk_info
+      description: Info of /sys/block/<block_device>.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          - key: major
+            value:
+              stringValue: '8'
+          - key: minor
+            value:
+              stringValue: '0'
+          - key: rotational
+            value:
+              stringValue: '0'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: nodename
+      value:
+        stringValue: host-0
+  scopeMetrics:
+  - scope: *1
+    metrics:
+    - name: node_uname_info
+      description: Labeled system information as provided by the uname system call.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: domainname
+            value:
+              stringValue: "(none)"
+          - key: machine
+            value:
+              stringValue: x86_64
+          - key: release
+            value:
+              stringValue: 6.1.0-cloud-amd64
+          - key: sysname
+            value:
+              stringValue: Linux
+          - key: version
+            value:
+              stringValue: "#1 SMP PREEMPT_DYNAMIC"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: build_id
+      value:
+        stringValue: ''
+    - key: id
+      value:
+        stringValue: debian
+    - key: id_like
+      value:
+        stringValue: ''
+    - key: image_id
+      value:
+        stringValue: ''
+    - key: image_version
+      value:
+        stringValue: ''
+    - key: name
+      value:
+        stringValue: Debian GNU/Linux
+    - key: pretty_name
+      value:
+        stringValue: Debian GNU/Linux 12 (bookworm)
+    - key: variant
+      value:
+        stringValue: ''
+    - key: variant_id
+      value:
+        stringValue: ''
+    - key: version
+      value:
+        stringValue: 12 (bookworm)
+    - key: version_codename
+      value:
+        stringValue: bookworm
+    - key: version_id
+      value:
+        stringValue: '12'
+  scopeMetrics:
+  - scope:
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_os_info
+      description: A metric with a constant 1 value labeled by OS release metadata.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: id
+      value:
+        stringValue: debian
+    - key: id_like
+      value:
+        stringValue: ''
+    - key: name
+      value:
+        stringValue: Debian GNU/Linux
+  scopeMetrics:
+  - scope:
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_os_version
+      description: Metric containing the major version of the OS.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '12'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: bios_date
+      value:
+        stringValue: 01/01/2024
+    - key: bios_release
+      value:
+        stringValue: '1.0'
+    - key: bios_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: bios_version
+      value:
+        stringValue: Generic Cloud BIOS
+    - key: board_asset_tag
+      value:
+        stringValue: asset-0
+    - key: board_name
+      value:
+        stringValue: Generic Cloud VM
+    - key: board_serial
+      value:
+        stringValue: board-0
+    - key: board_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: board_version
+      value:
+        stringValue: ''
+    - key: chassis_asset_tag
+      value:
+        stringValue: ''
+    - key: chassis_serial
+      value:
+        stringValue: ''
+    - key: chassis_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: chassis_version
+      value:
+        stringValue: ''
+    - key: product_family
+      value:
+        stringValue: ''
+    - key: product_name
+      value:
+        stringValue: Generic Cloud VM
+    - key: product_serial
+      value:
+        stringValue: product-0
+    - key: product_sku
+      value:
+        stringValue: ''
+    - key: product_uuid
+      value:
+        stringValue: 00000000-0000-0000-0000-000000000000
+    - key: product_version
+      value:
+        stringValue: ''
+    - key: system_vendor
+      value:
+        stringValue: Generic Cloud
+  scopeMetrics:
+  - scope:
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_dmi_info
+      description: A metric with a constant 1 value labeled by DMI system information.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
       metadata:
       - key: prometheus.type
         value:

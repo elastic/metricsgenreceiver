@@ -35,7 +35,7 @@ receivers:
 #      template_vars:
 #        services: 100
 #        transactions: 50
-#    - path: builtin/node-exporter
+#    - path: builtin/node_exporter
 #      scale: 100
 #    - path: builtin/simple
 #      scale: 10000

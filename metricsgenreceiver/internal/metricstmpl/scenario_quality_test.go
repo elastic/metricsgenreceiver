@@ -19,6 +19,10 @@ var allowedAllZeroDoubleMetricFamilies = map[string]string{
 	"node_pressure_memory_stalled_seconds_total": "healthy hosts may report no stalled memory pressure time",
 	// Pressure wait time can legitimately remain zero on an otherwise healthy, lightly loaded host.
 	"node_pressure_memory_waiting_seconds_total": "healthy hosts may report no waiting memory pressure time",
+	// Guest CPU time often remains at zero on a plain VM that is not itself running guest workloads.
+	"node_cpu_guest_seconds_total": "plain VMs can legitimately report zero guest CPU time across all cores",
+	// A synchronized clock can legitimately report no current estimated error at the capture instant.
+	"node_timex_estimated_error_seconds": "a synchronized clock may report zero current estimated error",
 	// A UTC-configured host can legitimately have a zero timezone offset.
 	"node_time_zone_offset_seconds": "UTC hosts legitimately report a zero timezone offset",
 	// A synchronized clock can legitimately have no observable offset at the capture instant.
@@ -64,7 +68,7 @@ func builtInScenarioTestCases() []builtInScenarioTestCase {
 			},
 		},
 		{name: "nginx", path: "builtin/nginx"},
-		{name: "node-exporter", path: "builtin/node-exporter"},
+		{name: "node_exporter", path: "builtin/node_exporter"},
 	}
 }
 

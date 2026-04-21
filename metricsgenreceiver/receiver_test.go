@@ -119,10 +119,10 @@ func TestReceiver(t *testing.T) {
 			},
 		},
 		{
-			name:            "node-exporter",
-			path:            "builtin/node-exporter",
-			dataPoints:      621,
-			resourceMetrics: 1,
+			name:            "node_exporter",
+			path:            "builtin/node_exporter",
+			dataPoints:      535,
+			resourceMetrics: 5,
 		},
 	}
 	for _, test := range tests {
