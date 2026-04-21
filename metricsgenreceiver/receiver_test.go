@@ -120,6 +120,12 @@ func TestReceiver(t *testing.T) {
 				}
 			},
 		},
+		{
+			name:            "node_exporter",
+			path:            "builtin/node_exporter",
+			dataPoints:      535,
+			resourceMetrics: 5,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

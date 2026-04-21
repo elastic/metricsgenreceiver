@@ -1,0 +1,124 @@
+---
+resourceMetrics:
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-{{.InstanceID}}:9100
+    - key: nodename
+      value:
+        stringValue: host-{{.InstanceID}}
+    - key: build_id
+      value:
+        stringValue: ''
+    - key: id
+      value:
+        stringValue: debian
+    - key: id_like
+      value:
+        stringValue: ''
+    - key: image_id
+      value:
+        stringValue: ''
+    - key: image_version
+      value:
+        stringValue: ''
+    - key: name
+      value:
+        stringValue: Debian GNU/Linux
+    - key: pretty_name
+      value:
+        stringValue: Debian GNU/Linux 12 (bookworm)
+    - key: variant
+      value:
+        stringValue: ''
+    - key: variant_id
+      value:
+        stringValue: ''
+    - key: version
+      value:
+        stringValue: 12 (bookworm)
+    - key: version_codename
+      value:
+        stringValue: bookworm
+    - key: version_id
+      value:
+        stringValue: '12'
+    - key: bios_date
+      value:
+        stringValue: 01/01/2024
+    - key: bios_release
+      value:
+        stringValue: '1.0'
+    - key: bios_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: bios_version
+      value:
+        stringValue: Generic Cloud BIOS
+    - key: board_asset_tag
+      value:
+        stringValue: asset-{{.InstanceID}}
+    - key: board_name
+      value:
+        stringValue: Generic Cloud VM
+    - key: board_serial
+      value:
+        stringValue: board-{{.InstanceID}}
+    - key: board_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: board_version
+      value:
+        stringValue: ''
+    - key: chassis_asset_tag
+      value:
+        stringValue: ''
+    - key: chassis_serial
+      value:
+        stringValue: ''
+    - key: chassis_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: chassis_version
+      value:
+        stringValue: ''
+    - key: product_family
+      value:
+        stringValue: ''
+    - key: product_name
+      value:
+        stringValue: Generic Cloud VM
+    - key: product_serial
+      value:
+        stringValue: product-{{.InstanceID}}
+    - key: product_sku
+      value:
+        stringValue: ''
+    - key: product_uuid
+      value:
+        stringValue: "{{.UUID}}"
+    - key: product_version
+      value:
+        stringValue: ''
+    - key: system_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: model
+      value:
+        stringValue: PersistentDisk
+    - key: path
+      value:
+        stringValue: pci-0000:00:03.0-scsi-0:0:0:0
+    - key: revision
+      value:
+        stringValue: '1'
+    - key: serial
+      value:
+        stringValue: disk-{{.RandomHex 8}}
+    - key: wwn
+      value:
+        stringValue: ''

@@ -1,0 +1,6152 @@
+---
+resourceMetrics:
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+  scopeMetrics:
+  - scope: &1
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_network_receive_packets_total
+      description: Network device statistic receive_packets.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '9024'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '5226'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_memstats_heap_objects
+      description: Number of currently allocated objects. Equals to /gc/heap/objects:objects.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '25028'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_next_gc_bytes
+      description: Number of heap bytes when next garbage collection will take place.
+        Equals to /gc/heap/goal:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '4719826'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Active_anon_bytes
+      description: Memory information field Active_anon_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '356352'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Tcp_OutRsts
+      description: Statistic TcpOutRsts.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2062'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_flags
+      description: 'Network device property: flags'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '4099'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '9'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_last_gc_time_seconds
+      description: Number of seconds since 1970 of last garbage collection.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 1776679300.079596
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_writes_completed_total
+      description: The total number of writes completed successfully.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '20134'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Slab_bytes
+      description: Memory information field Slab_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '69808128'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Icmp_InErrors
+      description: Statistic IcmpInErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_TcpExt_SyncookiesFailed
+      description: Statistic TcpExtSyncookiesFailed.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_transmit_fifo_total
+      description: Network device statistic transmit_fifo.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_scrape_collector_success
+      description: 'node_exporter: Whether a collector succeeded.'
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: arp
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bcache
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bonding
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: btrfs
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: conntrack
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: cpu
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: cpufreq
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: diskstats
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: dmi
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: edac
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: entropy
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: fibrechannel
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: filefd
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: filesystem
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: hwmon
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: infiniband
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: ipvs
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: loadavg
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: mdadm
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: meminfo
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: netclass
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: netdev
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: netstat
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfs
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfsd
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nvme
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: os
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: powersupplyclass
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: pressure
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: rapl
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: schedstat
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: selinux
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: sockstat
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: softnet
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: stat
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: tapestats
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: textfile
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: thermal_zone
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: time
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: timex
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: udp_queues
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: uname
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: vmstat
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: watchdog
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: xfs
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: zfs
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_UDP6_inuse
+      description: Number of UDP6 sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Bounce_bytes
+      description: Memory information field Bounce_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Mlocked_bytes
+      description: Memory information field Mlocked_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_SReclaimable_bytes
+      description: Memory information field SReclaimable_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '40730624'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_SwapCached_bytes
+      description: Memory information field SwapCached_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_iface_id
+      description: 'Network device property: iface_id'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '2'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_receive_errs_total
+      description: Network device statistic receive_errs.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_pressure_memory_waiting_seconds_total
+      description: Total time in seconds that processes have waited for memory
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_SUnreclaim_bytes
+      description: Memory information field SUnreclaim_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '29077504'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_SwapFree_bytes
+      description: Memory information field SwapFree_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_TcpExt_TCPOFOQueue
+      description: Statistic TcpExtTCPOFOQueue.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_sockstat_RAW_inuse
+      description: Number of RAW sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_TCP_inuse
+      description: Number of TCP sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '14'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_softnet_backlog_len
+      description: Softnet backlog status
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_softnet_dropped_total
+      description: Number of dropped packets
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_entropy_available_bits
+      description: Bits of available entropy.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '256'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_PageTables_bytes
+      description: Memory information field PageTables_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2592768'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Unevictable_bytes
+      description: Memory information field Unevictable_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Udp_RcvbufErrors
+      description: Statistic UdpRcvbufErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_timex_pps_stability_exceeded_total
+      description: Pulse per second count of stability limit exceeded events.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Inactive_anon_bytes
+      description: Memory information field Inactive_anon_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '169848832'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_heap_alloc_bytes
+      description: Number of heap bytes allocated and currently in use, same as go_memstats_alloc_bytes.
+        Equals to /memory/classes/heap/objects:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '3317352'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_heap_released_bytes
+      description: Number of heap bytes released to OS. Equals to /memory/classes/heap/released:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2924544'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_load15
+      description: 15m load average.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.01
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Zswapped_bytes
+      description: Memory information field Zswapped_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_write_time_seconds_total
+      description: This is the total number of seconds spent by all writes.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 163.725
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_CommitLimit_bytes
+      description: Memory information field CommitLimit_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '8389771264'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_TCP_orphan
+      description: Number of TCP sockets in state orphan.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_offset_seconds
+      description: Time offset in between local system and reference clock.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.001816917
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: promhttp_metric_handler_requests_total
+      description: Total number of scrapes by HTTP status code.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: code
+            value:
+              stringValue: '200'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '168'
+        - attributes:
+          - key: code
+            value:
+              stringValue: '500'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: code
+            value:
+              stringValue: '503'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_memstats_heap_idle_bytes
+      description: Number of heap bytes waiting to be used. Equals to /memory/classes/heap/released:bytes
+        + /memory/classes/heap/free:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '3031040'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_arp_entries
+      description: ARP entries by device
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_read_bytes_total
+      description: The total number of bytes read successfully.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '356013568'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_sockstat_RAW6_inuse
+      description: Number of RAW6 sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_vmstat_pgfault
+      description: "/proc/vmstat information field pgfault."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '848085'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_vmstat_pgmajfault
+      description: "/proc/vmstat information field pgmajfault."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1832'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_nf_conntrack_stat_early_drop
+      description: Number of dropped conntrack entries to make room for new ones,
+        if maximum table size was reached.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_frees_total
+      description: Total number of heap objects frees. Equals to /gc/heap/frees:objects
+        + /gc/heap/tiny/allocs:objects.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2707707'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_load1
+      description: 1m load average.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.08
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_transmit_packets_total
+      description: Network device statistic transmit_packets.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '6141'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '5226'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_memstats_buck_hash_sys_bytes
+      description: Number of bytes used by the profiling bucket hash table. Equals
+        to /memory/classes/profiling/buckets:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1504779'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_exporter_build_info
+      description: A metric with a constant '1' value labeled by version, revision,
+        branch, goversion from which node_exporter was built, and the goos and goarch
+        for the build.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: branch
+            value:
+              stringValue: HEAD
+          - key: goarch
+            value:
+              stringValue: arm64
+          - key: goos
+            value:
+              stringValue: linux
+          - key: goversion
+            value:
+              stringValue: go1.26.1
+          - key: revision
+            value:
+              stringValue: 0dd664dece3f8319f6bec5a221acd2c7ad13a23d
+          - key: tags
+            value:
+              stringValue: unknown
+          - key: version
+            value:
+              stringValue: 1.11.1
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Udp6_OutDatagrams
+      description: Statistic Udp6OutDatagrams.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '4'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Udp_InDatagrams
+      description: Statistic UdpInDatagrams.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '124'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_disk_discard_time_seconds_total
+      description: This is the total number of seconds spent by all discards.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 1.559
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_HugePages_Surp
+      description: Memory information field HugePages_Surp.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_receive_multicast_total
+      description: Network device statistic receive_multicast.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_up
+      description: Value is 1 if operstate is 'up', 0 otherwise.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_tai_offset_seconds
+      description: International Atomic Time (TAI) offset.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_TcpExt_SyncookiesSent
+      description: Statistic TcpExtSyncookiesSent.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Tcp_InErrs
+      description: Statistic TcpInErrs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_UdpLite_InErrors
+      description: Statistic UdpLiteInErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_vmstat_pgpgin
+      description: "/proc/vmstat information field pgpgin."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '347669'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: go_memstats_mspan_sys_bytes
+      description: Number of bytes used for mspan structures obtained from system.
+        Equals to /memory/classes/metadata/mspan/inuse:bytes + /memory/classes/metadata/mspan/free:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '81600'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Tcp_InSegs
+      description: Statistic TcpInSegs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '13581'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_timex_loop_time_constant
+      description: Phase-locked loop time constant.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 6.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_status
+      description: Value of the status array bits.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '8193'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_written_bytes_total
+      description: The total number of bytes written successfully.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1324196352'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_receive_nohandler_total
+      description: Network device statistic receive_nohandler.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_nf_conntrack_stat_drop
+      description: Number of packets dropped due to conntrack failure.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: process_virtual_memory_bytes
+      description: Virtual memory size in bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1273257984'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_net_dev_group
+      description: 'Network device property: net_dev_group'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_pressure_io_waiting_seconds_total
+      description: Total time in seconds that processes have waited due to IO congestion
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 7.754983
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_scrape_collector_duration_seconds
+      description: 'node_exporter: Duration of a collector scrape.'
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: arp
+          asDouble: 0.000231777
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bcache
+          asDouble: 1.2789e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: bonding
+          asDouble: 1.405e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: btrfs
+          asDouble: 0.000304818
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: conntrack
+          asDouble: 2.1189e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: cpu
+          asDouble: 0.000550114
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: cpufreq
+          asDouble: 8.9066e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: diskstats
+          asDouble: 0.001109008
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: dmi
+          asDouble: 1.8473e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: edac
+          asDouble: 1.2112e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: entropy
+          asDouble: 0.000103044
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: fibrechannel
+          asDouble: 1.081e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: filefd
+          asDouble: 3.7989e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: filesystem
+          asDouble: 0.003203587
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: hwmon
+          asDouble: 1.082e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: infiniband
+          asDouble: 1.0336e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: ipvs
+          asDouble: 1.4421e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: loadavg
+          asDouble: 3.5144e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: mdadm
+          asDouble: 2.1428e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: meminfo
+          asDouble: 0.000180524
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: netclass
+          asDouble: 0.001478359
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: netdev
+          asDouble: 0.000258266
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: netstat
+          asDouble: 0.000722071
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfs
+          asDouble: 2.1431e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nfsd
+          asDouble: 2.0781e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: nvme
+          asDouble: 1.8543e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: os
+          asDouble: 6.0016e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: powersupplyclass
+          asDouble: 4.9209e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: pressure
+          asDouble: 0.000148996
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: rapl
+          asDouble: 1.9048e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: schedstat
+          asDouble: 8.5256e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: selinux
+          asDouble: 1.882e-06
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: sockstat
+          asDouble: 0.000171614
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: softnet
+          asDouble: 7.7566e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: stat
+          asDouble: 0.000125921
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: tapestats
+          asDouble: 1.399e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: textfile
+          asDouble: 2.6767e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: thermal_zone
+          asDouble: 0.000331476
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: time
+          asDouble: 0.000114449
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: timex
+          asDouble: 1.9778e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: udp_queues
+          asDouble: 0.000182481
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: uname
+          asDouble: 1.051e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: vmstat
+          asDouble: 0.000150966
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: watchdog
+          asDouble: 4.2315e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: xfs
+          asDouble: 1.4766e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: collector
+            value:
+              stringValue: zfs
+          asDouble: 1.0952e-05
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_TCP_mem
+      description: Number of TCP sockets in state mem.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_softnet_times_squeezed_total
+      description: Number of times processing packets ran out of quota
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_forks_total
+      description: Total number of forks.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '7087'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_netstat_Udp6_RcvbufErrors
+      description: Statistic Udp6RcvbufErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_iface_link
+      description: 'Network device property: iface_link'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '2'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_transmit_queue_length
+      description: 'Network device property: transmit_queue_length'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '1000'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '1000'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_info
+      description: Non-numeric data from /sys/class/net/<iface>, value is always 1.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: address
+            value:
+              stringValue: 00:00:00:00:00:00
+          - key: adminstate
+            value:
+              stringValue: up
+          - key: broadcast
+            value:
+              stringValue: 00:00:00:00:00:00
+          - key: device
+            value:
+              stringValue: lo
+          - key: duplex
+            value:
+              stringValue: ''
+          - key: ifalias
+            value:
+              stringValue: ''
+          - key: operstate
+            value:
+              stringValue: unknown
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: address
+            value:
+              stringValue: 42:01:84:c0:a6:f9
+          - key: adminstate
+            value:
+              stringValue: up
+          - key: broadcast
+            value:
+              stringValue: ff:ff:ff:ff:ff:ff
+          - key: device
+            value:
+              stringValue: ens4
+          - key: duplex
+            value:
+              stringValue: unknown
+          - key: ifalias
+            value:
+              stringValue: ''
+          - key: operstate
+            value:
+              stringValue: up
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_UDPLITE_inuse
+      description: Number of UDPLITE sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_time_seconds
+      description: System time in seconds since epoch (1970).
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 1776679315.32512
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filefd_allocated
+      description: 'File descriptor statistics: allocated.'
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '896'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Ip6_InOctets
+      description: Statistic Ip6InOctets.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2133398'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_transmit_drop_total
+      description: Network device statistic transmit_drop.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_softnet_flow_limit_count_total
+      description: Number of times flow limit has been reached
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Shmem_bytes
+      description: Memory information field Shmem_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '495616'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_SwapTotal_bytes
+      description: Memory information field SwapTotal_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_dormant
+      description: 'Network device property: dormant'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_FRAG_memory
+      description: Number of FRAG sockets in state memory.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_vmstat_oom_kill
+      description: "/proc/vmstat information field oom_kill."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: go_memstats_mcache_inuse_bytes
+      description: Number of bytes in use by mcache structures. Equals to /memory/classes/metadata/mcache/inuse:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1208'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Tcp_RetransSegs
+      description: Statistic TcpRetransSegs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '6'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_name_assign_type
+      description: 'Network device property: name_assign_type'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '4'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '2'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_receive_fifo_total
+      description: Network device statistic receive_fifo.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_sockstat_TCP_alloc
+      description: Number of TCP sockets in state alloc.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '22'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_softnet_received_rps_total
+      description: Number of times cpu woken up received_rps
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_KernelStack_bytes
+      description: Memory information field KernelStack_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2654208'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_reads_merged_total
+      description: The total number of reads merged.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1656'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_context_switches_total
+      description: Total number of context switches.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '685042'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_cpu_seconds_total
+      description: Seconds the CPUs spent in each mode.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: idle
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 3184.77
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: iowait
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 3.98
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: irq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.96
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.16
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: system
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 4.52
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 6.62
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: idle
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 3184.53
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: iowait
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 3.24
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: irq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.77
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.17
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: system
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 4.39
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 6.76
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: idle
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 3179.36
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: iowait
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 6.16
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: irq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.65
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.16
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: system
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 4.31
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 10.43
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: idle
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 3186.97
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: iowait
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 4.08
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: irq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: softirq
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.98
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: steal
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.18
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: system
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 4.23
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 4.0
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Active_file_bytes
+      description: Memory information field Active_file_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '197111808'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_TcpExt_SyncookiesRecv
+      description: Statistic TcpExtSyncookiesRecv.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_nf_conntrack_entries_limit
+      description: Maximum size of connection tracking table.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '65536'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_tick_seconds
+      description: Seconds between clock ticks.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.01
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_vmstat_pswpin
+      description: "/proc/vmstat information field pswpin."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: go_memstats_heap_inuse_bytes
+      description: Number of heap bytes that are in use. Equals to /memory/classes/heap/objects:bytes
+        + /memory/classes/heap/unused:bytes
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '4702208'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filesystem_files_free
+      description: Filesystem total free file nodes.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '540451'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '2047784'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '2048281'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Icmp_OutMsgs
+      description: Statistic IcmpOutMsgs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '7'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_timex_pps_error_total
+      description: Pulse per second count of calibration errors.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: process_start_time_seconds
+      description: Start time of the process since unix epoch in seconds.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 1776676822.19
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: promhttp_metric_handler_errors_total
+      description: Total number of internal errors encountered by the promhttp metric
+        handler.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cause
+            value:
+              stringValue: encoding
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cause
+            value:
+              stringValue: gathering
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_disk_writes_merged_total
+      description: The number of writes merged.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '36421'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_HugePages_Total
+      description: Memory information field HugePages_Total.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Tcp_CurrEstab
+      description: Statistic TcpCurrEstab.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '12'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_address_assign_type
+      description: 'Network device property: address_assign_type'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_receive_compressed_total
+      description: Network device statistic receive_compressed.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_timex_pps_frequency_hertz
+      description: Pulse per second frequency.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filefd_maximum
+      description: 'File descriptor statistics: maximum.'
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '9223372036854775807'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Udp6_InErrors
+      description: Statistic Udp6InErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Udp_NoPorts
+      description: Statistic UdpNoPorts.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: go_memstats_alloc_bytes_total
+      description: Total number of bytes allocated in heap until now, even if released
+        already. Equals to /gc/heap/allocs:bytes.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '246011864'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_boot_time_seconds
+      description: Node boot time, in unixtime.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 1776676112.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_discarded_sectors_total
+      description: The total number of sectors discarded successfully.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2681080'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_netstat_Udp6_InDatagrams
+      description: Statistic Udp6InDatagrams.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '4'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_device_id
+      description: 'Network device property: device_id'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_speed_bytes
+      description: 'Network device property: speed_bytes'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '125000000'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_FRAG6_inuse
+      description: Number of FRAG6 sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_UDP_mem_bytes
+      description: Number of UDP sockets in state mem_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_discards_merged_total
+      description: The total number of discards merged.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_transmit_colls_total
+      description: Network device statistic transmit_colls.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_nf_conntrack_stat_found
+      description: Number of searched entries which were successful.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_pps_jitter_total
+      description: Pulse per second count of jitter limit exceeded events.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_netstat_Icmp6_InMsgs
+      description: Statistic Icmp6InMsgs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Udp_SndbufErrors
+      description: Statistic UdpSndbufErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: go_goroutines
+      description: Number of goroutines that currently exist.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '8'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_mcache_sys_bytes
+      description: Number of bytes used for mcache structures obtained from system.
+        Equals to /memory/classes/metadata/mcache/inuse:bytes + /memory/classes/metadata/mcache/free:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '15704'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_discards_completed_total
+      description: The total number of discards completed successfully.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '3315'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_HugePages_Rsvd
+      description: Memory information field HugePages_Rsvd.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_TcpExt_ListenDrops
+      description: Statistic TcpExtListenDrops.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_receive_drop_total
+      description: Network device statistic receive_drop.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_nf_conntrack_stat_insert_failed
+      description: Number of entries for which list insertion was attempted but failed.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_pressure_cpu_waiting_seconds_total
+      description: Total time in seconds that processes have waited for CPU time
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 1.598672
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_sched_gomaxprocs_threads
+      description: The current runtime.GOMAXPROCS setting, or the number of operating
+        system threads that can execute user-level Go code simultaneously. Sourced
+        from /sched/gomaxprocs:threads.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Cached_bytes
+      description: Memory information field Cached_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '995049472'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_MemTotal_bytes
+      description: Memory information field MemTotal_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '16779542528'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_time_zone_offset_seconds
+      description: System time zone offset in seconds.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: time_zone
+            value:
+              stringValue: UTC
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_vmstat_pswpout
+      description: "/proc/vmstat information field pswpout."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Ip6_OutOctets
+      description: Statistic Ip6OutOctets.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2134562'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_time_clocksource_available_info
+      description: Available clocksources read from '/sys/devices/system/clocksource'.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: clocksource
+            value:
+              stringValue: acpi_pm
+          - key: device
+            value:
+              stringValue: '0'
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: clocksource
+            value:
+              stringValue: kvm-clock
+          - key: device
+            value:
+              stringValue: '0'
+          asInt: '1'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: clocksource
+            value:
+              stringValue: tsc
+          - key: device
+            value:
+              stringValue: '0'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: process_network_receive_bytes_total
+      description: Number of bytes received by the process over the network.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '160713350'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: process_virtual_memory_max_bytes
+      description: Maximum amount of virtual memory available in bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 1.8446744073709552e+19
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filesystem_free_bytes
+      description: Filesystem free space in bytes.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '7347445760'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '117594112'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1677459456'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '5242880'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_VmallocTotal_bytes
+      description: Memory information field VmallocTotal_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '35184372087808'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_carrier
+      description: 'Network device property: carrier'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_UDP_inuse
+      description: Number of UDP sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '4'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_gc_gomemlimit_bytes
+      description: Go runtime memory limit configured by the user, otherwise math.MaxInt64.
+        This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit
+        function. Sourced from /gc/gomemlimit:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 9.223372036854776e+18
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Icmp6_OutMsgs
+      description: Statistic Icmp6OutMsgs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '18'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_TcpExt_TCPRcvQDrop
+      description: Statistic TcpExtTCPRcvQDrop.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_TcpExt_TCPSynRetrans
+      description: Statistic TcpExtTCPSynRetrans.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '6'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Udp_InErrors
+      description: Statistic UdpInErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_timex_sync_status
+      description: Is clock synchronized to a reliable server (1 = yes, 0 = no).
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filesystem_files
+      description: Filesystem total file nodes.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '647168'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '2048284'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '2048284'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Udp_OutDatagrams
+      description: Statistic UdpOutDatagrams.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '125'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_udp_queues
+      description: Number of allocated memory in the kernel for UDP datagrams in bytes.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: ip
+            value:
+              stringValue: v4
+          - key: queue
+            value:
+              stringValue: rx
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: ip
+            value:
+              stringValue: v4
+          - key: queue
+            value:
+              stringValue: tx
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: ip
+            value:
+              stringValue: v6
+          - key: queue
+            value:
+              stringValue: rx
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: ip
+            value:
+              stringValue: v6
+          - key: queue
+            value:
+              stringValue: tx
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: process_open_fds
+      description: Number of open file descriptors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '9'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_entropy_pool_size_bits
+      description: Bits of entropy pool.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '256'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_ShmemPmdMapped_bytes
+      description: Memory information field ShmemPmdMapped_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Tcp_ActiveOpens
+      description: Statistic TcpActiveOpens.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2127'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Udp6_NoPorts
+      description: Statistic Udp6NoPorts.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Udp6_SndbufErrors
+      description: Statistic Udp6SndbufErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_nf_conntrack_entries
+      description: Number of currently allocated flow entries for connection tracking.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '123'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_VmallocChunk_bytes
+      description: Memory information field VmallocChunk_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_HugePages_Free
+      description: Memory information field HugePages_Free.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_gc_sys_bytes
+      description: Number of bytes used for garbage collection system metadata. Equals
+        to /memory/classes/metadata/other:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '3308816'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_threads
+      description: Number of OS threads created.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '8'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_MemAvailable_bytes
+      description: Memory information field MemAvailable_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '16181948416'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_io_time_weighted_seconds_total
+      description: 'The weighted # of seconds spent doing I/Os.'
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 171.452
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Committed_AS_bytes
+      description: Memory information field Committed_AS_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '671002624'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_carrier_up_changes_total
+      description: 'Network device property: carrier_up_changes_total'
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_protocol_type
+      description: 'Network device property: protocol_type'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '772'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_softnet_processed_total
+      description: Number of processed packets
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1636'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '3153'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2649'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '6825'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_load5
+      description: 5m load average.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.02
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_ShmemHugePages_bytes
+      description: Memory information field ShmemHugePages_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Icmp6_InErrors
+      description: Statistic Icmp6InErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: go_memstats_mallocs_total
+      description: Total number of heap objects allocated, both live and gc-ed. Semantically
+        a counter version for go_memstats_heap_objects gauge. Equals to /gc/heap/allocs:objects
+        + /gc/heap/tiny/allocs:objects.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2732735'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_memstats_other_sys_bytes
+      description: Number of bytes used for other system allocations. Equals to /memory/classes/other:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '977365'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Inactive_file_bytes
+      description: Memory information field Inactive_file_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '839135232'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_nf_conntrack_stat_insert
+      description: Number of entries inserted into the list.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_io_time_seconds_total
+      description: Total seconds spent doing I/Os.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 15.58
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_filesystem_device_error
+      description: Whether an error occurred while getting statistics for the given
+        device.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_AnonPages_bytes
+      description: Memory information field AnonPages_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '167813120'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_TCP6_inuse
+      description: Number of TCP6 sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '6'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_sys_bytes
+      description: Number of bytes obtained from system. Equals to /memory/classes/total:byte.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '14244104'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filesystem_avail_bytes
+      description: Filesystem space available to non-root users in bytes.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '6800564224'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '117594112'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1677459456'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '5242880'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_transmit_carrier_total
+      description: Network device statistic transmit_carrier.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_sockstat_UDPLITE6_inuse
+      description: Number of UDPLITE6 sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_stack_inuse_bytes
+      description: Number of bytes obtained from system for stack allocator in non-CGO
+        environments. Equals to /memory/classes/heap/stacks:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '622592'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_cpu_guest_seconds_total
+      description: Seconds the CPUs spent in guests (VMs) for each mode.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: nice
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          - key: mode
+            value:
+              stringValue: user
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_disk_read_time_seconds_total
+      description: The total number of seconds spent by all reads.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 5.4670000000000005
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_netstat_TcpExt_TCPTimeouts
+      description: Statistic TcpExtTCPTimeouts.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '6'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_filesystem_mount_info
+      description: Filesystem mount information.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: major
+            value:
+              stringValue: '8'
+          - key: minor
+            value:
+              stringValue: '1'
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: major
+            value:
+              stringValue: '8'
+          - key: minor
+            value:
+              stringValue: '15'
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: major
+            value:
+              stringValue: '0'
+          - key: minor
+            value:
+              stringValue: '23'
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: major
+            value:
+              stringValue: '0'
+          - key: minor
+            value:
+              stringValue: '25'
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_nf_conntrack_stat_search_restart
+      description: Number of conntrack table lookups which had to be restarted due
+        to hashtable resizes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '7'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_info
+      description: Information about the Go environment.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: version
+            value:
+              stringValue: go1.26.1
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_stack_sys_bytes
+      description: Number of bytes obtained from system for stack allocator. Equals
+        to /memory/classes/heap/stacks:bytes + /memory/classes/os-stacks:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '622592'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_intr_total
+      description: Total number of interrupts serviced.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '457955'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_receive_bytes_total
+      description: Network device statistic receive_bytes.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '160621474'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2365990'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_pressure_memory_stalled_seconds_total
+      description: Total time in seconds no process could make progress due to memory
+        congestion
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: process_resident_memory_bytes
+      description: Resident memory size in bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '23912448'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filesystem_readonly
+      description: Filesystem read-only status.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Zswap_bytes
+      description: Memory information field Zswap_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_IpExt_InOctets
+      description: Statistic IpExtInOctets.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '160713350'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_transmit_compressed_total
+      description: Network device statistic transmit_compressed.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_procs_running
+      description: Number of processes in runnable state.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_vmstat_pgpgout
+      description: "/proc/vmstat information field pgpgout."
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1293160'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_disk_flush_requests_total
+      description: The total number of flush requests completed successfully
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '8836'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_NFS_Unstable_bytes
+      description: Memory information field NFS_Unstable_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_WritebackTmp_bytes
+      description: Memory information field WritebackTmp_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_time_clocksource_current_info
+      description: Current clocksource read from '/sys/devices/system/clocksource'.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: clocksource
+            value:
+              stringValue: arch_sys_counter
+          - key: device
+            value:
+              stringValue: '0'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 1.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Dirty_bytes
+      description: Memory information field Dirty_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '114688'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Icmp_InMsgs
+      description: Statistic IcmpInMsgs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '7'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_TcpExt_ListenOverflows
+      description: Statistic TcpExtListenOverflows.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_carrier_changes_total
+      description: 'Network device property: carrier_changes_total'
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_timex_maxerror_seconds
+      description: Maximum error in seconds.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.46
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_filesystem_size_bytes
+      description: Filesystem size in bytes.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '10330861568'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '129718272'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1677955072'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '5242880'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_transmit_bytes_total
+      description: Network device statistic transmit_bytes.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '857919'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '2365990'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_transmit_errs_total
+      description: Network device statistic transmit_errs.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_nf_conntrack_stat_invalid
+      description: Number of packets seen which can not be tracked.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '53'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_gc_duration_seconds
+      description: A summary of the wall-time pause (stop-the-world) duration in garbage
+        collection cycles.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0'
+          asDouble: 2.0625e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0.25'
+          asDouble: 2.0625e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0.5'
+          asDouble: 6.4001e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '0.75'
+          asDouble: 6.4001e-05
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: quantile
+            value:
+              stringValue: '1'
+          asDouble: 6.4001e-05
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_gc_duration_seconds_sum
+      description: Total pause duration of garbage collection cycles.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 8.4626e-05
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: go_gc_duration_seconds_count
+      description: Total number of garbage collection cycles.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          attributes: []
+          asInt: '2'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_network_receive_frame_total
+      description: Network device statistic receive_frame.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_sockstat_FRAG_inuse
+      description: Number of FRAG sockets in state inuse.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_TCP_tw
+      description: Number of TCP sockets in state tw.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_estimated_error_seconds
+      description: Estimated error in seconds.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Buffers_bytes
+      description: Memory information field Buffers_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '41693184'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_UDP_mem
+      description: Number of UDP sockets in state mem.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_sockstat_sockets_used
+      description: Number of IPv4 sockets in use.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '168'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_pps_calibration_total
+      description: Pulse per second count of calibration intervals.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Inactive_bytes
+      description: Memory information field Inactive_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1008984064'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Percpu_bytes
+      description: Memory information field Percpu_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1835008'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_alloc_bytes
+      description: Number of bytes allocated in heap and currently in use. Equals
+        to /memory/classes/heap/objects:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '3317352'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_procs_blocked
+      description: Number of processes blocked waiting for I/O to complete.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_heap_sys_bytes
+      description: Number of heap bytes obtained from system. Equals to /memory/classes/heap/objects:bytes
+        + /memory/classes/heap/unused:bytes + /memory/classes/heap/released:bytes
+        + /memory/classes/heap/free:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '7733248'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Writeback_bytes
+      description: Memory information field Writeback_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_iface_link_mode
+      description: 'Network device property: iface_link_mode'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_softnet_cpu_collision_total
+      description: Number of collision occur while obtaining device lock while transmitting
+      sum:
+        dataPoints:
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: process_cpu_seconds_total
+      description: Total user and system CPU time spent in seconds.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 2.79
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: process_network_transmit_bytes_total
+      description: Number of bytes sent by the process over the network.
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '986873'
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_nf_conntrack_stat_ignore
+      description: Number of packets seen which are already connected to a conntrack
+        entry.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '89738'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_textfile_scrape_error
+      description: 1 if there was an error opening or reading a file, 0 otherwise
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_frequency_adjustment_ratio
+      description: Local clock frequency adjustment.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 1.000035940032959
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: process_max_fds
+      description: Maximum number of open file descriptors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '524287'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_gc_gogc_percent
+      description: Heap size target percentage configured by the user, otherwise 100.
+        This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent
+        function. Sourced from /gc/gogc:percent.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '100'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_flush_requests_time_seconds_total
+      description: This is the total number of seconds spent by all flush requests.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 0.7000000000000001
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_memory_Hugepagesize_bytes
+      description: Memory information field Hugepagesize_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2097152'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_MemFree_bytes
+      description: Memory information field MemFree_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '15384461312'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_io_now
+      description: The number of I/Os currently in progress.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_IpExt_OutOctets
+      description: Statistic IpExtOutOctets.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '986873'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_UdpLite6_InErrors
+      description: Statistic UdpLite6InErrors.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_network_carrier_down_changes_total
+      description: 'Network device property: carrier_down_changes_total'
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_sockstat_TCP_mem_bytes
+      description: Number of TCP sockets in state mem_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_pps_jitter_seconds
+      description: Pulse per second jitter.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_disk_reads_completed_total
+      description: The total number of reads completed successfully.
+      sum:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asInt: '6031'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_filesystem_purgeable_bytes
+      description: Filesystem space available including purgeable space (MacOS specific).
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda1"
+          - key: fstype
+            value:
+              stringValue: ext4
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: "/dev/sda15"
+          - key: fstype
+            value:
+              stringValue: vfat
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/boot/efi"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+        - attributes:
+          - key: device
+            value:
+              stringValue: tmpfs
+          - key: fstype
+            value:
+              stringValue: tmpfs
+          - key: device_error
+            value:
+              stringValue: ''
+          - key: mountpoint
+            value:
+              stringValue: "/run/lock"
+          timeUnixNano: '1776631194895000000'
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: promhttp_metric_handler_requests_in_flight
+      description: Current number of scrapes being served.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Ip_Forwarding
+      description: Statistic IpForwarding.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '2'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_netstat_Tcp_OutSegs
+      description: Statistic TcpOutSegs.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '10838'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_timex_pps_stability_hertz
+      description: Pulse per second stability, average of recent frequency changes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: go_memstats_mspan_inuse_bytes
+      description: Number of bytes in use by mspan structures. Equals to /memory/classes/metadata/mspan/inuse:bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '63840'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_Active_bytes
+      description: Memory information field Active_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '197468160'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_VmallocUsed_bytes
+      description: Memory information field VmallocUsed_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '9670656'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_netstat_Tcp_PassiveOpens
+      description: Statistic TcpPassiveOpens.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '5'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: unknown
+    - name: node_memory_Mapped_bytes
+      description: Memory information field Mapped_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '209625088'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_network_mtu_bytes
+      description: 'Network device property: mtu_bytes'
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: ens4
+          timeUnixNano: '1776631194895000000'
+          asInt: '1460'
+        - attributes:
+          - key: device
+            value:
+              stringValue: lo
+          timeUnixNano: '1776631194895000000'
+          asInt: '65536'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_pressure_io_stalled_seconds_total
+      description: Total time in seconds no process could make progress due to IO
+        congestion
+      sum:
+        dataPoints:
+        - startTimeUnixNano: '1776631194895000000'
+          timeUnixNano: '1776631194895000000'
+          asDouble: 7.546516
+          attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_sockstat_FRAG6_memory
+      description: Number of FRAG6 sockets in state memory.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '0'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_timex_pps_shift_seconds
+      description: Pulse per second interval duration.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asDouble: 0.0
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_AnonHugePages_bytes
+      description: Memory information field AnonHugePages_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '96468992'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_cooling_device_cur_state
+      description: Current throttle state of the cooling device.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '0'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '1'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '2'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '3'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_cooling_device_max_state
+      description: Maximum throttle state of the cooling device.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '0'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '1'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '2'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+        - timeUnixNano: '1776631194895000000'
+          attributes:
+          - key: name
+            value:
+              stringValue: '3'
+          - key: type
+            value:
+              stringValue: Processor
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_DirectMap1G_bytes
+      description: Memory information field DirectMap1G_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 12884901888.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_DirectMap2M_bytes
+      description: Memory information field DirectMap2M_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 6345981952.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_memory_DirectMap4k_bytes
+      description: Memory information field DirectMap4k_bytes.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asDouble: 93118464.0
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+    - name: node_schedstat_running_seconds_total
+      description: Running time in seconds.
+      sum:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          asDouble: 12.699380784
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          asDouble: 13.195776544
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          asDouble: 16.403577445
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          asDouble: 10.355849672
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_schedstat_timeslices_total
+      description: Number of timeslices executed.
+      sum:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          asInt: '89363'
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          asInt: '90698'
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          asInt: '79350'
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          asInt: '103914'
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_schedstat_waiting_seconds_total
+      description: Waiting time in seconds.
+      sum:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '0'
+          asDouble: 1.355486921
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '1'
+          asDouble: 1.24701163
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '2'
+          asDouble: 1.085039163
+        - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
+          attributes:
+          - key: cpu
+            value:
+              stringValue: '3'
+          asDouble: 1.289371459
+        aggregationTemporality: 2
+        isMonotonic: true
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: counter
+    - name: node_selinux_enabled
+      description: SELinux is enabled, 1 is true, 0 is false.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          attributes: []
+          asInt: '0'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+  - resource:
+      attributes:
+      - key: job
+        value:
+          stringValue: node
+      - key: instance
+        value:
+          stringValue: host-0:9100
+      - key: model
+        value:
+          stringValue: PersistentDisk
+      - key: path
+        value:
+          stringValue: pci-0000:00:03.0-scsi-0:0:0:0
+      - key: revision
+        value:
+          stringValue: '1'
+      - key: serial
+        value:
+          stringValue: disk-0
+      - key: wwn
+        value:
+          stringValue: ''
+    scopeMetrics:
+    - scope:
+        name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+        version: 0.139.0
+      metrics:
+      - name: node_disk_info
+        description: Info of /sys/block/<block_device>.
+        gauge:
+          dataPoints:
+          - attributes:
+            - key: device
+              value:
+                stringValue: sda
+            - key: major
+              value:
+                stringValue: '8'
+            - key: minor
+              value:
+                stringValue: '0'
+            - key: rotational
+              value:
+                stringValue: '0'
+            timeUnixNano: '1776631194895000000'
+            asInt: '1'
+        metadata:
+        - key: prometheus.type
+          value:
+            stringValue: gauge
+  - resource: 
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: nodename
+      value:
+        stringValue: host-0
+    scopeMetrics:
+    - scope:
+        name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+        version: 0.139.0
+      metrics:
+      - name: node_uname_info
+      description: Labeled system information as provided by the uname system call.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: domainname
+            value:
+              stringValue: "(none)"
+          - key: machine
+            value:
+              stringValue: x86_64
+          - key: release
+            value:
+              stringValue: 6.1.0-cloud-amd64
+          - key: sysname
+            value:
+              stringValue: Linux
+          - key: version
+            value:
+              stringValue: "#1 SMP PREEMPT_DYNAMIC"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: model
+      value:
+        stringValue: PersistentDisk
+    - key: path
+      value:
+        stringValue: pci-0000:00:03.0-scsi-0:0:1:0
+    - key: revision
+      value:
+        stringValue: '1'
+    - key: serial
+      value:
+        stringValue: disk-0
+    - key: wwn
+      value:
+        stringValue: ''
+  scopeMetrics:
+  - scope: *1
+    metrics:
+    - name: node_disk_info
+      description: Info of /sys/block/<block_device>.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: device
+            value:
+              stringValue: sda
+          - key: major
+            value:
+              stringValue: '8'
+          - key: minor
+            value:
+              stringValue: '0'
+          - key: rotational
+            value:
+              stringValue: '0'
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: nodename
+      value:
+        stringValue: host-0
+  scopeMetrics:
+  - scope: *1
+    metrics:
+    - name: node_uname_info
+      description: Labeled system information as provided by the uname system call.
+      gauge:
+        dataPoints:
+        - attributes:
+          - key: domainname
+            value:
+              stringValue: "(none)"
+          - key: machine
+            value:
+              stringValue: x86_64
+          - key: release
+            value:
+              stringValue: 6.1.0-cloud-amd64
+          - key: sysname
+            value:
+              stringValue: Linux
+          - key: version
+            value:
+              stringValue: "#1 SMP PREEMPT_DYNAMIC"
+          timeUnixNano: '1776631194895000000'
+          asInt: '1'
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: build_id
+      value:
+        stringValue: ''
+    - key: id
+      value:
+        stringValue: debian
+    - key: id_like
+      value:
+        stringValue: ''
+    - key: image_id
+      value:
+        stringValue: ''
+    - key: image_version
+      value:
+        stringValue: ''
+    - key: name
+      value:
+        stringValue: Debian GNU/Linux
+    - key: pretty_name
+      value:
+        stringValue: Debian GNU/Linux 12 (bookworm)
+    - key: variant
+      value:
+        stringValue: ''
+    - key: variant_id
+      value:
+        stringValue: ''
+    - key: version
+      value:
+        stringValue: 12 (bookworm)
+    - key: version_codename
+      value:
+        stringValue: bookworm
+    - key: version_id
+      value:
+        stringValue: '12'
+  scopeMetrics:
+  - scope:
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_os_info
+      description: A metric with a constant 1 value labeled by OS release metadata.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: id
+      value:
+        stringValue: debian
+    - key: id_like
+      value:
+        stringValue: ''
+    - key: name
+      value:
+        stringValue: Debian GNU/Linux
+  scopeMetrics:
+  - scope:
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_os_version
+      description: Metric containing the major version of the OS.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '12'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge
+- resource:
+    attributes:
+    - key: job
+      value:
+        stringValue: node
+    - key: instance
+      value:
+        stringValue: host-0:9100
+    - key: bios_date
+      value:
+        stringValue: 01/01/2024
+    - key: bios_release
+      value:
+        stringValue: '1.0'
+    - key: bios_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: bios_version
+      value:
+        stringValue: Generic Cloud BIOS
+    - key: board_asset_tag
+      value:
+        stringValue: asset-0
+    - key: board_name
+      value:
+        stringValue: Generic Cloud VM
+    - key: board_serial
+      value:
+        stringValue: board-0
+    - key: board_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: board_version
+      value:
+        stringValue: ''
+    - key: chassis_asset_tag
+      value:
+        stringValue: ''
+    - key: chassis_serial
+      value:
+        stringValue: ''
+    - key: chassis_vendor
+      value:
+        stringValue: Generic Cloud
+    - key: chassis_version
+      value:
+        stringValue: ''
+    - key: product_family
+      value:
+        stringValue: ''
+    - key: product_name
+      value:
+        stringValue: Generic Cloud VM
+    - key: product_serial
+      value:
+        stringValue: product-0
+    - key: product_sku
+      value:
+        stringValue: ''
+    - key: product_uuid
+      value:
+        stringValue: 00000000-0000-0000-0000-000000000000
+    - key: product_version
+      value:
+        stringValue: ''
+    - key: system_vendor
+      value:
+        stringValue: Generic Cloud
+  scopeMetrics:
+  - scope:
+      name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
+      version: 0.139.0
+    metrics:
+    - name: node_dmi_info
+      description: A metric with a constant 1 value labeled by DMI system information.
+      gauge:
+        dataPoints:
+        - timeUnixNano: '1776631194895000000'
+          asInt: '1'
+          attributes: []
+      metadata:
+      - key: prometheus.type
+        value:
+          stringValue: gauge

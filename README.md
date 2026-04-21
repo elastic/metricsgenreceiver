@@ -50,6 +50,8 @@ You can start the Otel Collector with the predefined config:
 
 For local development, you can use the `otelcol.dev.yaml` config file which is ignored by default.
 
+There is also a dedicated `node_exporter` example config in `otelcol-node_exporter.yaml`.
+
 
 ### Receiver Settings
 
@@ -121,11 +123,15 @@ receivers:
       * `builtin/elasticapm-transaction-metrics`: simulates aggregated transaction metrics from the `elasticapmconnector`. The scale influences how many service instances are simulated. Uses the `template_vars` option to customize the data generation:
         * `services`: the number of services to simulate. Does not affect the number of metrics.
         * `transactions`: the number of transactions to simulate per service instance. This affects the number of simulated metrics.
-    * `builtin/nginx`: Built in scenario for nginx connection metrics simulating the `nginxreceiver`.
+      * `builtin/nginx`: built-in scenario for nginx connection metrics simulating the `nginxreceiver`.
+      * `builtin/node_exporter`: simulates a typical small Linux VM scraped by Prometheus `node_exporter` while keeping Prometheus metric names and target identity keys like `job` and `instance`.
     * Custom scenarios:
       Expects a `<path>.json` or `<path>.yaml` and a `<path>-resource-attributes.json` or `<path>-resource-attributes.yaml` file.
+      Optionally, a scenario can also include a `<path>-generation-hints.json` or `<path>-generation-hints.yaml` file.
       The `<path>.json`/`<path>.yaml` file contains a single batch of resource metrics in JSON or YAML format, as produced by the `fileexporter`.
       The `<path>-resource-attributes.json`/`<path>-resource-attributes.yaml` file contains the resource attributes template.
+      The optional generation hints file classifies metric families such as `binary_state`, `current_count`, `slow_gauge`, `steady_counter`, `sparse_counter`, `clock`, or `constant` to make synthetic updates more realistic.
+      These hints only affect how values evolve over time.
       The resource attributes template is used to simulate the individual instances.
       These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
       Supported placeholders:
