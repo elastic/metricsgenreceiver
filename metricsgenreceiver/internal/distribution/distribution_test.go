@@ -3,6 +3,7 @@ package distribution
 import (
 	"math/rand"
 	"testing"
+	"time"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
@@ -154,7 +155,7 @@ func TestAdvanceDataPoint(t *testing.T) {
 		initialCount := dp.Count()
 
 		// Advance the exponential histogram
-		AdvanceDataPoint(dp, r, metric, DefaultDistribution, expHistoGen, nil)
+		AdvanceDataPoint(dp, r, metric, DefaultDistribution, expHistoGen, AdvanceOptions{})
 
 		// Verify the exponential histogram was generated from the template
 		assert.Greater(t, dp.Count(), uint64(0), "count should be positive")
@@ -283,7 +284,7 @@ func TestAdvanceDataPointWithPrecision(t *testing.T) {
 
 	precision := map[string]int{"system.cpu.time": 2}
 	for i := 0; i < 100; i++ {
-		AdvanceDataPoint(d, rng, metric, DefaultDistribution, nil, precision)
+		AdvanceDataPoint(d, rng, metric, DefaultDistribution, nil, AdvanceOptions{Precision: precision})
 		assert.Equal(t, roundToPrecision(d.DoubleValue(), 2), d.DoubleValue())
 	}
 }
@@ -300,13 +301,161 @@ func TestAdvanceDataPointWithZeroPrecision(t *testing.T) {
 
 	precision := map[string]int{"system.fs.inodes.usage": 0}
 	for i := 0; i < 100; i++ {
-		AdvanceDataPoint(d, rng, metric, DefaultDistribution, nil, precision)
+		AdvanceDataPoint(d, rng, metric, DefaultDistribution, nil, AdvanceOptions{Precision: precision})
 		assert.Equal(t, roundToPrecision(d.DoubleValue(), 0), d.DoubleValue())
 	}
 }
 
+func TestAdvanceDataPointWithGenerationHints(t *testing.T) {
+	t.Run("constant", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		metric := pmetric.NewMetric()
+		metric.SetName("test.constant")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetIntValue(10)
+
+		opts := AdvanceOptions{
+			Hint: &MetricGenerationHint{Class: GenerationHintConstant},
+		}
+		for range 100 {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+			assert.Equal(t, int64(10), dp.IntValue())
+		}
+	})
+
+	t.Run("stable binary normalizes seed and never flips", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		for _, seed := range []float64{0, 0.3, 0.5, 0.7, 1} {
+			metric := pmetric.NewMetric()
+			metric.SetName("test.stable_binary")
+			metric.SetEmptyGauge()
+			dp := metric.Gauge().DataPoints().AppendEmpty()
+			dp.SetDoubleValue(seed)
+
+			opts := AdvanceOptions{
+				Hint: &MetricGenerationHint{Class: GenerationHintStableBinary},
+			}
+			expected := 0.0
+			if seed >= 0.5 {
+				expected = 1.0
+			}
+			for range 1000 {
+				AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+				assert.Equal(t, expected, dp.DoubleValue())
+			}
+		}
+	})
+
+	t.Run("current count", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		metric := pmetric.NewMetric()
+		metric.SetName("test.current_count")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetIntValue(2)
+
+		opts := AdvanceOptions{
+			Hint: &MetricGenerationHint{Class: GenerationHintCurrentCount},
+		}
+		prev := dp.IntValue()
+		for range 100 {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+			assert.GreaterOrEqual(t, dp.IntValue(), int64(0))
+			assert.LessOrEqual(t, absInt64(dp.IntValue()-prev), int64(3))
+			prev = dp.IntValue()
+		}
+	})
+
+	t.Run("clock", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		metric := pmetric.NewMetric()
+		metric.SetName("test.clock")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetDoubleValue(1000)
+
+		opts := AdvanceOptions{
+			Hint:     &MetricGenerationHint{Class: GenerationHintClock},
+			Interval: 30 * time.Second,
+		}
+		for i := 1; i <= 5; i++ {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+			assert.Equal(t, 1000+float64(30*i), dp.DoubleValue())
+		}
+	})
+
+	t.Run("steady counter overrides gauge semantics", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		metric := pmetric.NewMetric()
+		metric.SetName("test.steady_counter")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetIntValue(10)
+
+		opts := AdvanceOptions{
+			Hint: &MetricGenerationHint{Class: GenerationHintSteadyCounter},
+		}
+		prev := dp.IntValue()
+		for range 20 {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+			assert.GreaterOrEqual(t, dp.IntValue(), prev)
+			prev = dp.IntValue()
+		}
+	})
+
+	t.Run("sparse counter is mostly flat", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		metric := pmetric.NewMetric()
+		metric.SetName("test.sparse_counter")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetIntValue(0)
+
+		opts := AdvanceOptions{
+			Hint: &MetricGenerationHint{Class: GenerationHintSparseCounter},
+		}
+		prev := dp.IntValue()
+		unchanged := 0
+		for range 100 {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+			assert.GreaterOrEqual(t, dp.IntValue(), prev)
+			if dp.IntValue() == prev {
+				unchanged++
+			}
+			prev = dp.IntValue()
+		}
+		assert.GreaterOrEqual(t, unchanged, 80)
+	})
+
+	t.Run("slow gauge keeps utilization bounded", func(t *testing.T) {
+		rng := rand.New(rand.NewSource(42))
+		metric := pmetric.NewMetric()
+		metric.SetName("system.cpu.utilization")
+		metric.SetEmptyGauge()
+		dp := metric.Gauge().DataPoints().AppendEmpty()
+		dp.SetDoubleValue(0.5)
+
+		opts := AdvanceOptions{
+			Hint: &MetricGenerationHint{Class: GenerationHintSlowGauge},
+		}
+		for range 100 {
+			AdvanceDataPoint(dp, rng, metric, DefaultDistribution, nil, opts)
+			assert.GreaterOrEqual(t, dp.DoubleValue(), 0.0)
+			assert.LessOrEqual(t, dp.DoubleValue(), 1.0)
+		}
+	})
+}
+
 func advanceDataPointNTimes(dp dp.DataPoint, r *rand.Rand, metric pmetric.Metric, n int) {
 	for i := 0; i < n; i++ {
-		AdvanceDataPoint(dp, r, metric, DefaultDistribution, nil, nil)
+		AdvanceDataPoint(dp, r, metric, DefaultDistribution, nil, AdvanceOptions{})
 	}
+}
+
+func absInt64(v int64) int64 {
+	if v < 0 {
+		return -v
+	}
+	return v
 }

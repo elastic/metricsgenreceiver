@@ -10,6 +10,11 @@ Common commands:
 make test
 ```
 
+## Core Design Principles
+
+- Keep memory usage bounded by advancing shared templates rather than tracking per-instance or per-time-series state in memory.
+- Keep scenario authoring simple by letting contributors start from the output of an actual Collector execution instead of requiring per-metric code or configuration. Optional generation hints can add more realism when needed.
+
 Built-in scenarios live under `metricsgenreceiver/internal/metricstmpl/builtin/`.
 
 ## Built-in Scenario Guidelines
@@ -44,7 +49,14 @@ When adding or updating a scenario:
    - Prefer fixing bad seeds over adding exceptions.
    - If an all-zero double-valued family is still the most realistic choice, keep the exception narrow and document why in tests.
 
-6. Update the surrounding repo state with the scenario.
+6. Use generation hints only when the default evolution is not realistic enough.
+   - Declare a hint inline in the template by adding a `metricsgen.hint.class` entry to a metric's `metadata` block. The value is the string form of a hint class (e.g. `steady_counter`). The receiver reads and strips this metadata at startup so it does not leak into emitted data.
+   - Hints are not required and do not change the metric schema or the seeded values.
+   - Hints only affect how metric families evolve over time during synthetic generation.
+   - Keep hints narrow and intentional. Add them for families whose behavior materially affects realism or compression.
+   - For the supported hint classes and their intended behavior, see `metricsgenreceiver/internal/distribution/generation_hints.go`.
+
+7. Update the surrounding repo state with the scenario.
    - Add or update the matching `-resource-attributes` template.
    - Document the built-in in `README.md`.
    - Add or update receiver expectations in `metricsgenreceiver/receiver_test.go`.
@@ -58,4 +70,5 @@ Before merging a built-in scenario change, verify:
 - The scenario is representative of a typical environment for its source.
 - Important double-valued metrics have realistic non-zero seed values and decimal precision.
 - Zero-heavy metrics are zero for a good reason.
+- Any generation hints are narrow, understandable, and describe real behavior rather than compensating for bad seeds or violating the project's bounded-memory design principles.
 - Any allowlist entry for an all-zero double-valued family is narrow and justified.

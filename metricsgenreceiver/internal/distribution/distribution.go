@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
@@ -22,6 +23,12 @@ type DistributionCfg struct {
 	MedianMonotonicSum uint    `mapstructure:"median_monotonic_sum"`
 	StdDevGaugePct     float64 `mapstructure:"std_dev_gauge_pct"`
 	StdDev             float64 `mapstructure:"std_dev"`
+}
+
+type AdvanceOptions struct {
+	Hint      *MetricGenerationHint
+	Interval  time.Duration
+	Precision map[string]int
 }
 
 func InferPrecision(metrics *pmetric.Metrics) map[string]int {
@@ -57,10 +64,14 @@ func roundToPrecision(v float64, decimals int) float64 {
 	return math.Round(v*mul) / mul
 }
 
-func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg, expHistoGen *expohistogen.Generator, precision map[string]int) {
+func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist DistributionCfg, expHistoGen *expohistogen.Generator, opts AdvanceOptions) {
 
 	switch v := dp.(type) {
 	case pmetric.NumberDataPoint:
+		if opts.Hint != nil {
+			opts.Hint.AdvanceNumberDataPoint(v, r, m, dist, opts)
+			return
+		}
 		switch v.ValueType() {
 		case pmetric.NumberDataPointValueTypeDouble:
 			value := v.DoubleValue()
@@ -81,7 +92,7 @@ func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist Dist
 			} else {
 				value = advanceFloat(r, m, value, dist)
 			}
-			if p, ok := precision[m.Name()]; ok {
+			if p, ok := opts.Precision[m.Name()]; ok {
 				value = roundToPrecision(value, p)
 			}
 			v.SetDoubleValue(value)
