@@ -129,8 +129,8 @@ receivers:
       Expects a `<path>.json` or `<path>.yaml` and a `<path>-resource-attributes.json` or `<path>-resource-attributes.yaml` file.
       The `<path>.json`/`<path>.yaml` file contains a single batch of resource metrics in JSON or YAML format, as produced by the `fileexporter`.
       The `<path>-resource-attributes.json`/`<path>-resource-attributes.yaml` file contains the resource attributes template.
-      Optional generation hints can be declared inline on a metric by adding a `metricsgen.hint.class` entry to its `metadata` block. Supported classes are `stable_binary`, `current_count`, `slow_gauge`, `steady_counter`, `sparse_counter`, `clock`, and `constant`.
-      These hints only affect how values evolve over time during synthetic generation. The receiver strips the hint metadata at startup so it does not leak into emitted data.
+      Optional generation hints can be declared inline on a number metric (`Gauge` or `Sum`) by adding a `metricsgen.hint.class` entry to its `metadata` block. Supported classes are `stable_binary`, `current_count`, `slow_gauge`, `steady_counter`, `sparse_counter`, `clock`, and `constant`.
+      These hints only affect how values evolve over time during synthetic generation. The receiver strips the hint metadata at startup so it does not leak into emitted data. Hints are enforced per metric name within a scenario: if the same metric name appears multiple times, every occurrence must declare the same hint class or none of them may declare a hint.
       The resource attributes template is used to simulate the individual instances.
       These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
       Supported placeholders:

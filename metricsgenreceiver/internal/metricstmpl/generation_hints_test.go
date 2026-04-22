@@ -10,9 +10,7 @@ import (
 
 func TestExtractGenerationHintsNoMetadataIsNoop(t *testing.T) {
 	metrics := pmetric.NewMetrics()
-	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
-	m.SetName("test.metric")
-	m.SetEmptyGauge()
+	appendGaugeMetric(metrics, "test.metric")
 
 	hints, err := ExtractGenerationHints(&metrics)
 	require.NoError(t, err)
@@ -21,9 +19,7 @@ func TestExtractGenerationHintsNoMetadataIsNoop(t *testing.T) {
 
 func TestExtractGenerationHintsReadsAndStripsMetadata(t *testing.T) {
 	metrics := pmetric.NewMetrics()
-	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
-	m.SetName("test.metric")
-	m.SetEmptyGauge()
+	m := appendGaugeMetric(metrics, "test.metric")
 	m.Metadata().PutStr(GenerationHintMetadataKey, "slow_gauge")
 	m.Metadata().PutStr("prometheus.type", "gauge")
 
@@ -41,9 +37,7 @@ func TestExtractGenerationHintsReadsAndStripsMetadata(t *testing.T) {
 
 func TestExtractGenerationHintsInvalidClass(t *testing.T) {
 	metrics := pmetric.NewMetrics()
-	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
-	m.SetName("test.metric")
-	m.SetEmptyGauge()
+	m := appendGaugeMetric(metrics, "test.metric")
 	m.Metadata().PutStr(GenerationHintMetadataKey, "not_a_real_hint")
 
 	hints, err := ExtractGenerationHints(&metrics)
@@ -60,9 +54,7 @@ func TestExtractGenerationHintsInvalidClass(t *testing.T) {
 
 func TestExtractGenerationHintsMissingClass(t *testing.T) {
 	metrics := pmetric.NewMetrics()
-	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
-	m.SetName("test.metric")
-	m.SetEmptyGauge()
+	m := appendGaugeMetric(metrics, "test.metric")
 	m.Metadata().PutStr(GenerationHintMetadataKey, "")
 
 	hints, err := ExtractGenerationHints(&metrics)
@@ -74,13 +66,119 @@ func TestExtractGenerationHintsMissingClass(t *testing.T) {
 
 func TestExtractGenerationHintsNonStringMetadata(t *testing.T) {
 	metrics := pmetric.NewMetrics()
-	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
-	m.SetName("test.metric")
-	m.SetEmptyGauge()
+	m := appendGaugeMetric(metrics, "test.metric")
 	m.Metadata().PutInt(GenerationHintMetadataKey, 42)
 
 	hints, err := ExtractGenerationHints(&metrics)
 	require.Error(t, err)
 	assert.Nil(t, hints)
 	assert.Contains(t, err.Error(), "non-string")
+}
+
+func TestExtractGenerationHintsRepeatedMetricNameSameHintIsAllowed(t *testing.T) {
+	metrics := pmetric.NewMetrics()
+	first := appendGaugeMetric(metrics, "test.metric")
+	second := appendGaugeMetric(metrics, "test.metric")
+	first.Metadata().PutStr(GenerationHintMetadataKey, "steady_counter")
+	second.Metadata().PutStr(GenerationHintMetadataKey, "steady_counter")
+
+	hints, err := ExtractGenerationHints(&metrics)
+	require.NoError(t, err)
+	require.Len(t, hints, 1)
+	assert.Equal(t, "steady_counter", string(hints["test.metric"].Class))
+
+	_, firstHasHint := first.Metadata().Get(GenerationHintMetadataKey)
+	_, secondHasHint := second.Metadata().Get(GenerationHintMetadataKey)
+	assert.False(t, firstHasHint)
+	assert.False(t, secondHasHint)
+}
+
+func TestExtractGenerationHintsRepeatedMetricNameDifferentHintFails(t *testing.T) {
+	metrics := pmetric.NewMetrics()
+	first := appendGaugeMetric(metrics, "test.metric")
+	second := appendGaugeMetric(metrics, "test.metric")
+	first.Metadata().PutStr(GenerationHintMetadataKey, "steady_counter")
+	second.Metadata().PutStr(GenerationHintMetadataKey, "slow_gauge")
+
+	hints, err := ExtractGenerationHints(&metrics)
+	require.Error(t, err)
+	assert.Nil(t, hints)
+	assert.Contains(t, err.Error(), "same metricsgen.hint.class across all occurrences")
+
+	v, ok := first.Metadata().Get(GenerationHintMetadataKey)
+	require.True(t, ok)
+	assert.Equal(t, "steady_counter", v.Str())
+}
+
+func TestExtractGenerationHintsRepeatedMetricNameMixedHintPresenceFails(t *testing.T) {
+	metrics := pmetric.NewMetrics()
+	first := appendGaugeMetric(metrics, "test.metric")
+	appendGaugeMetric(metrics, "test.metric")
+	first.Metadata().PutStr(GenerationHintMetadataKey, "steady_counter")
+
+	hints, err := ExtractGenerationHints(&metrics)
+	require.Error(t, err)
+	assert.Nil(t, hints)
+	assert.Contains(t, err.Error(), "declare metricsgen.hint.class consistently across all occurrences")
+}
+
+func TestExtractGenerationHintsRejectsNonNumberMetrics(t *testing.T) {
+	tests := []struct {
+		name   string
+		append func(pmetric.Metrics, string) pmetric.Metric
+	}{
+		{
+			name:   "histogram",
+			append: appendHistogramMetric,
+		},
+		{
+			name:   "exponential histogram",
+			append: appendExponentialHistogramMetric,
+		},
+		{
+			name:   "summary",
+			append: appendSummaryMetric,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			metrics := pmetric.NewMetrics()
+			m := tt.append(metrics, "test.metric")
+			m.Metadata().PutStr(GenerationHintMetadataKey, "constant")
+
+			hints, err := ExtractGenerationHints(&metrics)
+			require.Error(t, err)
+			assert.Nil(t, hints)
+			assert.Contains(t, err.Error(), "must be a gauge or sum")
+		})
+	}
+}
+
+func appendGaugeMetric(metrics pmetric.Metrics, name string) pmetric.Metric {
+	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
+	m.SetName(name)
+	m.SetEmptyGauge()
+	return m
+}
+
+func appendHistogramMetric(metrics pmetric.Metrics, name string) pmetric.Metric {
+	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
+	m.SetName(name)
+	m.SetEmptyHistogram()
+	return m
+}
+
+func appendExponentialHistogramMetric(metrics pmetric.Metrics, name string) pmetric.Metric {
+	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
+	m.SetName(name)
+	m.SetEmptyExponentialHistogram()
+	return m
+}
+
+func appendSummaryMetric(metrics pmetric.Metrics, name string) pmetric.Metric {
+	m := metrics.ResourceMetrics().AppendEmpty().ScopeMetrics().AppendEmpty().Metrics().AppendEmpty()
+	m.SetName(name)
+	m.SetEmptySummary()
+	return m
 }

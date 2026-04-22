@@ -51,6 +51,8 @@ When adding or updating a scenario:
 
 6. Use generation hints only when the default evolution is not realistic enough.
    - Declare a hint inline in the template by adding a `metricsgen.hint.class` entry to a metric's `metadata` block. The value is the string form of a hint class (e.g. `steady_counter`). The receiver reads and strips this metadata at startup so it does not leak into emitted data.
+   - Hints are supported only on number metrics (`Gauge` and `Sum`).
+   - Hints are enforced per metric family within a scenario: if the same metric name appears multiple times, every occurrence must declare the same hint class or none of them may declare a hint.
    - Hints are not required and do not change the metric schema or the seeded values.
    - Hints only affect how metric families evolve over time during synthetic generation.
    - Keep hints narrow and intentional. Add them for families whose behavior materially affects realism or compression.
