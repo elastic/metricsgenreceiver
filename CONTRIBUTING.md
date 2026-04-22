@@ -54,7 +54,8 @@ When adding or updating a scenario:
    - Hints are supported only on number metrics (`Gauge` and `Sum`).
    - Hints are enforced per metric family within a scenario: if the same metric name appears multiple times, every occurrence must declare the same hint class or none of them may declare a hint.
    - Hints are not required and do not change the metric schema or the seeded values.
-   - Hints only affect how metric families evolve over time during synthetic generation.
+   - Hints control how metric families evolve over time on the shared template and how each instance's copy varies around it deterministically.
+   - Unhinted gauges and sums receive a small default per-instance multiplier, which produces no visible variation for int metrics with small absolute values; tag those with `current_count` so instances diverge by a deterministic integer offset instead.
    - Keep hints narrow and intentional. Add them for families whose behavior materially affects realism or compression.
    - For the supported hint classes and their intended behavior, see `metricsgenreceiver/internal/distribution/generation_hints.go`.
 

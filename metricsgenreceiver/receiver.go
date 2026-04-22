@@ -42,9 +42,18 @@ type Scenario struct {
 	config                     ScenarioCfg
 	metricsTemplate            *pmetric.Metrics
 	resourceAttributesTemplate pcommon.Resource
-	resources                  []pcommon.Resource
+	instances                  []scenarioInstance
 	precision                  map[string]int
 	generationHints            map[string]distribution.MetricGenerationHint
+	// seriesIdentityHashes holds IdentityHash(metric name, attrs) for each template data point in
+	// the order ForEachDataPoint visits them. Precomputed once so the per-instance emission path
+	// avoids re-hashing the attribute set on every tick.
+	seriesIdentityHashes []uint64
+}
+
+type scenarioInstance struct {
+	id       int
+	resource pcommon.Resource
 }
 
 type MetricsProgress struct {
@@ -140,12 +149,24 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		if err != nil {
 			return nil, err
 		}
+		instances := make([]scenarioInstance, len(resources))
+		for i, resource := range resources {
+			instances[i] = scenarioInstance{
+				id:       i + int(cfg.InstanceOffset),
+				resource: resource,
+			}
+		}
+		var seriesIdentityHashes []uint64
+		dp.ForEachDataPoint(&metrics, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+			seriesIdentityHashes = append(seriesIdentityHashes, distribution.IdentityHash(m.Name(), dataPoint.Attributes()))
+		})
 		scenarios = append(scenarios, Scenario{
-			config:          scn,
-			metricsTemplate: &metrics,
-			resources:       resources,
-			precision:       distribution.InferPrecision(&metrics),
-			generationHints: generationHints,
+			config:               scn,
+			metricsTemplate:      &metrics,
+			instances:            instances,
+			precision:            distribution.InferPrecision(&metrics),
+			generationHints:      generationHints,
+			seriesIdentityHashes: seriesIdentityHashes,
 		})
 	}
 
@@ -279,7 +300,10 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 			if err != nil {
 				r.settings.Logger.Error("failed to apply churn", zap.Error(err))
 			} else {
-				scn.resources[id%len(scn.resources)] = resource
+				scn.instances[id%len(scn.instances)] = scenarioInstance{
+					id:       id + int(r.cfg.InstanceOffset),
+					resource: resource,
+				}
 			}
 		}
 	}
@@ -304,8 +328,8 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 			distribution.AdvanceDataPoint(dataPoint, r.baseRand, m, r.cfg.Distribution, r.expHistoGen, opts)
 		})
 		if scn.config.Concurrency == 0 {
-			for i := range scn.config.Scale {
-				*dataPoints += uint64(r.produceMetricsForInstance(ctx, r.baseRand, currentTime, scn, scn.resources[i]))
+			for i := range scn.instances {
+				*dataPoints += uint64(r.produceMetricsForInstance(ctx, r.baseRand, currentTime, scn, scn.instances[i]))
 			}
 			continue
 		}
@@ -318,8 +342,8 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 			go func() {
 				defer wg.Done()
 				for j := 0; j < scn.config.Scale/scn.config.Concurrency; j++ {
-					resource := scn.resources[j+i*scn.config.Scale/scn.config.Concurrency]
-					currentDataPoints := r.produceMetricsForInstance(ctx, rng, currentTime, scn, resource)
+					instance := scn.instances[j+i*scn.config.Scale/scn.config.Concurrency]
+					currentDataPoints := r.produceMetricsForInstance(ctx, rng, currentTime, scn, instance)
 					atomic.AddUint64(dataPoints, uint64(currentDataPoints))
 				}
 			}()
@@ -329,24 +353,30 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 	return *dataPoints
 }
 
-func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng *rand.Rand, currentTime time.Time, scn Scenario, instanceResource pcommon.Resource) int {
+func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng *rand.Rand, currentTime time.Time, scn Scenario, instance scenarioInstance) int {
 	r.obsreport.StartMetricsOp(ctx)
 	metrics := pmetric.NewMetrics()
 	scn.metricsTemplate.CopyTo(metrics)
 	resourceMetrics := metrics.ResourceMetrics()
 	for j := 0; j < resourceMetrics.Len(); j++ {
-		overrideExistingAttributes(instanceResource, resourceMetrics.At(j).Resource())
+		overrideExistingAttributes(instance.resource, resourceMetrics.At(j).Resource())
 	}
 
 	instanceTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval, rng)
 
+	idx := 0
 	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
-		if _, ok := scn.generationHints[m.Name()]; !ok {
-			distribution.AdvanceDataPoint(dataPoint, rng, m, r.cfg.Distribution, r.expHistoGen, distribution.AdvanceOptions{
-				Precision: scn.precision,
-			})
-		}
+		distribution.EmitForInstance(dataPoint, m, distribution.InstanceEmitOptions{
+			InstanceID:   instance.id,
+			IdentityHash: scn.seriesIdentityHashes[idx],
+			Hints:        scn.generationHints,
+			Precision:    scn.precision,
+			Rand:         rng,
+			Dist:         r.cfg.Distribution,
+			ExpHistoGen:  r.expHistoGen,
+		})
 		dataPoint.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
+		idx++
 	})
 	dataPoints := metrics.DataPointCount()
 	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)

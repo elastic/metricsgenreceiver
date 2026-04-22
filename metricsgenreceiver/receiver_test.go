@@ -162,6 +162,89 @@ func TestReceiver(t *testing.T) {
 	}
 }
 
+func TestReceiverAppliesGenerationHints(t *testing.T) {
+	sink := new(consumertest.MetricsSink)
+
+	factory := NewFactory()
+	cfg := testdataConfigYamlAsMap()
+	cfg.Scenarios[0].Path = "testdata/generation-hints-template"
+	cfg.Scenarios[0].Scale = 2
+
+	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+	require.NoError(t, err)
+	err = rcv.Start(context.Background(), nil)
+	require.NoError(t, err)
+
+	require.EventuallyWithT(t, func(c *assert.CollectT) {
+		require.Equal(c, 7*2*cfg.Scenarios[0].Scale, sink.DataPointCount())
+	}, 2*time.Second, time.Millisecond)
+	require.NoError(t, rcv.Shutdown(context.Background()))
+
+	allMetrics := sink.AllMetrics()
+	require.Len(t, allMetrics, 4)
+
+	firstIntervalHost0 := allMetrics[0]
+	firstIntervalHost1 := allMetrics[1]
+	secondIntervalHost0 := allMetrics[2]
+	secondIntervalHost1 := allMetrics[3]
+
+	// constant: identical across hosts and intervals.
+	assert.Equal(t, metricIntValue(t, firstIntervalHost0, "test.constant"), metricIntValue(t, secondIntervalHost0, "test.constant"))
+	assert.Equal(t, metricIntValue(t, firstIntervalHost0, "test.constant"), metricIntValue(t, firstIntervalHost1, "test.constant"))
+
+	// clock: identical across hosts, advances by the collection interval.
+	assert.Equal(t, metricDoubleValue(t, firstIntervalHost0, "test.clock"), metricDoubleValue(t, firstIntervalHost1, "test.clock"))
+	assert.Equal(t, metricDoubleValue(t, secondIntervalHost0, "test.clock"), metricDoubleValue(t, secondIntervalHost1, "test.clock"))
+	assert.Equal(t, 30.0, metricDoubleValue(t, secondIntervalHost0, "test.clock")-metricDoubleValue(t, firstIntervalHost0, "test.clock"))
+
+	// stable_binary: identical across hosts and intervals, normalized to 0 or 1.
+	assert.Equal(t, int64(1), metricIntValue(t, firstIntervalHost0, "test.stable_binary"))
+	assert.Equal(t, int64(1), metricIntValue(t, firstIntervalHost1, "test.stable_binary"))
+	assert.Equal(t, int64(1), metricIntValue(t, secondIntervalHost0, "test.stable_binary"))
+	assert.Equal(t, int64(1), metricIntValue(t, secondIntervalHost1, "test.stable_binary"))
+
+	// current_count: varies per instance via a stable integer offset.
+	firstCountHost0 := metricIntValue(t, firstIntervalHost0, "test.current_count")
+	firstCountHost1 := metricIntValue(t, firstIntervalHost1, "test.current_count")
+	secondCountHost0 := metricIntValue(t, secondIntervalHost0, "test.current_count")
+	secondCountHost1 := metricIntValue(t, secondIntervalHost1, "test.current_count")
+	assert.NotEqual(t, firstCountHost0, firstCountHost1)
+	assert.NotEqual(t, secondCountHost0, secondCountHost1)
+	assert.GreaterOrEqual(t, firstCountHost0, int64(0))
+	assert.GreaterOrEqual(t, firstCountHost1, int64(0))
+
+	// slow_gauge.utilization: varies per instance via a stable multiplier, stays within [0, 1].
+	firstSlowGaugeHost0 := metricDoubleValue(t, firstIntervalHost0, "test.slow_gauge.utilization")
+	firstSlowGaugeHost1 := metricDoubleValue(t, firstIntervalHost1, "test.slow_gauge.utilization")
+	assert.NotEqual(t, firstSlowGaugeHost0, firstSlowGaugeHost1)
+	for _, v := range []float64{
+		firstSlowGaugeHost0,
+		firstSlowGaugeHost1,
+		metricDoubleValue(t, secondIntervalHost0, "test.slow_gauge.utilization"),
+		metricDoubleValue(t, secondIntervalHost1, "test.slow_gauge.utilization"),
+	} {
+		assert.GreaterOrEqual(t, v, 0.0)
+		assert.LessOrEqual(t, v, 1.0)
+	}
+
+	// steady_counter: varies per instance, grows monotonically per instance, and preserves relative ordering across intervals.
+	firstCounterHost0 := metricDoubleValue(t, firstIntervalHost0, "test.steady_counter")
+	firstCounterHost1 := metricDoubleValue(t, firstIntervalHost1, "test.steady_counter")
+	secondCounterHost0 := metricDoubleValue(t, secondIntervalHost0, "test.steady_counter")
+	secondCounterHost1 := metricDoubleValue(t, secondIntervalHost1, "test.steady_counter")
+	assert.NotEqual(t, firstCounterHost0, firstCounterHost1)
+	assert.Greater(t, secondCounterHost0, firstCounterHost0)
+	assert.Greater(t, secondCounterHost1, firstCounterHost1)
+	assert.True(t,
+		(firstCounterHost0 < firstCounterHost1) == (secondCounterHost0 < secondCounterHost1),
+		"relative ordering between instances should stay stable across intervals")
+
+	// unhinted gauge: still receives per-instance variation via the default strategy.
+	firstUnhintedHost0 := metricDoubleValue(t, firstIntervalHost0, "test.unhinted")
+	firstUnhintedHost1 := metricDoubleValue(t, firstIntervalHost1, "test.unhinted")
+	assert.NotEqual(t, firstUnhintedHost0, firstUnhintedHost1)
+}
+
 func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.Metrics, timestamp time.Time) {
 	for i := offset; i < cfg.Scenarios[0].Scale+offset; i++ {
 		dp.ForEachDataPoint(&allMetrics[i], func(r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
@@ -635,57 +718,6 @@ func collectHostNames(allMetrics []pmetric.Metrics) []string {
 	return hosts
 }
 
-func TestReceiverAppliesGenerationHints(t *testing.T) {
-	sink := new(consumertest.MetricsSink)
-
-	factory := NewFactory()
-	cfg := testdataConfigYamlAsMap()
-	cfg.Scenarios[0].Path = "testdata/generation-hints-template"
-	cfg.Scenarios[0].Scale = 2
-
-	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
-	require.NoError(t, err)
-	err = rcv.Start(context.Background(), nil)
-	require.NoError(t, err)
-
-	require.EventuallyWithT(t, func(c *assert.CollectT) {
-		require.Equal(c, 5*2*cfg.Scenarios[0].Scale, sink.DataPointCount())
-	}, 2*time.Second, time.Millisecond)
-	require.NoError(t, rcv.Shutdown(context.Background()))
-
-	allMetrics := sink.AllMetrics()
-	require.Len(t, allMetrics, 4)
-
-	firstIntervalHost0 := allMetrics[0]
-	firstIntervalHost1 := allMetrics[1]
-	secondIntervalHost0 := allMetrics[2]
-	secondIntervalHost1 := allMetrics[3]
-
-	// constant: identical across hosts and intervals.
-	assert.Equal(t, metricIntValue(t, firstIntervalHost0, "test.constant"), metricIntValue(t, secondIntervalHost0, "test.constant"))
-	assert.Equal(t, metricIntValue(t, firstIntervalHost0, "test.constant"), metricIntValue(t, firstIntervalHost1, "test.constant"))
-
-	// clock: identical across hosts, advances by the collection interval.
-	assert.Equal(t, metricDoubleValue(t, firstIntervalHost0, "test.clock"), metricDoubleValue(t, firstIntervalHost1, "test.clock"))
-	assert.Equal(t, metricDoubleValue(t, secondIntervalHost0, "test.clock"), metricDoubleValue(t, secondIntervalHost1, "test.clock"))
-	assert.Equal(t, 30.0, metricDoubleValue(t, secondIntervalHost0, "test.clock")-metricDoubleValue(t, firstIntervalHost0, "test.clock"))
-
-	// stable_binary: identical across hosts and intervals, normalized to 0 or 1.
-	assert.Equal(t, int64(1), metricIntValue(t, firstIntervalHost0, "test.stable_binary"))
-	assert.Equal(t, int64(1), metricIntValue(t, firstIntervalHost1, "test.stable_binary"))
-	assert.Equal(t, int64(1), metricIntValue(t, secondIntervalHost0, "test.stable_binary"))
-	assert.Equal(t, int64(1), metricIntValue(t, secondIntervalHost1, "test.stable_binary"))
-
-	// current_count: moves in small integer steps. With hints declared, instances share the same template-advanced value.
-	firstCount := metricIntValue(t, firstIntervalHost0, "test.current_count")
-	secondCount := metricIntValue(t, secondIntervalHost0, "test.current_count")
-	assert.Equal(t, firstCount, metricIntValue(t, firstIntervalHost1, "test.current_count"))
-	assert.Equal(t, secondCount, metricIntValue(t, secondIntervalHost1, "test.current_count"))
-	assert.GreaterOrEqual(t, firstCount, int64(0))
-	assert.GreaterOrEqual(t, secondCount, int64(0))
-	assert.LessOrEqual(t, absInt64(secondCount-firstCount), int64(3))
-}
-
 func metricIntValue(t *testing.T, metrics pmetric.Metrics, metricName string) int64 {
 	t.Helper()
 
@@ -730,11 +762,4 @@ func metricDoubleValue(t *testing.T, metrics pmetric.Metrics, metricName string)
 	})
 	require.True(t, found, "metric %q not found", metricName)
 	return value
-}
-
-func absInt64(v int64) int64 {
-	if v < 0 {
-		return -v
-	}
-	return v
 }
