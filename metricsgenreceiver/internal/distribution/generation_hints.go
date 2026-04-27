@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"strings"
 
 	"go.opentelemetry.io/collector/pdata/pmetric"
 )
@@ -14,22 +13,22 @@ type GenerationHintClass string
 const (
 	// GenerationHintClock advances a time-like metric deterministically with the collection interval.
 	// Example: node_time_seconds.
-	GenerationHintClock         GenerationHintClass = "clock"
+	GenerationHintClock GenerationHintClass = "clock"
 	// GenerationHintConstant keeps a metric fixed after its initial seed value.
 	// Examples: node_memory_MemTotal_bytes, node_boot_time_seconds.
-	GenerationHintConstant      GenerationHintClass = "constant"
+	GenerationHintConstant GenerationHintClass = "constant"
 	// GenerationHintCurrentCount models a non-negative integer count that changes in small steps.
 	// Examples: system.network.connections, node_sockstat_TCP_inuse.
-	GenerationHintCurrentCount  GenerationHintClass = "current_count"
+	GenerationHintCurrentCount GenerationHintClass = "current_count"
 	// GenerationHintSlowGauge models a gauge that moves gradually instead of wandering wildly between intervals.
 	// Examples: system.cpu.utilization, system.memory.usage.
-	GenerationHintSlowGauge     GenerationHintClass = "slow_gauge"
+	GenerationHintSlowGauge GenerationHintClass = "slow_gauge"
 	// GenerationHintSparseCounter models a counter-like series that is flat most intervals and only increases occasionally.
 	// Examples: system.network.errors, node_vmstat_oom_kill.
 	GenerationHintSparseCounter GenerationHintClass = "sparse_counter"
 	// GenerationHintStableBinary keeps a metric strictly at 0 or 1 and never flips after the seed is normalized.
 	// Examples: node_network_up, node_filesystem_readonly.
-	GenerationHintStableBinary  GenerationHintClass = "stable_binary"
+	GenerationHintStableBinary GenerationHintClass = "stable_binary"
 	// GenerationHintSteadyCounter models a counter-like series that increases at a fairly stable rate most intervals.
 	// Examples: system.cpu.time, node_network_receive_bytes_total.
 	GenerationHintSteadyCounter GenerationHintClass = "steady_counter"
@@ -126,11 +125,11 @@ func (currentCountStrategy) Advance(current float64, rand *rand.Rand, _ pmetric.
 
 type slowGaugeStrategy struct{}
 
-func (slowGaugeStrategy) Advance(current float64, rand *rand.Rand, metric pmetric.Metric, dist DistributionCfg, _ AdvanceOptions) float64 {
+func (slowGaugeStrategy) Advance(current float64, rand *rand.Rand, _ pmetric.Metric, dist DistributionCfg, _ AdvanceOptions) float64 {
 	scale := math.Max(math.Abs(current), 1)
 	value := math.Abs(current + rand.NormFloat64()*math.Max(dist.StdDev*0.2, scale*0.005))
-	if strings.HasSuffix(metric.Name(), ".utilization") {
-		value = min(value, 1)
+	if isUnitIntervalGaugeValue(current) {
+		value = bounceBetweenZeroAndOne(value)
 	}
 	return value
 }

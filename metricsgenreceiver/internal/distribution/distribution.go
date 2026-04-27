@@ -121,10 +121,18 @@ func AdvanceDataPoint(dp dp.DataPoint, r *rand.Rand, m pmetric.Metric, dist Dist
 
 func advanceZeroToOne(value float64, rand *rand.Rand, dist DistributionCfg) float64 {
 	value += rand.NormFloat64() * dist.StdDevGaugePct
-	// keep locked between 0..1
+	return bounceBetweenZeroAndOne(value)
+}
+
+// bounceBetweenZeroAndOne keeps a value in [0, 1] by reflecting it at the
+// boundaries instead of saturating at either edge.
+func bounceBetweenZeroAndOne(value float64) float64 {
 	value = math.Abs(value)
-	value = min(value, 1)
-	return value
+	fractional := math.Mod(value, 1.0)
+	if int(value)%2 == 0 {
+		return fractional
+	}
+	return 1.0 - fractional
 }
 
 func advanceInt(rand *rand.Rand, m pmetric.Metric, value int64, dist DistributionCfg) int64 {

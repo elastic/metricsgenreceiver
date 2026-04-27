@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"strings"
 	"time"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
@@ -14,6 +13,7 @@ import (
 
 const (
 	gaugeTemporalVariationAmplitude = 0.04
+	currentCountTemporalOffsetMax   = 3
 	counterExtraRateMax             = 0.20
 	temporalVariationBucketCount    = 10
 )
@@ -39,9 +39,9 @@ var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
 	GenerationHintConstant:      noInstanceVariation{},
 	GenerationHintStableBinary:  noInstanceVariation{},
 	GenerationHintCurrentCount:  integerOffsetVariation{min: -2, max: 2},
-	GenerationHintSlowGauge:     boundedMultiplierVariation{min: 0.95, max: 1.05, clampUtilization: true},
-	GenerationHintSparseCounter: boundedMultiplierVariation{min: 0.95, max: 1.05},
-	GenerationHintSteadyCounter: boundedMultiplierVariation{min: 0.95, max: 1.05},
+	GenerationHintSlowGauge:     boundedMultiplierVariation{min: 0.80, max: 1.20, autoBounceBetweenZeroAndOne: true},
+	GenerationHintSparseCounter: boundedMultiplierVariation{min: 0.90, max: 1.10},
+	GenerationHintSteadyCounter: boundedMultiplierVariation{min: 0.90, max: 1.10},
 }
 
 // ApplyInstanceVariation applies deterministic per-instance variation to a number data point.
@@ -100,8 +100,10 @@ func strategyFor(metric pmetric.Metric, hints map[string]MetricGenerationHint) I
 
 func defaultInstanceVariationFor(metric pmetric.Metric) InstanceVariationStrategy {
 	switch metric.Type() {
-	case pmetric.MetricTypeGauge, pmetric.MetricTypeSum:
-		return boundedMultiplierVariation{min: 0.95, max: 1.05, clampUtilization: true}
+	case pmetric.MetricTypeGauge:
+		return boundedMultiplierVariation{min: 0.80, max: 1.20, autoBounceBetweenZeroAndOne: true}
+	case pmetric.MetricTypeSum:
+		return boundedMultiplierVariation{min: 0.90, max: 1.10}
 	default:
 		return noInstanceVariation{}
 	}
@@ -113,9 +115,9 @@ func (noInstanceVariation) ApplyNumber(pmetric.NumberDataPoint, int, uint64, pme
 }
 
 type boundedMultiplierVariation struct {
-	min              float64
-	max              float64
-	clampUtilization bool
+	min                         float64
+	max                         float64
+	autoBounceBetweenZeroAndOne bool
 }
 
 func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
@@ -132,8 +134,8 @@ func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, insta
 		next *= temporalMultiplier(identityHash, instanceID, opts)
 	}
 	next = math.Max(0, next)
-	if s.clampUtilization && strings.HasSuffix(metric.Name(), ".utilization") {
-		next = min(next, 1)
+	if s.autoBounceBetweenZeroAndOne && isUnitIntervalGaugeValue(current) {
+		next = bounceBetweenZeroAndOne(next)
 	}
 	writeNumberDataPoint(v, next, metric, precision)
 }
@@ -151,8 +153,15 @@ func (s integerOffsetVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceI
 	}
 	base := int64(identityHash % uint64(span))
 	offset := positiveMod(int64(instanceID)+base, span) + s.min
-	next := math.Max(0, current+float64(offset))
+	offset += int64(math.Round(currentCountTemporalOffsetMax * temporalNoise(identityHash, instanceID, opts)))
+	instanceUnit := hashToUnitInterval(mixInstanceID(identityHash, instanceID))
+	multiplier := 0.80 + 0.40*instanceUnit
+	next := math.Max(0, current*multiplier+float64(offset))
 	writeNumberDataPoint(v, next, metric, precision)
+}
+
+func isUnitIntervalGaugeValue(v float64) bool {
+	return v >= 0 && v <= 1
 }
 
 func isCumulativeMonotonicSum(metric pmetric.Metric) bool {

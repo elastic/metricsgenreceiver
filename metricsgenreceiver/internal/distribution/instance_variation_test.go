@@ -65,6 +65,33 @@ func TestCurrentCountInstanceVariationKeepsCountsIntegralAndNonNegative(t *testi
 	}
 }
 
+func TestCurrentCountInstanceVariationChangesOverTimeWithoutState(t *testing.T) {
+	start := time.Unix(1000, 0)
+	opts := InstanceVariationOptions{
+		StartTime: start,
+		Interval:  30 * time.Second,
+	}
+	hints := map[string]MetricGenerationHint{
+		"test.current_count": {Class: GenerationHintCurrentCount},
+	}
+
+	metricA, dpA := newGaugeIntMetric("test.current_count", 10)
+	dpA.Attributes().PutStr("queue", "ingest")
+	opts.Timestamp = start
+	applyVariationWithOptions(dpA, 7, metricA, hints, opts)
+
+	changed := false
+	for i := 1; i <= 20; i++ {
+		metricB, dpB := newGaugeIntMetric("test.current_count", 10)
+		dpB.Attributes().PutStr("queue", "ingest")
+		opts.Timestamp = start.Add(time.Duration(i) * opts.Interval)
+		applyVariationWithOptions(dpB, 7, metricB, hints, opts)
+		changed = changed || dpA.IntValue() != dpB.IntValue()
+	}
+
+	assert.True(t, changed)
+}
+
 func TestSlowGaugeInstanceVariationKeepsUtilizationBounded(t *testing.T) {
 	hints := map[string]MetricGenerationHint{
 		"system.cpu.utilization": {Class: GenerationHintSlowGauge},
@@ -76,6 +103,21 @@ func TestSlowGaugeInstanceVariationKeepsUtilizationBounded(t *testing.T) {
 		assert.GreaterOrEqual(t, dp.DoubleValue(), 0.0)
 		assert.LessOrEqual(t, dp.DoubleValue(), 1.0)
 	}
+}
+
+func TestUnitIntervalGaugeVariationBouncesAtBounds(t *testing.T) {
+	hints := map[string]MetricGenerationHint{
+		"system.cpu.utilization": {Class: GenerationHintSlowGauge},
+	}
+
+	for instanceID := 0; instanceID < 64; instanceID++ {
+		metric, dp := newGaugeDoubleMetric("system.cpu.utilization", 0.99)
+		dp.Attributes().PutStr("cpu", "0")
+		applyVariation(dp, instanceID, metric, hints)
+		assert.GreaterOrEqual(t, dp.DoubleValue(), 0.0)
+		assert.LessOrEqual(t, dp.DoubleValue(), 1.0)
+	}
+	assert.InDelta(t, 0.9, bounceBetweenZeroAndOne(1.1), 0.000001)
 }
 
 func TestGaugeInstanceVariationChangesOverTimeWithoutState(t *testing.T) {
