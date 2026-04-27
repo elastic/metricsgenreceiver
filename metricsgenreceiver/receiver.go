@@ -371,9 +371,14 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 			IdentityHash: scn.seriesIdentityHashes[idx],
 			Hints:        scn.generationHints,
 			Precision:    scn.precision,
-			Rand:         rng,
-			Dist:         r.cfg.Distribution,
-			ExpHistoGen:  r.expHistoGen,
+			Variation: distribution.InstanceVariationOptions{
+				Timestamp: currentTime,
+				StartTime: r.cfg.StartTime,
+				Interval:  r.cfg.Interval,
+			},
+			Rand:        rng,
+			Dist:        r.cfg.Distribution,
+			ExpHistoGen: r.expHistoGen,
 		})
 		dataPoint.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
 		idx++

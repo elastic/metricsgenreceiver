@@ -2,13 +2,18 @@ package distribution
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
 func applyVariation(v pmetric.NumberDataPoint, instanceID int, metric pmetric.Metric, hints map[string]MetricGenerationHint) {
-	ApplyInstanceVariation(v, instanceID, IdentityHash(metric.Name(), v.Attributes()), metric, hints, nil)
+	applyVariationWithOptions(v, instanceID, metric, hints, InstanceVariationOptions{})
+}
+
+func applyVariationWithOptions(v pmetric.NumberDataPoint, instanceID int, metric pmetric.Metric, hints map[string]MetricGenerationHint, opts InstanceVariationOptions) {
+	ApplyInstanceVariation(v, instanceID, IdentityHash(metric.Name(), v.Attributes()), metric, hints, nil, opts)
 }
 
 func TestInstanceVariationIsDeterministic(t *testing.T) {
@@ -73,6 +78,26 @@ func TestSlowGaugeInstanceVariationKeepsUtilizationBounded(t *testing.T) {
 	}
 }
 
+func TestGaugeInstanceVariationChangesOverTimeWithoutState(t *testing.T) {
+	start := time.Unix(1000, 0)
+	opts := InstanceVariationOptions{
+		StartTime: start,
+		Interval:  30 * time.Second,
+	}
+
+	metricA, dpA := newGaugeDoubleMetric("test.unhinted", 100)
+	dpA.Attributes().PutStr("state", "used")
+	opts.Timestamp = start
+	applyVariationWithOptions(dpA, 7, metricA, nil, opts)
+
+	metricB, dpB := newGaugeDoubleMetric("test.unhinted", 100)
+	dpB.Attributes().PutStr("state", "used")
+	opts.Timestamp = start.Add(5 * time.Minute)
+	applyVariationWithOptions(dpB, 7, metricB, nil, opts)
+
+	assert.NotEqual(t, dpA.DoubleValue(), dpB.DoubleValue())
+}
+
 func TestCounterInstanceVariationKeepsCountersNonNegative(t *testing.T) {
 	hints := map[string]MetricGenerationHint{
 		"test.steady_counter": {Class: GenerationHintSteadyCounter},
@@ -90,6 +115,29 @@ func TestCounterInstanceVariationKeepsCountersNonNegative(t *testing.T) {
 		applyVariation(sparseDP, instanceID, sparseMetric, hints)
 		assert.GreaterOrEqual(t, sparseDP.DoubleValue(), 0.0)
 	}
+}
+
+func TestCumulativeCounterInstanceVariationAddsElapsedRate(t *testing.T) {
+	start := time.Unix(1000, 0)
+	opts := InstanceVariationOptions{
+		StartTime: start,
+		Interval:  30 * time.Second,
+	}
+	hints := map[string]MetricGenerationHint{
+		"test.steady_counter": {Class: GenerationHintSteadyCounter},
+	}
+
+	metricA, dpA := newCumulativeDoubleSumMetric("test.steady_counter", 1000)
+	dpA.Attributes().PutStr("device", "sda")
+	opts.Timestamp = start
+	applyVariationWithOptions(dpA, 7, metricA, hints, opts)
+
+	metricB, dpB := newCumulativeDoubleSumMetric("test.steady_counter", 1000)
+	dpB.Attributes().PutStr("device", "sda")
+	opts.Timestamp = start.Add(5 * time.Minute)
+	applyVariationWithOptions(dpB, 7, metricB, hints, opts)
+
+	assert.Greater(t, dpB.DoubleValue(), dpA.DoubleValue())
 }
 
 func TestMultiplierVariationKeepsZeroFlat(t *testing.T) {

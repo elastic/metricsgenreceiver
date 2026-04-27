@@ -5,10 +5,17 @@ import (
 	"math"
 	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
 	"go.opentelemetry.io/collector/pdata/pmetric"
+)
+
+const (
+	gaugeTemporalVariationAmplitude = 0.04
+	counterElapsedMultiplierMax     = 0.20
+	temporalVariationBucketCount    = 10
 )
 
 // InstanceVariationStrategy applies deterministic per-instance variation to a number data point.
@@ -24,7 +31,7 @@ import (
 // Implementations must be stateless: keeping per-series state would violate the project's
 // bounded-memory design principle.
 type InstanceVariationStrategy interface {
-	ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int)
+	ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions)
 }
 
 var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
@@ -41,8 +48,16 @@ var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
 // If a hint is configured for the metric, its declared variation strategy is used; otherwise the
 // variation is inferred from the metric shape. identityHash must be the value returned by
 // IdentityHash for this data point.
-func ApplyInstanceVariation(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, hints map[string]MetricGenerationHint, precision map[string]int) {
-	strategyFor(metric, hints).ApplyNumber(v, instanceID, identityHash, metric, precision)
+func ApplyInstanceVariation(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, hints map[string]MetricGenerationHint, precision map[string]int, opts InstanceVariationOptions) {
+	strategyFor(metric, hints).ApplyNumber(v, instanceID, identityHash, metric, precision, opts)
+}
+
+// InstanceVariationOptions contains timing information used for stateless,
+// time-varying per-instance variation.
+type InstanceVariationOptions struct {
+	Timestamp time.Time
+	StartTime time.Time
+	Interval  time.Duration
 }
 
 // InstanceEmitOptions carries the state needed to emit a data point for one specific instance.
@@ -54,6 +69,7 @@ type InstanceEmitOptions struct {
 	IdentityHash uint64
 	Hints        map[string]MetricGenerationHint
 	Precision    map[string]int
+	Variation    InstanceVariationOptions
 	Rand         *rand.Rand
 	Dist         DistributionCfg
 	ExpHistoGen  *expohistogen.Generator
@@ -64,7 +80,7 @@ type InstanceEmitOptions struct {
 func EmitForInstance(dataPoint dp.DataPoint, metric pmetric.Metric, opts InstanceEmitOptions) {
 	switch v := dataPoint.(type) {
 	case pmetric.NumberDataPoint:
-		ApplyInstanceVariation(v, opts.InstanceID, opts.IdentityHash, metric, opts.Hints, opts.Precision)
+		ApplyInstanceVariation(v, opts.InstanceID, opts.IdentityHash, metric, opts.Hints, opts.Precision, opts.Variation)
 	default:
 		AdvanceDataPoint(dataPoint, opts.Rand, metric, opts.Dist, opts.ExpHistoGen, AdvanceOptions{Precision: opts.Precision})
 	}
@@ -92,7 +108,7 @@ func defaultInstanceVariationFor(metric pmetric.Metric) InstanceVariationStrateg
 
 type noInstanceVariation struct{}
 
-func (noInstanceVariation) ApplyNumber(pmetric.NumberDataPoint, int, uint64, pmetric.Metric, map[string]int) {
+func (noInstanceVariation) ApplyNumber(pmetric.NumberDataPoint, int, uint64, pmetric.Metric, map[string]int, InstanceVariationOptions) {
 }
 
 type boundedMultiplierVariation struct {
@@ -101,13 +117,20 @@ type boundedMultiplierVariation struct {
 	clampUtilization bool
 }
 
-func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int) {
+func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
 	current := currentNumberDataPointValue(v)
 	if current == 0 {
 		return
 	}
-	multiplier := s.min + (s.max-s.min)*hashToUnitInterval(mixInstanceID(identityHash, instanceID))
-	next := math.Max(0, current*multiplier)
+	instanceUnit := hashToUnitInterval(mixInstanceID(identityHash, instanceID))
+	multiplier := s.min + (s.max-s.min)*instanceUnit
+	next := current * multiplier
+	if isCumulativeMonotonicSum(metric) {
+		next += current * counterElapsedMultiplier(instanceUnit, opts)
+	} else {
+		next *= temporalMultiplier(identityHash, instanceID, opts)
+	}
+	next = math.Max(0, next)
 	if s.clampUtilization && strings.HasSuffix(metric.Name(), ".utilization") {
 		next = min(next, 1)
 	}
@@ -119,7 +142,7 @@ type integerOffsetVariation struct {
 	max int64
 }
 
-func (s integerOffsetVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int) {
+func (s integerOffsetVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
 	current := currentNumberDataPointValue(v)
 	span := s.max - s.min + 1
 	if span <= 0 {
@@ -129,6 +152,69 @@ func (s integerOffsetVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceI
 	offset := positiveMod(int64(instanceID)+base, span) + s.min
 	next := math.Max(0, current+float64(offset))
 	writeNumberDataPoint(v, next, metric, precision)
+}
+
+func isCumulativeMonotonicSum(metric pmetric.Metric) bool {
+	return metric.Type() == pmetric.MetricTypeSum &&
+		metric.Sum().IsMonotonic() &&
+		metric.Sum().AggregationTemporality() == pmetric.AggregationTemporalityCumulative
+}
+
+func temporalMultiplier(identityHash uint64, instanceID int, opts InstanceVariationOptions) float64 {
+	if opts.Timestamp.IsZero() || opts.Interval <= 0 {
+		return 1
+	}
+	return 1 + gaugeTemporalVariationAmplitude*temporalNoise(identityHash, instanceID, opts)
+}
+
+func counterElapsedMultiplier(instanceUnit float64, opts InstanceVariationOptions) float64 {
+	if opts.Timestamp.IsZero() || opts.StartTime.IsZero() || opts.Interval <= 0 {
+		return 0
+	}
+	elapsed := opts.Timestamp.Sub(opts.StartTime).Seconds() / opts.Interval.Seconds()
+	if elapsed <= 0 {
+		return 0
+	}
+	// Ramp toward a bounded extra multiplier so cumulative counters stay monotonic
+	// without per-series state or a time-varying factor that can shrink.
+	return counterElapsedMultiplierMax * instanceUnit * elapsed / (elapsed + temporalVariationBucketCount)
+}
+
+func temporalNoise(identityHash uint64, instanceID int, opts InstanceVariationOptions) float64 {
+	if opts.Timestamp.IsZero() || opts.Interval <= 0 {
+		return 0
+	}
+	bucketDuration := opts.Interval * temporalVariationBucketCount
+	if bucketDuration <= 0 {
+		return 0
+	}
+	timestamp := opts.Timestamp.UnixNano()
+	bucketNanos := bucketDuration.Nanoseconds()
+	bucket := timestamp / bucketNanos
+	fraction := float64(timestamp%bucketNanos) / float64(bucketNanos)
+	if fraction < 0 {
+		fraction += 1
+		bucket--
+	}
+	start := hashToSignedUnit(temporalBucketHash(identityHash, instanceID, bucket))
+	end := hashToSignedUnit(temporalBucketHash(identityHash, instanceID, bucket+1))
+	return lerp(start, end, smoothstep(fraction))
+}
+
+func temporalBucketHash(identityHash uint64, instanceID int, bucket int64) uint64 {
+	return mixInstanceID(identityHash^uint64(bucket)*0xbf58476d1ce4e5b9, instanceID)
+}
+
+func hashToSignedUnit(hash uint64) float64 {
+	return hashToUnitInterval(hash)*2 - 1
+}
+
+func smoothstep(v float64) float64 {
+	return v * v * (3 - 2*v)
+}
+
+func lerp(start, end, fraction float64) float64 {
+	return start + (end-start)*fraction
 }
 
 func writeNumberDataPoint(v pmetric.NumberDataPoint, next float64, metric pmetric.Metric, precision map[string]int) {
