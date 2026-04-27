@@ -12,9 +12,11 @@ import (
 )
 
 const (
-	gaugeTemporalVariationAmplitude = 0.04
+	gaugeTemporalVariationAmplitude = 0.08
 	currentCountTemporalOffsetMax   = 3
 	counterExtraRateMax             = 0.20
+	counterRateWaveAmplitude        = 0.80
+	counterRateWavePeriodIntervals  = 20.0
 	temporalVariationBucketCount    = 10
 )
 
@@ -35,11 +37,13 @@ type InstanceVariationStrategy interface {
 }
 
 var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
-	GenerationHintClock:         noInstanceVariation{},
-	GenerationHintConstant:      noInstanceVariation{},
-	GenerationHintStableBinary:  noInstanceVariation{},
-	GenerationHintCurrentCount:  integerOffsetVariation{min: -2, max: 2},
-	GenerationHintSlowGauge:     boundedMultiplierVariation{min: 0.80, max: 1.20, autoBounceBetweenZeroAndOne: true},
+	GenerationHintClock:        noInstanceVariation{},
+	GenerationHintConstant:     noInstanceVariation{},
+	GenerationHintStableBinary: noInstanceVariation{},
+	GenerationHintCurrentCount: integerOffsetVariation{min: -2, max: 2},
+	// Keep gauge multipliers >= 1 so non-unit gauges do not get pushed below 1
+	// and accidentally become eligible for [0,1] bouncing on later intervals.
+	GenerationHintSlowGauge:     boundedMultiplierVariation{min: 1.00, max: 2.00, autoBounceBetweenZeroAndOne: true},
 	GenerationHintSparseCounter: boundedMultiplierVariation{min: 0.90, max: 1.10},
 	GenerationHintSteadyCounter: boundedMultiplierVariation{min: 0.90, max: 1.10},
 }
@@ -101,7 +105,9 @@ func strategyFor(metric pmetric.Metric, hints map[string]MetricGenerationHint) I
 func defaultInstanceVariationFor(metric pmetric.Metric) InstanceVariationStrategy {
 	switch metric.Type() {
 	case pmetric.MetricTypeGauge:
-		return boundedMultiplierVariation{min: 0.80, max: 1.20, autoBounceBetweenZeroAndOne: true}
+		// Keep gauge multipliers >= 1 so non-unit gauges do not get pushed below 1
+		// and accidentally become eligible for [0,1] bouncing on later intervals.
+		return boundedMultiplierVariation{min: 1.00, max: 2.00, autoBounceBetweenZeroAndOne: true}
 	case pmetric.MetricTypeSum:
 		return boundedMultiplierVariation{min: 0.90, max: 1.10}
 	default:
@@ -129,9 +135,9 @@ func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, insta
 	multiplier := s.min + (s.max-s.min)*instanceUnit
 	next := current * multiplier
 	if isCumulativeMonotonicSum(metric) {
-		next += counterElapsedOffset(instanceUnit, opts)
+		next += counterElapsedOffset(identityHash, instanceID, instanceUnit, opts)
 	} else {
-		next *= temporalMultiplier(identityHash, instanceID, opts)
+		next *= temporalMultiplier(identityHash, instanceID, opts, isUnitIntervalGaugeValue(current))
 	}
 	next = math.Max(0, next)
 	if s.autoBounceBetweenZeroAndOne && isUnitIntervalGaugeValue(current) {
@@ -155,7 +161,7 @@ func (s integerOffsetVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceI
 	offset := positiveMod(int64(instanceID)+base, span) + s.min
 	offset += int64(math.Round(currentCountTemporalOffsetMax * temporalNoise(identityHash, instanceID, opts)))
 	instanceUnit := hashToUnitInterval(mixInstanceID(identityHash, instanceID))
-	multiplier := 0.80 + 0.40*instanceUnit
+	multiplier := 1.00 + instanceUnit
 	next := math.Max(0, current*multiplier+float64(offset))
 	writeNumberDataPoint(v, next, metric, precision)
 }
@@ -170,14 +176,18 @@ func isCumulativeMonotonicSum(metric pmetric.Metric) bool {
 		metric.Sum().AggregationTemporality() == pmetric.AggregationTemporalityCumulative
 }
 
-func temporalMultiplier(identityHash uint64, instanceID int, opts InstanceVariationOptions) float64 {
+func temporalMultiplier(identityHash uint64, instanceID int, opts InstanceVariationOptions, allowNegativeNoise bool) float64 {
 	if opts.Timestamp.IsZero() || opts.Interval <= 0 {
 		return 1
 	}
-	return 1 + gaugeTemporalVariationAmplitude*temporalNoise(identityHash, instanceID, opts)
+	noise := temporalNoise(identityHash, instanceID, opts)
+	if !allowNegativeNoise {
+		noise = 0.5 + 0.5*noise
+	}
+	return 1 + gaugeTemporalVariationAmplitude*noise
 }
 
-func counterElapsedOffset(instanceUnit float64, opts InstanceVariationOptions) float64 {
+func counterElapsedOffset(identityHash uint64, instanceID int, instanceUnit float64, opts InstanceVariationOptions) float64 {
 	if opts.Timestamp.IsZero() || opts.StartTime.IsZero() || opts.Interval <= 0 {
 		return 0
 	}
@@ -185,7 +195,14 @@ func counterElapsedOffset(instanceUnit float64, opts InstanceVariationOptions) f
 	if elapsed <= 0 {
 		return 0
 	}
-	return opts.CounterBaseDelta * counterExtraRateMax * instanceUnit * elapsed
+	phase := 2 * math.Pi * hashToUnitInterval(mixInstanceID(identityHash^0x94d049bb133111eb, instanceID))
+	wave := integratedCounterRateWave(elapsed, phase)
+	return opts.CounterBaseDelta * counterExtraRateMax * instanceUnit * wave
+}
+
+func integratedCounterRateWave(elapsed float64, phase float64) float64 {
+	angularFrequency := 2 * math.Pi / counterRateWavePeriodIntervals
+	return elapsed + counterRateWaveAmplitude/angularFrequency*(math.Sin(angularFrequency*elapsed+phase)-math.Sin(phase))
 }
 
 func temporalNoise(identityHash uint64, instanceID int, opts InstanceVariationOptions) float64 {

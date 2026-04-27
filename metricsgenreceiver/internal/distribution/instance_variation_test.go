@@ -1,6 +1,7 @@
 package distribution
 
 import (
+	"math"
 	"testing"
 	"time"
 
@@ -140,6 +141,19 @@ func TestGaugeInstanceVariationChangesOverTimeWithoutState(t *testing.T) {
 	assert.NotEqual(t, dpA.DoubleValue(), dpB.DoubleValue())
 }
 
+func TestNonUnitGaugeInstanceVariationDoesNotScaleBelowBaseline(t *testing.T) {
+	opts := InstanceVariationOptions{
+		Timestamp: time.Unix(1000, 0),
+		Interval:  30 * time.Second,
+	}
+
+	for instanceID := 0; instanceID < 128; instanceID++ {
+		metric, dp := newGaugeDoubleMetric("test.unhinted", 1.01)
+		applyVariationWithOptions(dp, instanceID, metric, nil, opts)
+		assert.GreaterOrEqual(t, dp.DoubleValue(), 1.01)
+	}
+}
+
 func TestCounterInstanceVariationKeepsCountersNonNegative(t *testing.T) {
 	hints := map[string]MetricGenerationHint{
 		"test.steady_counter": {Class: GenerationHintSteadyCounter},
@@ -183,7 +197,7 @@ func TestCumulativeCounterInstanceVariationAddsElapsedRate(t *testing.T) {
 	assert.Greater(t, dpB.DoubleValue(), dpA.DoubleValue())
 }
 
-func TestCumulativeCounterExtraRateDoesNotDecayForLargeSeed(t *testing.T) {
+func TestCumulativeCounterExtraRateVariesWithoutDecreasingLargeSeed(t *testing.T) {
 	start := time.Unix(1000, 0)
 	opts := InstanceVariationOptions{
 		StartTime:        start,
@@ -194,12 +208,19 @@ func TestCumulativeCounterExtraRateDoesNotDecayForLargeSeed(t *testing.T) {
 		"test.steady_counter": {Class: GenerationHintSteadyCounter},
 	}
 
-	earlyA := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+100, 7, start.Add(30*time.Second), opts, hints)
-	earlyB := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+200, 7, start.Add(60*time.Second), opts, hints)
-	lateA := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+9900, 7, start.Add(99*30*time.Second), opts, hints)
-	lateB := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+10000, 7, start.Add(100*30*time.Second), opts, hints)
+	prev := variedCumulativeCounterValue(t, "test.steady_counter", 246011864, 7, start, opts, hints)
+	minDelta := math.Inf(1)
+	maxDelta := math.Inf(-1)
+	for i := 1; i <= 100; i++ {
+		current := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+float64(100*i), 7, start.Add(time.Duration(i)*opts.Interval), opts, hints)
+		delta := current - prev
+		assert.Greater(t, delta, 0.0)
+		minDelta = min(minDelta, delta)
+		maxDelta = max(maxDelta, delta)
+		prev = current
+	}
 
-	assert.InDelta(t, earlyB-earlyA, lateB-lateA, 0.000001)
+	assert.Greater(t, maxDelta-minDelta, 1.0)
 }
 
 func TestMultiplierVariationKeepsZeroFlat(t *testing.T) {
