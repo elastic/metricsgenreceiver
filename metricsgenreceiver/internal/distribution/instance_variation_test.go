@@ -120,8 +120,9 @@ func TestCounterInstanceVariationKeepsCountersNonNegative(t *testing.T) {
 func TestCumulativeCounterInstanceVariationAddsElapsedRate(t *testing.T) {
 	start := time.Unix(1000, 0)
 	opts := InstanceVariationOptions{
-		StartTime: start,
-		Interval:  30 * time.Second,
+		StartTime:        start,
+		Interval:         30 * time.Second,
+		CounterBaseDelta: 100,
 	}
 	hints := map[string]MetricGenerationHint{
 		"test.steady_counter": {Class: GenerationHintSteadyCounter},
@@ -138,6 +139,25 @@ func TestCumulativeCounterInstanceVariationAddsElapsedRate(t *testing.T) {
 	applyVariationWithOptions(dpB, 7, metricB, hints, opts)
 
 	assert.Greater(t, dpB.DoubleValue(), dpA.DoubleValue())
+}
+
+func TestCumulativeCounterExtraRateDoesNotDecayForLargeSeed(t *testing.T) {
+	start := time.Unix(1000, 0)
+	opts := InstanceVariationOptions{
+		StartTime:        start,
+		Interval:         30 * time.Second,
+		CounterBaseDelta: 100,
+	}
+	hints := map[string]MetricGenerationHint{
+		"test.steady_counter": {Class: GenerationHintSteadyCounter},
+	}
+
+	earlyA := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+100, 7, start.Add(30*time.Second), opts, hints)
+	earlyB := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+200, 7, start.Add(60*time.Second), opts, hints)
+	lateA := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+9900, 7, start.Add(99*30*time.Second), opts, hints)
+	lateB := variedCumulativeCounterValue(t, "test.steady_counter", 246011864+10000, 7, start.Add(100*30*time.Second), opts, hints)
+
+	assert.InDelta(t, earlyB-earlyA, lateB-lateA, 0.000001)
 }
 
 func TestMultiplierVariationKeepsZeroFlat(t *testing.T) {
@@ -219,6 +239,15 @@ func newGaugeDoubleMetric(name string, value float64) (pmetric.Metric, pmetric.N
 	dp := metric.Gauge().DataPoints().AppendEmpty()
 	dp.SetDoubleValue(value)
 	return metric, dp
+}
+
+func variedCumulativeCounterValue(t *testing.T, name string, value float64, instanceID int, timestamp time.Time, opts InstanceVariationOptions, hints map[string]MetricGenerationHint) float64 {
+	t.Helper()
+	metric, dp := newCumulativeDoubleSumMetric(name, value)
+	dp.Attributes().PutStr("device", "sda")
+	opts.Timestamp = timestamp
+	applyVariationWithOptions(dp, instanceID, metric, hints, opts)
+	return dp.DoubleValue()
 }
 
 func newGaugeIntMetric(name string, value int64) (pmetric.Metric, pmetric.NumberDataPoint) {

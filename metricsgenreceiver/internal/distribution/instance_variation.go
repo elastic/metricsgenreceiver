@@ -14,7 +14,7 @@ import (
 
 const (
 	gaugeTemporalVariationAmplitude = 0.04
-	counterElapsedMultiplierMax     = 0.20
+	counterExtraRateMax             = 0.20
 	temporalVariationBucketCount    = 10
 )
 
@@ -55,9 +55,10 @@ func ApplyInstanceVariation(v pmetric.NumberDataPoint, instanceID int, identityH
 // InstanceVariationOptions contains timing information used for stateless,
 // time-varying per-instance variation.
 type InstanceVariationOptions struct {
-	Timestamp time.Time
-	StartTime time.Time
-	Interval  time.Duration
+	Timestamp        time.Time
+	StartTime        time.Time
+	Interval         time.Duration
+	CounterBaseDelta float64
 }
 
 // InstanceEmitOptions carries the state needed to emit a data point for one specific instance.
@@ -126,7 +127,7 @@ func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, insta
 	multiplier := s.min + (s.max-s.min)*instanceUnit
 	next := current * multiplier
 	if isCumulativeMonotonicSum(metric) {
-		next += current * counterElapsedMultiplier(instanceUnit, opts)
+		next += counterElapsedOffset(instanceUnit, opts)
 	} else {
 		next *= temporalMultiplier(identityHash, instanceID, opts)
 	}
@@ -167,7 +168,7 @@ func temporalMultiplier(identityHash uint64, instanceID int, opts InstanceVariat
 	return 1 + gaugeTemporalVariationAmplitude*temporalNoise(identityHash, instanceID, opts)
 }
 
-func counterElapsedMultiplier(instanceUnit float64, opts InstanceVariationOptions) float64 {
+func counterElapsedOffset(instanceUnit float64, opts InstanceVariationOptions) float64 {
 	if opts.Timestamp.IsZero() || opts.StartTime.IsZero() || opts.Interval <= 0 {
 		return 0
 	}
@@ -175,9 +176,7 @@ func counterElapsedMultiplier(instanceUnit float64, opts InstanceVariationOption
 	if elapsed <= 0 {
 		return 0
 	}
-	// Ramp toward a bounded extra multiplier so cumulative counters stay monotonic
-	// without per-series state or a time-varying factor that can shrink.
-	return counterElapsedMultiplierMax * instanceUnit * elapsed / (elapsed + temporalVariationBucketCount)
+	return opts.CounterBaseDelta * counterExtraRateMax * instanceUnit * elapsed
 }
 
 func temporalNoise(identityHash uint64, instanceID int, opts InstanceVariationOptions) float64 {

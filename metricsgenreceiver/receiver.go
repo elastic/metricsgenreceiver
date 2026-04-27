@@ -372,9 +372,10 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 			Hints:        scn.generationHints,
 			Precision:    scn.precision,
 			Variation: distribution.InstanceVariationOptions{
-				Timestamp: currentTime,
-				StartTime: r.cfg.StartTime,
-				Interval:  r.cfg.Interval,
+				Timestamp:        currentTime,
+				StartTime:        r.cfg.StartTime,
+				Interval:         r.cfg.Interval,
+				CounterBaseDelta: float64(r.cfg.Distribution.MedianMonotonicSum),
 			},
 			Rand:        rng,
 			Dist:        r.cfg.Distribution,
