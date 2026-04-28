@@ -13,7 +13,10 @@ Given an initial set of resource metrics, this receiver generates metrics with a
 For example, given the output of a single report from the `hostmetricsreceiver`,
 lets you generate a day's worth of data from multiple simulated hosts with a given interval.
 
-The datapoints for the metrics are individually simulated using a distribution that can be customized with the `distribution` settings.
+Generation runs in two stages per interval.
+First, the shared metrics template is advanced stochastically using the `distribution` settings — this produces the baseline that every simulated instance sees.
+Second, each instance emits a copy of the template with a deterministic per-series variation layered on top, so instances differ from each other while each instance's series stays coherent over time.
+The variation for number data points is controlled by optional generation hints; histograms are still randomized per instance.
 
 ## Getting Started
 
@@ -91,12 +94,13 @@ receivers:
   Built-in templates:
   * `builtin/exponential-histograms-low-frequency.ndjson`: exponential histogram data with a low number of observations per histogram.
   * `builtin/exponential-histograms-high-frequency.ndjson`: exponential histogram data with a high number of observations per histogram.
-* `distribution`: the datapoints for the metrics are individually simulated by advancing their initial value using a standard distribution,
+* `distribution`: controls how the shared metrics template is advanced each interval,
   taking into account the [temporality](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#temporality),
   [monotonicity](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#point-kinds),
   and capping floating point gauges values whose initial value is between 0 and 1 to that range.
   By changing the distribution parameters, you can simulate how predictable the metrics are evolving over time.
   This may have an impact on how well the backend can compress the data.
+  These settings only affect the shared template; per-instance variation for number data points is controlled separately by generation hints.
   * `median_monotonic_sum` (default `100`): the median value for the normal distribution used to simulate metrics that are monotonic sums.
     If the sum is not monotonic, or if the metric is a gauge, the median will always be zero, to simulate a value that goes up and down over time.
     If the temporality of the metric is delta, the new value will be set to the result of the normal distribution.
@@ -107,7 +111,8 @@ receivers:
     The new value will be incremented by the result of the normal distribution.
 * `scenarios`: a list of scenarios to simulate. For every interval, each scenario is simulated before moving to the next interval.
   * `scale`: determines how many instances (like hosts) to simulate.
-    The individual instances will a have a consistent set of resource attributes throughout the simulation.
+    The individual instances will have a consistent set of resource attributes throughout the simulation.
+    Each instance's number data points also get a deterministic per-series variation (hash-derived from instance ID + metric name + attributes) so that instances differ from each other without introducing noise into any single instance's time series.
   * `concurrency` (default `0`): when set to a non-zero value, the receiver will simulate the scenario concurrently with the specified number of goroutines.
   * `path`: the path of the scenario files.
     * Built-in scenarios:
@@ -130,7 +135,7 @@ receivers:
       The `<path>.json`/`<path>.yaml` file contains a single batch of resource metrics in JSON or YAML format, as produced by the `fileexporter`.
       The `<path>-resource-attributes.json`/`<path>-resource-attributes.yaml` file contains the resource attributes template.
       Optional generation hints can be declared inline on a number metric (`Gauge` or `Sum`) by adding a `metricsgen.hint.class` entry to its `metadata` block. Supported classes are `stable_binary`, `current_count`, `slow_gauge`, `steady_counter`, `sparse_counter`, `clock`, and `constant`.
-      These hints only affect how values evolve over time during synthetic generation. The receiver strips the hint metadata at startup so it does not leak into emitted data. Hints are enforced per metric name within a scenario: if the same metric name appears multiple times, every occurrence must declare the same hint class or none of them may declare a hint.
+      Hints control how values evolve on the shared template and how each instance's copy varies around it deterministically. The receiver strips the hint metadata at startup so it does not leak into emitted data. Hints are enforced per metric name within a scenario: if the same metric name appears multiple times, every occurrence must declare the same hint class or none of them may declare a hint.
       The resource attributes template is used to simulate the individual instances.
       These resource attributes are injected into all resource metrics for which a matching resource attribute key exists.
       Supported placeholders:

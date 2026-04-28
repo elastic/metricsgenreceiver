@@ -95,6 +95,48 @@
               ]
             },
             {
+              "name": "test.slow_gauge.utilization",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asDouble": 0.5555
+                  }
+                ]
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test.steady_counter",
+              "sum": {
+                "aggregationTemporality": 2,
+                "isMonotonic": true,
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asDouble": 100
+                  }
+                ]
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
+            },
+            {
               "name": "test.unhinted",
               "gauge": {
                 "dataPoints": [
