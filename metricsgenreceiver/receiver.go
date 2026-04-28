@@ -44,6 +44,7 @@ type Scenario struct {
 	resourceAttributesTemplate pcommon.Resource
 	resources                  []pcommon.Resource
 	precision                  map[string]int
+	generationHints            map[string]distribution.MetricGenerationHint
 }
 
 type MetricsProgress struct {
@@ -106,6 +107,10 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		if err != nil {
 			return nil, err
 		}
+		generationHints, err := metricstmpl.ExtractGenerationHints(&metrics)
+		if err != nil {
+			return nil, err
+		}
 
 		if scn.ForceExponentialHistograms() {
 			dp.ForEachMetric(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric) {
@@ -140,6 +145,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 			metricsTemplate: &metrics,
 			resources:       resources,
 			precision:       distribution.InferPrecision(&metrics),
+			generationHints: generationHints,
 		})
 	}
 
@@ -287,8 +293,15 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		// we don't keep track of the data points for each instance individually to reduce memory pressure
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		// this makes sure counters are increasing over time
-		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-			distribution.AdvanceDataPoint(dp, r.baseRand, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
+		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+			opts := distribution.AdvanceOptions{
+				Interval:  r.cfg.Interval,
+				Precision: scn.precision,
+			}
+			if hint, ok := scn.generationHints[m.Name()]; ok {
+				opts.Hint = &hint
+			}
+			distribution.AdvanceDataPoint(dataPoint, r.baseRand, m, r.cfg.Distribution, r.expHistoGen, opts)
 		})
 		if scn.config.Concurrency == 0 {
 			for i := range scn.config.Scale {
@@ -327,9 +340,13 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 
 	instanceTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval, rng)
 
-	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
-		distribution.AdvanceDataPoint(dp, rng, m, r.cfg.Distribution, r.expHistoGen, scn.precision)
-		dp.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
+	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+		if _, ok := scn.generationHints[m.Name()]; !ok {
+			distribution.AdvanceDataPoint(dataPoint, rng, m, r.cfg.Distribution, r.expHistoGen, distribution.AdvanceOptions{
+				Precision: scn.precision,
+			})
+		}
+		dataPoint.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
 	})
 	dataPoints := metrics.DataPointCount()
 	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)

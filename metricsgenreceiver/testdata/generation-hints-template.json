@@ -1,0 +1,114 @@
+{
+  "resourceMetrics": [
+    {
+      "resource": {
+        "attributes": [
+          {
+            "key": "host.name",
+            "value": {
+              "stringValue": "hinted"
+            }
+          }
+        ]
+      },
+      "scopeMetrics": [
+        {
+          "metrics": [
+            {
+              "name": "test.constant",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asInt": "10"
+                  }
+                ]
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "constant"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test.clock",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asDouble": 1000
+                  }
+                ]
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "clock"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test.stable_binary",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asInt": "1"
+                  }
+                ]
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "stable_binary"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test.current_count",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asInt": "10"
+                  }
+                ]
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "current_count"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "test.unhinted",
+              "gauge": {
+                "dataPoints": [
+                  {
+                    "startTimeUnixNano": "0",
+                    "timeUnixNano": "0",
+                    "asDouble": 50
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
