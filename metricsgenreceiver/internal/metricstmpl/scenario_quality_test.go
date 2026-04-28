@@ -1,10 +1,15 @@
 package metricstmpl
 
 import (
+	"fmt"
+	"sort"
+	"strings"
 	"testing"
 
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
@@ -145,6 +150,24 @@ func TestBuiltInScenariosAvoidAllZeroDoubleMetricFamilies(t *testing.T) {
 	}
 }
 
+func TestBuiltInScenariosDoNotContainDuplicateSeries(t *testing.T) {
+	for _, tc := range builtInScenarioTestCases() {
+		t.Run(tc.name, func(t *testing.T) {
+			metrics, err := RenderMetricsTemplate(tc.path, tc.templateVars)
+			require.NoError(t, err)
+
+			seen := map[string]struct{}{}
+			dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+				key := dataPointSeriesKey(m.Name(), res.Attributes(), dataPoint.Attributes())
+				if _, ok := seen[key]; ok {
+					t.Errorf("duplicate metric series %s", key)
+				}
+				seen[key] = struct{}{}
+			})
+		})
+	}
+}
+
 func recordNumberEncodings(encodings map[string]map[pmetric.NumberDataPointValueType]struct{}, name string, dps pmetric.NumberDataPointSlice) {
 	if _, ok := encodings[name]; !ok {
 		encodings[name] = map[pmetric.NumberDataPointValueType]struct{}{}
@@ -177,5 +200,26 @@ func inspectDoubleSeedQuality(
 		case pmetric.NumberDataPointValueTypeInt:
 			seenInt[name] = true
 		}
+	}
+}
+
+func dataPointSeriesKey(metricName string, resourceAttrs pcommon.Map, dataPointAttrs pcommon.Map) string {
+	var b strings.Builder
+	b.WriteString(metricName)
+	appendAttributesKey(&b, "resource", resourceAttrs)
+	appendAttributesKey(&b, "datapoint", dataPointAttrs)
+	return b.String()
+}
+
+func appendAttributesKey(b *strings.Builder, prefix string, attrs pcommon.Map) {
+	keys := make([]string, 0, attrs.Len())
+	attrs.Range(func(k string, _ pcommon.Value) bool {
+		keys = append(keys, k)
+		return true
+	})
+	sort.Strings(keys)
+	for _, key := range keys {
+		value, _ := attrs.Get(key)
+		b.WriteString(fmt.Sprintf("|%s.%s=%s", prefix, key, value.AsString()))
 	}
 }

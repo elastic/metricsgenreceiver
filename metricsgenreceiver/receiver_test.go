@@ -123,7 +123,7 @@ func TestReceiver(t *testing.T) {
 		{
 			name:            "node_exporter",
 			path:            "builtin/node_exporter",
-			dataPoints:      537,
+			dataPoints:      535,
 			resourceMetrics: 7,
 		},
 	}
