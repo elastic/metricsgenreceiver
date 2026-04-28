@@ -18,6 +18,11 @@ const (
 	counterRateWaveAmplitude        = 0.80
 	counterRateWavePeriodIntervals  = 20.0
 	temporalVariationBucketCount    = 10
+
+	minGaugeMultiplier   = 1.00
+	maxGaugeMultiplier   = 2.00
+	minCounterMultiplier = 0.90
+	maxCounterMultiplier = 1.10
 )
 
 // InstanceVariationStrategy applies deterministic per-instance variation to a number data point.
@@ -37,15 +42,13 @@ type InstanceVariationStrategy interface {
 }
 
 var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
-	GenerationHintClock:        noInstanceVariation{},
-	GenerationHintConstant:     noInstanceVariation{},
-	GenerationHintStableBinary: noInstanceVariation{},
-	GenerationHintCurrentCount: integerOffsetVariation{min: -2, max: 2},
-	// Keep gauge multipliers >= 1 so non-unit gauges do not get pushed below 1
-	// and accidentally become eligible for [0,1] bouncing on later intervals.
-	GenerationHintSlowGauge:     boundedMultiplierVariation{min: 1.00, max: 2.00, autoBounceBetweenZeroAndOne: true},
-	GenerationHintSparseCounter: boundedMultiplierVariation{min: 0.90, max: 1.10},
-	GenerationHintSteadyCounter: boundedMultiplierVariation{min: 0.90, max: 1.10},
+	GenerationHintClock:         noInstanceVariation{},
+	GenerationHintConstant:      noInstanceVariation{},
+	GenerationHintStableBinary:  noInstanceVariation{},
+	GenerationHintCurrentCount:  currentCountVariation{minOffset: -2, maxOffset: 2},
+	GenerationHintSlowGauge:     gaugeVariation(),
+	GenerationHintSparseCounter: counterVariation(),
+	GenerationHintSteadyCounter: counterVariation(),
 }
 
 // ApplyInstanceVariation applies deterministic per-instance variation to a number data point.
@@ -105,11 +108,9 @@ func strategyFor(metric pmetric.Metric, hints map[string]MetricGenerationHint) I
 func defaultInstanceVariationFor(metric pmetric.Metric) InstanceVariationStrategy {
 	switch metric.Type() {
 	case pmetric.MetricTypeGauge:
-		// Keep gauge multipliers >= 1 so non-unit gauges do not get pushed below 1
-		// and accidentally become eligible for [0,1] bouncing on later intervals.
-		return boundedMultiplierVariation{min: 1.00, max: 2.00, autoBounceBetweenZeroAndOne: true}
+		return gaugeVariation()
 	case pmetric.MetricTypeSum:
-		return boundedMultiplierVariation{min: 0.90, max: 1.10}
+		return counterVariation()
 	default:
 		return noInstanceVariation{}
 	}
@@ -126,44 +127,81 @@ type boundedMultiplierVariation struct {
 	autoBounceBetweenZeroAndOne bool
 }
 
+func gaugeVariation() boundedMultiplierVariation {
+	return boundedMultiplierVariation{
+		min:                         minGaugeMultiplier,
+		max:                         maxGaugeMultiplier,
+		autoBounceBetweenZeroAndOne: true,
+	}
+}
+
+func counterVariation() boundedMultiplierVariation {
+	return boundedMultiplierVariation{
+		min: minCounterMultiplier,
+		max: maxCounterMultiplier,
+	}
+}
+
 func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
 	current := currentNumberDataPointValue(v)
 	if current == 0 {
 		return
 	}
 	instanceUnit := hashToUnitInterval(mixInstanceID(identityHash, instanceID))
-	multiplier := s.min + (s.max-s.min)*instanceUnit
-	next := current * multiplier
+	var next float64
 	if isCumulativeMonotonicSum(metric) {
-		next += counterElapsedOffset(identityHash, instanceID, instanceUnit, opts)
+		next = s.applyCumulativeCounterVariation(current, identityHash, instanceID, instanceUnit, opts)
 	} else {
-		next *= temporalMultiplier(identityHash, instanceID, opts, isUnitIntervalGaugeValue(current))
-	}
-	next = math.Max(0, next)
-	if s.autoBounceBetweenZeroAndOne && isUnitIntervalGaugeValue(current) {
-		next = bounceBetweenZeroAndOne(next)
+		next = s.applyNonCumulativeVariation(current, identityHash, instanceID, instanceUnit, opts)
 	}
 	writeNumberDataPoint(v, next, metric, precision)
 }
 
-type integerOffsetVariation struct {
-	min int64
-	max int64
+func (s boundedMultiplierVariation) applyCumulativeCounterVariation(current float64, identityHash uint64, instanceID int, instanceUnit float64, opts InstanceVariationOptions) float64 {
+	next := current * stableMultiplier(s.min, s.max, instanceUnit)
+	next += counterRateOffset(identityHash, instanceID, instanceUnit, opts)
+	return math.Max(0, next)
 }
 
-func (s integerOffsetVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
+func (s boundedMultiplierVariation) applyNonCumulativeVariation(current float64, identityHash uint64, instanceID int, instanceUnit float64, opts InstanceVariationOptions) float64 {
+	isUnitInterval := isUnitIntervalGaugeValue(current)
+	next := current * stableMultiplier(s.min, s.max, instanceUnit)
+	next *= temporalMultiplier(identityHash, instanceID, opts, isUnitInterval)
+	next = math.Max(0, next)
+	if s.autoBounceBetweenZeroAndOne && isUnitInterval {
+		next = bounceBetweenZeroAndOne(next)
+	}
+	return next
+}
+
+type currentCountVariation struct {
+	minOffset int64
+	maxOffset int64
+}
+
+func (s currentCountVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
 	current := currentNumberDataPointValue(v)
-	span := s.max - s.min + 1
+	span := s.maxOffset - s.minOffset + 1
 	if span <= 0 {
 		panic("invalid integer offset bounds")
 	}
 	base := int64(identityHash % uint64(span))
-	offset := positiveMod(int64(instanceID)+base, span) + s.min
+	offset := positiveMod(int64(instanceID)+base, span) + s.minOffset
 	offset += int64(math.Round(currentCountTemporalOffsetMax * temporalNoise(identityHash, instanceID, opts)))
 	instanceUnit := hashToUnitInterval(mixInstanceID(identityHash, instanceID))
-	multiplier := 1.00 + instanceUnit
+	multiplier := stableGaugeMultiplier(instanceUnit)
 	next := math.Max(0, current*multiplier+float64(offset))
 	writeNumberDataPoint(v, next, metric, precision)
+}
+
+func stableGaugeMultiplier(instanceUnit float64) float64 {
+	// Keep gauge multipliers >= 1 so non-unit gauges do not get pushed below 1
+	// and accidentally become eligible for [0,1] bouncing on later intervals.
+	return stableMultiplier(minGaugeMultiplier, maxGaugeMultiplier, instanceUnit)
+}
+
+func stableMultiplier(minValue, maxValue, unit float64) float64 {
+	return minValue + (maxValue-minValue)*unit
 }
 
 func isUnitIntervalGaugeValue(v float64) bool {
@@ -187,7 +225,7 @@ func temporalMultiplier(identityHash uint64, instanceID int, opts InstanceVariat
 	return 1 + gaugeTemporalVariationAmplitude*noise
 }
 
-func counterElapsedOffset(identityHash uint64, instanceID int, instanceUnit float64, opts InstanceVariationOptions) float64 {
+func counterRateOffset(identityHash uint64, instanceID int, instanceUnit float64, opts InstanceVariationOptions) float64 {
 	if opts.Timestamp.IsZero() || opts.StartTime.IsZero() || opts.Interval <= 0 {
 		return 0
 	}
@@ -201,6 +239,8 @@ func counterElapsedOffset(identityHash uint64, instanceID int, instanceUnit floa
 }
 
 func integratedCounterRateWave(elapsed float64, phase float64) float64 {
+	// Integrate a positive rate wave so cumulative counters stay monotonic while
+	// rate() views still see time-varying per-instance movement.
 	angularFrequency := 2 * math.Pi / counterRateWavePeriodIntervals
 	return elapsed + counterRateWaveAmplitude/angularFrequency*(math.Sin(angularFrequency*elapsed+phase)-math.Sin(phase))
 }
