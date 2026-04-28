@@ -157,7 +157,7 @@ func TestBuiltInScenariosDoNotContainDuplicateSeries(t *testing.T) {
 			require.NoError(t, err)
 
 			seen := map[string]struct{}{}
-			dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+			dp.ForEachDataPoint(&metrics, func(_ int, res pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
 				key := dataPointSeriesKey(m.Name(), res.Attributes(), dataPoint.Attributes())
 				if _, ok := seen[key]; ok {
 					t.Errorf("duplicate metric series %s", key)
