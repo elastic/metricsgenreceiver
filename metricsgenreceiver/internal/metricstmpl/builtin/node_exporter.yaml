@@ -37,6 +37,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: go_memstats_heap_objects
       description: Number of currently allocated objects. Equals to /gc/heap/objects:objects.
       gauge:
@@ -48,6 +51,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: go_memstats_next_gc_bytes
       description: Number of heap bytes when next garbage collection will take place.
         Equals to /gc/heap/goal:bytes.
@@ -60,6 +66,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Active_anon_bytes
       description: Memory information field Active_anon_bytes.
       gauge:
@@ -71,17 +80,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Tcp_OutRsts
       description: Statistic TcpOutRsts.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '2062'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_flags
       description: 'Network device property: flags'
       gauge:
@@ -102,6 +120,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: go_memstats_last_gc_time_seconds
       description: Number of seconds since 1970 of last garbage collection.
       gauge:
@@ -113,6 +134,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: clock
     - name: node_disk_writes_completed_total
       description: The total number of writes completed successfully.
       sum:
@@ -130,6 +154,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_Slab_bytes
       description: Memory information field Slab_bytes.
       gauge:
@@ -141,28 +168,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Icmp_InErrors
       description: Statistic IcmpInErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_TcpExt_SyncookiesFailed
       description: Statistic TcpExtSyncookiesFailed.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_transmit_fifo_total
       description: Network device statistic transmit_fifo.
       sum:
@@ -187,6 +229,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_scrape_collector_success
       description: 'node_exporter: Whether a collector succeeded.'
       gauge:
@@ -471,6 +516,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_sockstat_UDP6_inuse
       description: Number of UDP6 sockets in state inuse.
       gauge:
@@ -482,6 +530,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_memory_Bounce_bytes
       description: Memory information field Bounce_bytes.
       gauge:
@@ -493,6 +544,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Mlocked_bytes
       description: Memory information field Mlocked_bytes.
       gauge:
@@ -504,6 +558,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_SReclaimable_bytes
       description: Memory information field SReclaimable_bytes.
       gauge:
@@ -515,6 +572,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_SwapCached_bytes
       description: Memory information field SwapCached_bytes.
       gauge:
@@ -526,6 +586,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_iface_id
       description: 'Network device property: iface_id'
       gauge:
@@ -546,6 +609,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_receive_errs_total
       description: Network device statistic receive_errs.
       sum:
@@ -570,6 +636,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_pressure_memory_waiting_seconds_total
       description: Total time in seconds that processes have waited for memory
       sum:
@@ -584,6 +653,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_memory_SUnreclaim_bytes
       description: Memory information field SUnreclaim_bytes.
       gauge:
@@ -595,6 +667,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_SwapFree_bytes
       description: Memory information field SwapFree_bytes.
       gauge:
@@ -606,17 +681,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_TcpExt_TCPOFOQueue
       description: Statistic TcpExtTCPOFOQueue.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_sockstat_RAW_inuse
       description: Number of RAW sockets in state inuse.
       gauge:
@@ -628,6 +712,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_sockstat_TCP_inuse
       description: Number of TCP sockets in state inuse.
       gauge:
@@ -639,6 +726,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_softnet_backlog_len
       description: Softnet backlog status
       gauge:
@@ -671,6 +761,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_softnet_dropped_total
       description: Number of dropped packets
       sum:
@@ -709,6 +802,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_entropy_available_bits
       description: Bits of available entropy.
       gauge:
@@ -720,6 +816,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_PageTables_bytes
       description: Memory information field PageTables_bytes.
       gauge:
@@ -731,6 +830,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Unevictable_bytes
       description: Memory information field Unevictable_bytes.
       gauge:
@@ -742,17 +844,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Udp_RcvbufErrors
       description: Statistic UdpRcvbufErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_timex_pps_stability_exceeded_total
       description: Pulse per second count of stability limit exceeded events.
       sum:
@@ -767,6 +878,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_memory_Inactive_anon_bytes
       description: Memory information field Inactive_anon_bytes.
       gauge:
@@ -778,6 +892,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: go_memstats_heap_alloc_bytes
       description: Number of heap bytes allocated and currently in use, same as go_memstats_alloc_bytes.
         Equals to /memory/classes/heap/objects:bytes.
@@ -790,6 +907,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: go_memstats_heap_released_bytes
       description: Number of heap bytes released to OS. Equals to /memory/classes/heap/released:bytes.
       gauge:
@@ -801,6 +921,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_load15
       description: 15m load average.
       gauge:
@@ -812,6 +935,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Zswapped_bytes
       description: Memory information field Zswapped_bytes.
       gauge:
@@ -823,6 +949,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_disk_write_time_seconds_total
       description: This is the total number of seconds spent by all writes.
       sum:
@@ -840,6 +969,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_CommitLimit_bytes
       description: Memory information field CommitLimit_bytes.
       gauge:
@@ -851,6 +983,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_sockstat_TCP_orphan
       description: Number of TCP sockets in state orphan.
       gauge:
@@ -862,6 +997,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_timex_offset_seconds
       description: Time offset in between local system and reference clock.
       gauge:
@@ -873,6 +1011,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: promhttp_metric_handler_requests_total
       description: Total number of scrapes by HTTP status code.
       sum:
@@ -904,6 +1045,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: go_memstats_heap_idle_bytes
       description: Number of heap bytes waiting to be used. Equals to /memory/classes/heap/released:bytes
         + /memory/classes/heap/free:bytes.
@@ -916,6 +1060,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_arp_entries
       description: ARP entries by device
       gauge:
@@ -930,6 +1077,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_disk_read_bytes_total
       description: The total number of bytes read successfully.
       sum:
@@ -947,6 +1097,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_sockstat_RAW6_inuse
       description: Number of RAW6 sockets in state inuse.
       gauge:
@@ -958,40 +1111,61 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_vmstat_pgfault
       description: "/proc/vmstat information field pgfault."
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '848085'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_vmstat_pgmajfault
       description: "/proc/vmstat information field pgmajfault."
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '1832'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_stat_early_drop
       description: Number of dropped conntrack entries to make room for new ones,
         if maximum table size was reached.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_memstats_frees_total
       description: Total number of heap objects frees. Equals to /gc/heap/frees:objects
         + /gc/heap/tiny/allocs:objects.
@@ -1007,6 +1181,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_load1
       description: 1m load average.
       gauge:
@@ -1018,6 +1195,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_transmit_packets_total
       description: Network device statistic transmit_packets.
       sum:
@@ -1042,6 +1222,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: go_memstats_buck_hash_sys_bytes
       description: Number of bytes used by the profiling bucket hash table. Equals
         to /memory/classes/profiling/buckets:bytes.
@@ -1054,6 +1237,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_exporter_build_info
       description: A metric with a constant '1' value labeled by version, revision,
         branch, goversion from which node_exporter was built, and the goos and goarch
@@ -1088,28 +1274,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_netstat_Udp6_OutDatagrams
       description: Statistic Udp6OutDatagrams.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '4'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_Udp_InDatagrams
       description: Statistic UdpInDatagrams.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '124'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_disk_discard_time_seconds_total
       description: This is the total number of seconds spent by all discards.
       sum:
@@ -1127,6 +1328,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_HugePages_Surp
       description: Memory information field HugePages_Surp.
       gauge:
@@ -1138,6 +1342,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_network_receive_multicast_total
       description: Network device statistic receive_multicast.
       sum:
@@ -1162,6 +1369,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_up
       description: Value is 1 if operstate is 'up', 0 otherwise.
       gauge:
@@ -1182,6 +1392,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_timex_tai_offset_seconds
       description: International Atomic Time (TAI) offset.
       gauge:
@@ -1193,50 +1406,77 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_netstat_TcpExt_SyncookiesSent
       description: Statistic TcpExtSyncookiesSent.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_Tcp_InErrs
       description: Statistic TcpInErrs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_UdpLite_InErrors
       description: Statistic UdpLiteInErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_vmstat_pgpgin
       description: "/proc/vmstat information field pgpgin."
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '347669'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: go_memstats_mspan_sys_bytes
       description: Number of bytes used for mspan structures obtained from system.
         Equals to /memory/classes/metadata/mspan/inuse:bytes + /memory/classes/metadata/mspan/free:bytes.
@@ -1249,17 +1489,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Tcp_InSegs
       description: Statistic TcpInSegs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '13581'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_timex_loop_time_constant
       description: Phase-locked loop time constant.
       gauge:
@@ -1271,6 +1520,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_timex_status
       description: Value of the status array bits.
       gauge:
@@ -1282,6 +1534,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_disk_written_bytes_total
       description: The total number of bytes written successfully.
       sum:
@@ -1299,6 +1554,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_receive_nohandler_total
       description: Network device statistic receive_nohandler.
       sum:
@@ -1323,17 +1581,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_stat_drop
       description: Number of packets dropped due to conntrack failure.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: process_virtual_memory_bytes
       description: Virtual memory size in bytes.
       gauge:
@@ -1345,6 +1612,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_net_dev_group
       description: 'Network device property: net_dev_group'
       gauge:
@@ -1365,6 +1635,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_pressure_io_waiting_seconds_total
       description: Total time in seconds that processes have waited due to IO congestion
       sum:
@@ -1379,6 +1652,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_scrape_collector_duration_seconds
       description: 'node_exporter: Duration of a collector scrape.'
       gauge:
@@ -1663,6 +1939,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_sockstat_TCP_mem
       description: Number of TCP sockets in state mem.
       gauge:
@@ -1674,6 +1953,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_softnet_times_squeezed_total
       description: Number of times processing packets ran out of quota
       sum:
@@ -1712,6 +1994,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_forks_total
       description: Total number of forks.
       sum:
@@ -1726,17 +2011,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_Udp6_RcvbufErrors
       description: Statistic Udp6RcvbufErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_iface_link
       description: 'Network device property: iface_link'
       gauge:
@@ -1757,6 +2051,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_transmit_queue_length
       description: 'Network device property: transmit_queue_length'
       gauge:
@@ -1777,6 +2074,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_network_info
       description: Non-numeric data from /sys/class/net/<iface>, value is always 1.
       gauge:
@@ -1833,6 +2133,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_sockstat_UDPLITE_inuse
       description: Number of UDPLITE sockets in state inuse.
       gauge:
@@ -1844,6 +2147,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_time_seconds
       description: System time in seconds since epoch (1970).
       gauge:
@@ -1855,6 +2161,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: clock
     - name: node_filefd_allocated
       description: 'File descriptor statistics: allocated.'
       gauge:
@@ -1866,17 +2175,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_netstat_Ip6_InOctets
       description: Statistic Ip6InOctets.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '2133398'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_transmit_drop_total
       description: Network device statistic transmit_drop.
       sum:
@@ -1901,6 +2219,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_softnet_flow_limit_count_total
       description: Number of times flow limit has been reached
       sum:
@@ -1939,6 +2260,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_memory_Shmem_bytes
       description: Memory information field Shmem_bytes.
       gauge:
@@ -1950,6 +2274,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_SwapTotal_bytes
       description: Memory information field SwapTotal_bytes.
       gauge:
@@ -1961,6 +2288,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_dormant
       description: 'Network device property: dormant'
       gauge:
@@ -1981,6 +2311,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_sockstat_FRAG_memory
       description: Number of FRAG sockets in state memory.
       gauge:
@@ -1992,6 +2325,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_vmstat_oom_kill
       description: "/proc/vmstat information field oom_kill."
       gauge:
@@ -2003,6 +2339,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: unknown
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_memstats_mcache_inuse_bytes
       description: Number of bytes in use by mcache structures. Equals to /memory/classes/metadata/mcache/inuse:bytes.
       gauge:
@@ -2014,17 +2353,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Tcp_RetransSegs
       description: Statistic TcpRetransSegs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '6'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_name_assign_type
       description: 'Network device property: name_assign_type'
       gauge:
@@ -2045,6 +2393,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_receive_fifo_total
       description: Network device statistic receive_fifo.
       sum:
@@ -2069,6 +2420,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_sockstat_TCP_alloc
       description: Number of TCP sockets in state alloc.
       gauge:
@@ -2080,6 +2434,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_softnet_received_rps_total
       description: Number of times cpu woken up received_rps
       sum:
@@ -2118,6 +2475,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_memory_KernelStack_bytes
       description: Memory information field KernelStack_bytes.
       gauge:
@@ -2129,6 +2489,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_disk_reads_merged_total
       description: The total number of reads merged.
       sum:
@@ -2146,6 +2509,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_context_switches_total
       description: Total number of context switches.
       sum:
@@ -2160,6 +2526,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_cpu_seconds_total
       description: Seconds the CPUs spent in each mode.
       sum:
@@ -2490,6 +2859,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_Active_file_bytes
       description: Memory information field Active_file_bytes.
       gauge:
@@ -2501,17 +2873,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_TcpExt_SyncookiesRecv
       description: Statistic TcpExtSyncookiesRecv.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_entries_limit
       description: Maximum size of connection tracking table.
       gauge:
@@ -2523,6 +2904,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_timex_tick_seconds
       description: Seconds between clock ticks.
       gauge:
@@ -2534,17 +2918,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_vmstat_pswpin
       description: "/proc/vmstat information field pswpin."
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_memstats_heap_inuse_bytes
       description: Number of heap bytes that are in use. Equals to /memory/classes/heap/objects:bytes
         + /memory/classes/heap/unused:bytes
@@ -2557,6 +2950,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_filesystem_files_free
       description: Filesystem total free file nodes.
       gauge:
@@ -2625,17 +3021,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Icmp_OutMsgs
       description: Statistic IcmpOutMsgs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '7'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_timex_pps_error_total
       description: Pulse per second count of calibration errors.
       sum:
@@ -2650,6 +3055,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: process_start_time_seconds
       description: Start time of the process since unix epoch in seconds.
       gauge:
@@ -2661,6 +3069,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: promhttp_metric_handler_errors_total
       description: Total number of internal errors encountered by the promhttp metric
         handler.
@@ -2686,6 +3097,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_disk_writes_merged_total
       description: The number of writes merged.
       sum:
@@ -2703,6 +3117,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_HugePages_Total
       description: Memory information field HugePages_Total.
       gauge:
@@ -2714,6 +3131,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_netstat_Tcp_CurrEstab
       description: Statistic TcpCurrEstab.
       gauge:
@@ -2725,6 +3145,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: unknown
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_network_address_assign_type
       description: 'Network device property: address_assign_type'
       gauge:
@@ -2745,6 +3168,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_receive_compressed_total
       description: Network device statistic receive_compressed.
       sum:
@@ -2769,6 +3195,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_timex_pps_frequency_hertz
       description: Pulse per second frequency.
       gauge:
@@ -2780,6 +3209,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_filefd_maximum
       description: 'File descriptor statistics: maximum.'
       gauge:
@@ -2791,28 +3223,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_netstat_Udp6_InErrors
       description: Statistic Udp6InErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_Udp_NoPorts
       description: Statistic UdpNoPorts.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_memstats_alloc_bytes_total
       description: Total number of bytes allocated in heap until now, even if released
         already. Equals to /gc/heap/allocs:bytes.
@@ -2828,6 +3275,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_boot_time_seconds
       description: Node boot time, in unixtime.
       gauge:
@@ -2839,6 +3289,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_disk_discarded_sectors_total
       description: The total number of sectors discarded successfully.
       sum:
@@ -2856,17 +3309,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_Udp6_InDatagrams
       description: Statistic Udp6InDatagrams.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '4'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_device_id
       description: 'Network device property: device_id'
       gauge:
@@ -2887,6 +3349,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_speed_bytes
       description: 'Network device property: speed_bytes'
       gauge:
@@ -2901,6 +3366,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_sockstat_FRAG6_inuse
       description: Number of FRAG6 sockets in state inuse.
       gauge:
@@ -2912,6 +3380,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_sockstat_UDP_mem_bytes
       description: Number of UDP sockets in state mem_bytes.
       gauge:
@@ -2923,6 +3394,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_disk_discards_merged_total
       description: The total number of discards merged.
       sum:
@@ -2940,6 +3414,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_transmit_colls_total
       description: Network device statistic transmit_colls.
       sum:
@@ -2964,17 +3441,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_stat_found
       description: Number of searched entries which were successful.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_timex_pps_jitter_total
       description: Pulse per second count of jitter limit exceeded events.
       sum:
@@ -2989,28 +3475,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_Icmp6_InMsgs
       description: Statistic Icmp6InMsgs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_Udp_SndbufErrors
       description: Statistic UdpSndbufErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_goroutines
       description: Number of goroutines that currently exist.
       gauge:
@@ -3022,6 +3523,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: go_memstats_mcache_sys_bytes
       description: Number of bytes used for mcache structures obtained from system.
         Equals to /memory/classes/metadata/mcache/inuse:bytes + /memory/classes/metadata/mcache/free:bytes.
@@ -3034,6 +3538,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_disk_discards_completed_total
       description: The total number of discards completed successfully.
       sum:
@@ -3051,6 +3558,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_HugePages_Rsvd
       description: Memory information field HugePages_Rsvd.
       gauge:
@@ -3062,17 +3572,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_netstat_TcpExt_ListenDrops
       description: Statistic TcpExtListenDrops.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_receive_drop_total
       description: Network device statistic receive_drop.
       sum:
@@ -3097,17 +3616,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_stat_insert_failed
       description: Number of entries for which list insertion was attempted but failed.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_pressure_cpu_waiting_seconds_total
       description: Total time in seconds that processes have waited for CPU time
       sum:
@@ -3122,6 +3650,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_sched_gomaxprocs_threads
       description: The current runtime.GOMAXPROCS setting, or the number of operating
         system threads that can execute user-level Go code simultaneously. Sourced
@@ -3135,6 +3666,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_Cached_bytes
       description: Memory information field Cached_bytes.
       gauge:
@@ -3146,6 +3680,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_MemTotal_bytes
       description: Memory information field MemTotal_bytes.
       gauge:
@@ -3157,6 +3694,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_time_zone_offset_seconds
       description: System time zone offset in seconds.
       gauge:
@@ -3171,28 +3711,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_vmstat_pswpout
       description: "/proc/vmstat information field pswpout."
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_Ip6_OutOctets
       description: Statistic Ip6OutOctets.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '2134562'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_time_clocksource_available_info
       description: Available clocksources read from '/sys/devices/system/clocksource'.
       gauge:
@@ -3228,6 +3783,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: process_network_receive_bytes_total
       description: Number of bytes received by the process over the network.
       sum:
@@ -3242,6 +3800,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: process_virtual_memory_max_bytes
       description: Maximum amount of virtual memory available in bytes.
       gauge:
@@ -3253,6 +3814,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_filesystem_free_bytes
       description: Filesystem free space in bytes.
       gauge:
@@ -3321,6 +3885,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_VmallocTotal_bytes
       description: Memory information field VmallocTotal_bytes.
       gauge:
@@ -3332,6 +3899,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_carrier
       description: 'Network device property: carrier'
       gauge:
@@ -3352,6 +3922,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_sockstat_UDP_inuse
       description: Number of UDP sockets in state inuse.
       gauge:
@@ -3363,6 +3936,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: go_gc_gomemlimit_bytes
       description: Go runtime memory limit configured by the user, otherwise math.MaxInt64.
         This value is set by the GOMEMLIMIT environment variable, and the runtime/debug.SetMemoryLimit
@@ -3376,50 +3952,77 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_netstat_Icmp6_OutMsgs
       description: Statistic Icmp6OutMsgs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '18'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_TcpExt_TCPRcvQDrop
       description: Statistic TcpExtTCPRcvQDrop.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_TcpExt_TCPSynRetrans
       description: Statistic TcpExtTCPSynRetrans.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '6'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_Udp_InErrors
       description: Statistic UdpInErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_timex_sync_status
       description: Is clock synchronized to a reliable server (1 = yes, 0 = no).
       gauge:
@@ -3431,6 +4034,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_filesystem_files
       description: Filesystem total file nodes.
       gauge:
@@ -3499,17 +4105,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_netstat_Udp_OutDatagrams
       description: Statistic UdpOutDatagrams.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '125'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_udp_queues
       description: Number of allocated memory in the kernel for UDP datagrams in bytes.
       gauge:
@@ -3554,6 +4169,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: process_open_fds
       description: Number of open file descriptors.
       gauge:
@@ -3565,6 +4183,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_entropy_pool_size_bits
       description: Bits of entropy pool.
       gauge:
@@ -3576,6 +4197,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_ShmemPmdMapped_bytes
       description: Memory information field ShmemPmdMapped_bytes.
       gauge:
@@ -3587,39 +4211,60 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Tcp_ActiveOpens
       description: Statistic TcpActiveOpens.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '2127'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_Udp6_NoPorts
       description: Statistic Udp6NoPorts.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_netstat_Udp6_SndbufErrors
       description: Statistic Udp6SndbufErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_entries
       description: Number of currently allocated flow entries for connection tracking.
       gauge:
@@ -3631,6 +4276,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_memory_VmallocChunk_bytes
       description: Memory information field VmallocChunk_bytes.
       gauge:
@@ -3642,6 +4290,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_HugePages_Free
       description: Memory information field HugePages_Free.
       gauge:
@@ -3653,6 +4304,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: go_memstats_gc_sys_bytes
       description: Number of bytes used for garbage collection system metadata. Equals
         to /memory/classes/metadata/other:bytes.
@@ -3665,6 +4319,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: go_threads
       description: Number of OS threads created.
       gauge:
@@ -3676,6 +4333,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_memory_MemAvailable_bytes
       description: Memory information field MemAvailable_bytes.
       gauge:
@@ -3687,6 +4347,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_disk_io_time_weighted_seconds_total
       description: 'The weighted # of seconds spent doing I/Os.'
       sum:
@@ -3704,6 +4367,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_Committed_AS_bytes
       description: Memory information field Committed_AS_bytes.
       gauge:
@@ -3715,6 +4381,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_carrier_up_changes_total
       description: 'Network device property: carrier_up_changes_total'
       sum:
@@ -3739,6 +4408,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_protocol_type
       description: 'Network device property: protocol_type'
       gauge:
@@ -3759,6 +4431,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_softnet_processed_total
       description: Number of processed packets
       sum:
@@ -3797,6 +4472,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_load5
       description: 5m load average.
       gauge:
@@ -3808,6 +4486,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_ShmemHugePages_bytes
       description: Memory information field ShmemHugePages_bytes.
       gauge:
@@ -3819,17 +4500,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Icmp6_InErrors
       description: Statistic Icmp6InErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_memstats_mallocs_total
       description: Total number of heap objects allocated, both live and gc-ed. Semantically
         a counter version for go_memstats_heap_objects gauge. Equals to /gc/heap/allocs:objects
@@ -3846,6 +4536,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: go_memstats_other_sys_bytes
       description: Number of bytes used for other system allocations. Equals to /memory/classes/other:bytes.
       gauge:
@@ -3857,6 +4550,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Inactive_file_bytes
       description: Memory information field Inactive_file_bytes.
       gauge:
@@ -3868,17 +4564,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_nf_conntrack_stat_insert
       description: Number of entries inserted into the list.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_disk_io_time_seconds_total
       description: Total seconds spent doing I/Os.
       sum:
@@ -3896,6 +4601,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_filesystem_device_error
       description: Whether an error occurred while getting statistics for the given
         device.
@@ -3965,6 +4673,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_memory_AnonPages_bytes
       description: Memory information field AnonPages_bytes.
       gauge:
@@ -3976,6 +4687,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_sockstat_TCP6_inuse
       description: Number of TCP6 sockets in state inuse.
       gauge:
@@ -3987,6 +4701,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: go_memstats_sys_bytes
       description: Number of bytes obtained from system. Equals to /memory/classes/total:byte.
       gauge:
@@ -3998,6 +4715,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_filesystem_avail_bytes
       description: Filesystem space available to non-root users in bytes.
       gauge:
@@ -4066,6 +4786,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_transmit_carrier_total
       description: Network device statistic transmit_carrier.
       sum:
@@ -4090,6 +4813,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_sockstat_UDPLITE6_inuse
       description: Number of UDPLITE6 sockets in state inuse.
       gauge:
@@ -4101,6 +4827,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: go_memstats_stack_inuse_bytes
       description: Number of bytes obtained from system for stack allocator in non-CGO
         environments. Equals to /memory/classes/heap/stacks:bytes.
@@ -4113,6 +4842,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_cpu_guest_seconds_total
       description: Seconds the CPUs spent in guests (VMs) for each mode.
       sum:
@@ -4203,6 +4935,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_disk_read_time_seconds_total
       description: The total number of seconds spent by all reads.
       sum:
@@ -4220,17 +4955,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_TcpExt_TCPTimeouts
       description: Statistic TcpExtTCPTimeouts.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '6'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_filesystem_mount_info
       description: Filesystem mount information.
       gauge:
@@ -4299,18 +5043,27 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_nf_conntrack_stat_search_restart
       description: Number of conntrack table lookups which had to be restarted due
         to hashtable resizes.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '7'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_info
       description: Information about the Go environment.
       gauge:
@@ -4325,6 +5078,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: go_memstats_stack_sys_bytes
       description: Number of bytes obtained from system for stack allocator. Equals
         to /memory/classes/heap/stacks:bytes + /memory/classes/os-stacks:bytes.
@@ -4337,6 +5093,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_intr_total
       description: Total number of interrupts serviced.
       sum:
@@ -4351,6 +5110,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_receive_bytes_total
       description: Network device statistic receive_bytes.
       sum:
@@ -4375,6 +5137,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_pressure_memory_stalled_seconds_total
       description: Total time in seconds no process could make progress due to memory
         congestion
@@ -4390,6 +5155,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: process_resident_memory_bytes
       description: Resident memory size in bytes.
       gauge:
@@ -4401,6 +5169,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_filesystem_readonly
       description: Filesystem read-only status.
       gauge:
@@ -4469,6 +5240,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_memory_Zswap_bytes
       description: Memory information field Zswap_bytes.
       gauge:
@@ -4480,17 +5254,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_IpExt_InOctets
       description: Statistic IpExtInOctets.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '160713350'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_transmit_compressed_total
       description: Network device statistic transmit_compressed.
       sum:
@@ -4515,6 +5298,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_procs_running
       description: Number of processes in runnable state.
       gauge:
@@ -4526,17 +5312,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_vmstat_pgpgout
       description: "/proc/vmstat information field pgpgout."
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '1293160'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_disk_flush_requests_total
       description: The total number of flush requests completed successfully
       sum:
@@ -4554,6 +5349,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_NFS_Unstable_bytes
       description: Memory information field NFS_Unstable_bytes.
       gauge:
@@ -4565,6 +5363,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_WritebackTmp_bytes
       description: Memory information field WritebackTmp_bytes.
       gauge:
@@ -4576,6 +5377,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_time_clocksource_current_info
       description: Current clocksource read from '/sys/devices/system/clocksource'.
       gauge:
@@ -4593,6 +5397,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_Dirty_bytes
       description: Memory information field Dirty_bytes.
       gauge:
@@ -4604,28 +5411,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Icmp_InMsgs
       description: Statistic IcmpInMsgs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '7'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_TcpExt_ListenOverflows
       description: Statistic TcpExtListenOverflows.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_carrier_changes_total
       description: 'Network device property: carrier_changes_total'
       sum:
@@ -4650,6 +5472,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_timex_maxerror_seconds
       description: Maximum error in seconds.
       gauge:
@@ -4661,6 +5486,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_filesystem_size_bytes
       description: Filesystem size in bytes.
       gauge:
@@ -4729,6 +5557,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_network_transmit_bytes_total
       description: Network device statistic transmit_bytes.
       sum:
@@ -4753,6 +5584,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_transmit_errs_total
       description: Network device statistic transmit_errs.
       sum:
@@ -4777,17 +5611,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_nf_conntrack_stat_invalid
       description: Number of packets seen which can not be tracked.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '53'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: go_gc_duration_seconds
       description: A summary of the wall-time pause (stop-the-world) duration in garbage
         collection cycles.
@@ -4827,6 +5670,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: go_gc_duration_seconds_sum
       description: Total pause duration of garbage collection cycles.
       sum:
@@ -4841,6 +5687,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: go_gc_duration_seconds_count
       description: Total number of garbage collection cycles.
       sum:
@@ -4855,6 +5704,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_network_receive_frame_total
       description: Network device statistic receive_frame.
       sum:
@@ -4879,6 +5731,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_sockstat_FRAG_inuse
       description: Number of FRAG sockets in state inuse.
       gauge:
@@ -4890,6 +5745,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_sockstat_TCP_tw
       description: Number of TCP sockets in state tw.
       gauge:
@@ -4901,6 +5759,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_timex_estimated_error_seconds
       description: Estimated error in seconds.
       gauge:
@@ -4912,6 +5773,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Buffers_bytes
       description: Memory information field Buffers_bytes.
       gauge:
@@ -4923,6 +5787,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_sockstat_UDP_mem
       description: Number of UDP sockets in state mem.
       gauge:
@@ -4934,6 +5801,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_sockstat_sockets_used
       description: Number of IPv4 sockets in use.
       gauge:
@@ -4945,6 +5815,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_timex_pps_calibration_total
       description: Pulse per second count of calibration intervals.
       sum:
@@ -4959,6 +5832,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_memory_Inactive_bytes
       description: Memory information field Inactive_bytes.
       gauge:
@@ -4970,6 +5846,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Percpu_bytes
       description: Memory information field Percpu_bytes.
       gauge:
@@ -4981,6 +5860,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: go_memstats_alloc_bytes
       description: Number of bytes allocated in heap and currently in use. Equals
         to /memory/classes/heap/objects:bytes.
@@ -4993,6 +5875,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_procs_blocked
       description: Number of processes blocked waiting for I/O to complete.
       gauge:
@@ -5004,6 +5889,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: go_memstats_heap_sys_bytes
       description: Number of heap bytes obtained from system. Equals to /memory/classes/heap/objects:bytes
         + /memory/classes/heap/unused:bytes + /memory/classes/heap/released:bytes
@@ -5017,6 +5905,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Writeback_bytes
       description: Memory information field Writeback_bytes.
       gauge:
@@ -5028,6 +5919,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_iface_link_mode
       description: 'Network device property: iface_link_mode'
       gauge:
@@ -5048,6 +5942,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_softnet_cpu_collision_total
       description: Number of collision occur while obtaining device lock while transmitting
       sum:
@@ -5086,6 +5983,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: process_cpu_seconds_total
       description: Total user and system CPU time spent in seconds.
       sum:
@@ -5100,6 +6000,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: process_network_transmit_bytes_total
       description: Number of bytes sent by the process over the network.
       sum:
@@ -5114,18 +6017,27 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_nf_conntrack_stat_ignore
       description: Number of packets seen which are already connected to a conntrack
         entry.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '89738'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: gauge
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_textfile_scrape_error
       description: 1 if there was an error opening or reading a file, 0 otherwise
       gauge:
@@ -5137,6 +6049,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_timex_frequency_adjustment_ratio
       description: Local clock frequency adjustment.
       gauge:
@@ -5148,6 +6063,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: process_max_fds
       description: Maximum number of open file descriptors.
       gauge:
@@ -5159,6 +6077,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: go_gc_gogc_percent
       description: Heap size target percentage configured by the user, otherwise 100.
         This value is set by the GOGC environment variable, and the runtime/debug.SetGCPercent
@@ -5172,6 +6093,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_disk_flush_requests_time_seconds_total
       description: This is the total number of seconds spent by all flush requests.
       sum:
@@ -5189,6 +6113,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_Hugepagesize_bytes
       description: Memory information field Hugepagesize_bytes.
       gauge:
@@ -5200,6 +6127,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_MemFree_bytes
       description: Memory information field MemFree_bytes.
       gauge:
@@ -5211,6 +6141,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_disk_io_now
       description: The number of I/Os currently in progress.
       gauge:
@@ -5225,28 +6158,43 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_netstat_IpExt_OutOctets
       description: Statistic IpExtOutOctets.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '986873'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_netstat_UdpLite6_InErrors
       description: Statistic UdpLite6InErrors.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '0'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_network_carrier_down_changes_total
       description: 'Network device property: carrier_down_changes_total'
       sum:
@@ -5271,6 +6219,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_sockstat_TCP_mem_bytes
       description: Number of TCP sockets in state mem_bytes.
       gauge:
@@ -5282,6 +6233,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_timex_pps_jitter_seconds
       description: Pulse per second jitter.
       gauge:
@@ -5293,6 +6247,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_disk_reads_completed_total
       description: The total number of reads completed successfully.
       sum:
@@ -5310,6 +6267,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_filesystem_purgeable_bytes
       description: Filesystem space available including purgeable space (MacOS specific).
       gauge:
@@ -5378,6 +6338,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: promhttp_metric_handler_requests_in_flight
       description: Current number of scrapes being served.
       gauge:
@@ -5389,6 +6352,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_netstat_Ip_Forwarding
       description: Statistic IpForwarding.
       gauge:
@@ -5400,17 +6366,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: unknown
+      - key: metricsgen.hint.class
+        value:
+          stringValue: stable_binary
     - name: node_netstat_Tcp_OutSegs
       description: Statistic TcpOutSegs.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '10838'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_timex_pps_stability_hertz
       description: Pulse per second stability, average of recent frequency changes.
       gauge:
@@ -5422,6 +6397,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: go_memstats_mspan_inuse_bytes
       description: Number of bytes in use by mspan structures. Equals to /memory/classes/metadata/mspan/inuse:bytes.
       gauge:
@@ -5433,6 +6411,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_Active_bytes
       description: Memory information field Active_bytes.
       gauge:
@@ -5444,6 +6425,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_memory_VmallocUsed_bytes
       description: Memory information field VmallocUsed_bytes.
       gauge:
@@ -5455,17 +6439,26 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_netstat_Tcp_PassiveOpens
       description: Statistic TcpPassiveOpens.
-      gauge:
+      sum:
         dataPoints:
         - timeUnixNano: '1776631194895000000'
+          startTimeUnixNano: '1776631194895000000'
           asInt: '5'
           attributes: []
+        aggregationTemporality: 2
+        isMonotonic: true
       metadata:
       - key: prometheus.type
         value:
-          stringValue: unknown
+          stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_memory_Mapped_bytes
       description: Memory information field Mapped_bytes.
       gauge:
@@ -5477,6 +6470,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_network_mtu_bytes
       description: 'Network device property: mtu_bytes'
       gauge:
@@ -5497,6 +6493,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_pressure_io_stalled_seconds_total
       description: Total time in seconds no process could make progress due to IO
         congestion
@@ -5512,6 +6511,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: sparse_counter
     - name: node_sockstat_FRAG6_memory
       description: Number of FRAG6 sockets in state memory.
       gauge:
@@ -5523,6 +6525,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_timex_pps_shift_seconds
       description: Pulse per second interval duration.
       gauge:
@@ -5534,6 +6539,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_AnonHugePages_bytes
       description: Memory information field AnonHugePages_bytes.
       gauge:
@@ -5545,6 +6553,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: slow_gauge
     - name: node_cooling_device_cur_state
       description: Current throttle state of the cooling device.
       gauge:
@@ -5589,6 +6600,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: current_count
     - name: node_cooling_device_max_state
       description: Maximum throttle state of the cooling device.
       gauge:
@@ -5633,6 +6647,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_DirectMap1G_bytes
       description: Memory information field DirectMap1G_bytes.
       gauge:
@@ -5644,6 +6661,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_DirectMap2M_bytes
       description: Memory information field DirectMap2M_bytes.
       gauge:
@@ -5655,6 +6675,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_memory_DirectMap4k_bytes
       description: Memory information field DirectMap4k_bytes.
       gauge:
@@ -5666,6 +6689,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
     - name: node_schedstat_running_seconds_total
       description: Running time in seconds.
       sum:
@@ -5704,6 +6730,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_schedstat_timeslices_total
       description: Number of timeslices executed.
       sum:
@@ -5742,6 +6771,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_schedstat_waiting_seconds_total
       description: Waiting time in seconds.
       sum:
@@ -5780,6 +6812,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: counter
+      - key: metricsgen.hint.class
+        value:
+          stringValue: steady_counter
     - name: node_selinux_enabled
       description: SELinux is enabled, 1 is true, 0 is false.
       gauge:
@@ -5791,99 +6826,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
-  - resource:
-      attributes:
-      - key: job
+      - key: metricsgen.hint.class
         value:
-          stringValue: node
-      - key: instance
-        value:
-          stringValue: host-0:9100
-      - key: model
-        value:
-          stringValue: PersistentDisk
-      - key: path
-        value:
-          stringValue: pci-0000:00:03.0-scsi-0:0:0:0
-      - key: revision
-        value:
-          stringValue: '1'
-      - key: serial
-        value:
-          stringValue: disk-0
-      - key: wwn
-        value:
-          stringValue: ''
-    scopeMetrics:
-    - scope:
-        name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
-        version: 0.139.0
-      metrics:
-      - name: node_disk_info
-        description: Info of /sys/block/<block_device>.
-        gauge:
-          dataPoints:
-          - attributes:
-            - key: device
-              value:
-                stringValue: sda
-            - key: major
-              value:
-                stringValue: '8'
-            - key: minor
-              value:
-                stringValue: '0'
-            - key: rotational
-              value:
-                stringValue: '0'
-            timeUnixNano: '1776631194895000000'
-            asInt: '1'
-        metadata:
-        - key: prometheus.type
-          value:
-            stringValue: gauge
-  - resource: 
-    attributes:
-    - key: job
-      value:
-        stringValue: node
-    - key: instance
-      value:
-        stringValue: host-0:9100
-    - key: nodename
-      value:
-        stringValue: host-0
-    scopeMetrics:
-    - scope:
-        name: github.com/open-telemetry/opentelemetry-collector-contrib/receiver/prometheusreceiver
-        version: 0.139.0
-      metrics:
-      - name: node_uname_info
-      description: Labeled system information as provided by the uname system call.
-      gauge:
-        dataPoints:
-        - attributes:
-          - key: domainname
-            value:
-              stringValue: "(none)"
-          - key: machine
-            value:
-              stringValue: x86_64
-          - key: release
-            value:
-              stringValue: 6.1.0-cloud-amd64
-          - key: sysname
-            value:
-              stringValue: Linux
-          - key: version
-            value:
-              stringValue: "#1 SMP PREEMPT_DYNAMIC"
-          timeUnixNano: '1776631194895000000'
-          asInt: '1'
-      metadata:
-      - key: prometheus.type
-        value:
-          stringValue: gauge
+          stringValue: stable_binary
 - resource:
     attributes:
     - key: job
@@ -5897,7 +6842,7 @@ resourceMetrics:
         stringValue: PersistentDisk
     - key: path
       value:
-        stringValue: pci-0000:00:03.0-scsi-0:0:1:0
+        stringValue: pci-0000:00:03.0-scsi-0:0:0:0
     - key: revision
       value:
         stringValue: '1'
@@ -5933,6 +6878,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
 - resource:
     attributes:
     - key: job
@@ -5973,6 +6921,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
 - resource:
     attributes:
     - key: job
@@ -6033,6 +6984,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
 - resource:
     attributes:
     - key: job
@@ -6066,6 +7020,9 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant
 - resource:
     attributes:
     - key: job
@@ -6150,3 +7107,6 @@ resourceMetrics:
       - key: prometheus.type
         value:
           stringValue: gauge
+      - key: metricsgen.hint.class
+        value:
+          stringValue: constant

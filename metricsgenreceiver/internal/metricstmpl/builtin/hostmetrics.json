@@ -332,7 +332,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "current_count"
+                  }
+                }
+              ]
             },
             {
               "name": "system.network.dropped",
@@ -495,7 +503,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "sparse_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.network.errors",
@@ -658,7 +674,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "sparse_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.network.io",
@@ -821,7 +845,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.network.packets",
@@ -984,7 +1016,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -1134,7 +1174,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "current_count"
+                  }
+                }
+              ]
             },
             {
               "name": "system.processes.created",
@@ -1150,7 +1198,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -1339,7 +1395,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             },
             {
               "name": "system.memory.utilization",
@@ -1426,7 +1490,15 @@
                     "asDouble": 0.008484339278
                   }
                 ]
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -1759,7 +1831,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             },
             {
               "name": "system.filesystem.usage",
@@ -2102,7 +2182,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -2217,7 +2305,15 @@
                     "asDouble": 0.02
                   }
                 ]
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             },
             {
               "name": "system.cpu.load_average.1m",
@@ -2231,7 +2327,15 @@
                     "asDouble": 0.01
                   }
                 ]
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             },
             {
               "name": "system.cpu.load_average.5m",
@@ -2245,7 +2349,15 @@
                     "asDouble": 0.02
                   }
                 ]
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -2395,7 +2507,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.disk.io_time",
@@ -2419,7 +2539,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.disk.operation_time",
@@ -2468,7 +2596,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.disk.operations",
@@ -2517,7 +2653,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.disk.pending_operations",
@@ -2540,7 +2684,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "current_count"
+                  }
+                }
+              ]
             },
             {
               "name": "system.disk.merged",
@@ -2589,7 +2741,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.disk.weighted_io_time",
@@ -2613,7 +2773,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -2729,7 +2897,15 @@
                   }
                 ],
                 "aggregationTemporality": 2
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "constant"
+                  }
+                }
+              ]
             },
             {
               "name": "system.cpu.time",
@@ -3500,7 +3676,15 @@
                 ],
                 "aggregationTemporality": 2,
                 "isMonotonic": true
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "steady_counter"
+                  }
+                }
+              ]
             },
             {
               "name": "system.cpu.utilization",
@@ -4229,7 +4413,15 @@
                     "asDouble": 0.001
                   }
                 ]
-              }
+              },
+              "metadata": [
+                {
+                  "key": "metricsgen.hint.class",
+                  "value": {
+                    "stringValue": "slow_gauge"
+                  }
+                }
+              ]
             }
           ]
         }
