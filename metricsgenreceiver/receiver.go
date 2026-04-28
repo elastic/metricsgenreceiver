@@ -126,7 +126,7 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 				replaceHistogramsWithExponentialHistograms(m)
 			})
 		}
-		dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
+		dp.ForEachDataPoint(&metrics, func(_ int, res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			dp.SetStartTimestamp(pcommon.NewTimestampFromTime(cfg.StartTime))
 			if scn.AggregationTemporalityOverride() != pmetric.AggregationTemporalityUnspecified {
 				switch m.Type() {
@@ -156,9 +156,9 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 				resource: resource,
 			}
 		}
-		var seriesIdentityHashes []uint64
-		dp.ForEachDataPoint(&metrics, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
-			seriesIdentityHashes = append(seriesIdentityHashes, distribution.IdentityHash(m.Name(), dataPoint.Attributes()))
+		seriesIdentityHashes := make([]uint64, metrics.DataPointCount())
+		dp.ForEachDataPoint(&metrics, func(idx int, _ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+			seriesIdentityHashes[idx] = distribution.IdentityHash(m.Name(), dataPoint.Attributes())
 		})
 		scenarios = append(scenarios, Scenario{
 			config:               scn,
@@ -317,7 +317,7 @@ func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime tim
 		// we don't keep track of the data points for each instance individually to reduce memory pressure
 		// we still advance the metrics template have a new baseline that's used when simulating the metrics for each individual instance
 		// this makes sure counters are increasing over time
-		dp.ForEachDataPoint(scn.metricsTemplate, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+		dp.ForEachDataPoint(scn.metricsTemplate, func(_ int, res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
 			opts := distribution.AdvanceOptions{
 				Interval:  r.cfg.Interval,
 				Precision: scn.precision,
@@ -364,8 +364,7 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 
 	instanceTime := addJitter(currentTime, r.cfg.IntervalJitterStdDev, r.cfg.Interval, rng)
 
-	idx := 0
-	dp.ForEachDataPoint(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+	dp.ForEachDataPoint(&metrics, func(idx int, res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
 		distribution.EmitForInstance(dataPoint, m, distribution.InstanceEmitOptions{
 			InstanceID:   instance.id,
 			IdentityHash: scn.seriesIdentityHashes[idx],
@@ -382,7 +381,6 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 			ExpHistoGen: r.expHistoGen,
 		})
 		dataPoint.SetTimestamp(pcommon.NewTimestampFromTime(instanceTime))
-		idx++
 	})
 	dataPoints := metrics.DataPointCount()
 	err := r.nextMetrics.ConsumeMetrics(ctx, metrics)

@@ -33,7 +33,7 @@ type AdvanceOptions struct {
 
 func InferPrecision(metrics *pmetric.Metrics) map[string]int {
 	precision := make(map[string]int)
-	dp.ForEachDataPoint(metrics, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, d dp.DataPoint) {
+	dp.ForEachDataPoint(metrics, func(_ int, _ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, d dp.DataPoint) {
 		ndp, ok := d.(pmetric.NumberDataPoint)
 		if !ok || ndp.ValueType() != pmetric.NumberDataPointValueTypeDouble {
 			return

@@ -252,7 +252,7 @@ func extractExponentialHistograms(jsonBytes []byte) ([]pmetric.ExponentialHistog
 	var dataPoints []pmetric.ExponentialHistogramDataPoint
 
 	// Use ForEachDataPoint to iterate through all data points
-	dp.ForEachDataPoint(&metrics, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
+	dp.ForEachDataPoint(&metrics, func(_ int, _ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
 		if m.Type() == pmetric.MetricTypeExponentialHistogram && m.ExponentialHistogram().AggregationTemporality() == pmetric.AggregationTemporalityDelta {
 			// Type assert to get the exponential histogram data point
 			if expHistDP, ok := dataPoint.(pmetric.ExponentialHistogramDataPoint); ok {

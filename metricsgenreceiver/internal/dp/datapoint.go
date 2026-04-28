@@ -21,34 +21,40 @@ func ForEachMetric(ms *pmetric.Metrics, visitor func(res pcommon.Resource, is pc
 	}
 }
 
-func ForEachDataPoint(ms *pmetric.Metrics, visitor func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp DataPoint)) {
+func ForEachDataPoint(ms *pmetric.Metrics, visitor func(index int, res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric, dp DataPoint)) {
+	index := 0
 	ForEachMetric(ms, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric) {
 		//exhaustive:enforce
 		switch m.Type() {
 		case pmetric.MetricTypeGauge:
 			ds := m.Gauge().DataPoints()
 			for l := 0; l < ds.Len(); l++ {
-				visitor(res, is, m, ds.At(l))
+				visitor(index, res, is, m, ds.At(l))
+				index++
 			}
 		case pmetric.MetricTypeSum:
 			ds := m.Sum().DataPoints()
 			for l := 0; l < ds.Len(); l++ {
-				visitor(res, is, m, ds.At(l))
+				visitor(index, res, is, m, ds.At(l))
+				index++
 			}
 		case pmetric.MetricTypeHistogram:
 			ds := m.Histogram().DataPoints()
 			for l := 0; l < ds.Len(); l++ {
-				visitor(res, is, m, ds.At(l))
+				visitor(index, res, is, m, ds.At(l))
+				index++
 			}
 		case pmetric.MetricTypeExponentialHistogram:
 			ds := m.ExponentialHistogram().DataPoints()
 			for l := 0; l < ds.Len(); l++ {
-				visitor(res, is, m, ds.At(l))
+				visitor(index, res, is, m, ds.At(l))
+				index++
 			}
 		case pmetric.MetricTypeSummary:
 			ds := m.Summary().DataPoints()
 			for l := 0; l < ds.Len(); l++ {
-				visitor(res, is, m, ds.At(l))
+				visitor(index, res, is, m, ds.At(l))
+				index++
 			}
 		case pmetric.MetricTypeEmpty:
 		}

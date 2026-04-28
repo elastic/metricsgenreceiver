@@ -247,7 +247,7 @@ func TestReceiverAppliesGenerationHints(t *testing.T) {
 
 func verifyMetrics(t *testing.T, offset int, cfg *Config, allMetrics []pmetric.Metrics, timestamp time.Time) {
 	for i := offset; i < cfg.Scenarios[0].Scale+offset; i++ {
-		dp.ForEachDataPoint(&allMetrics[i], func(r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
+		dp.ForEachDataPoint(&allMetrics[i], func(_ int, r pcommon.Resource, s pcommon.InstrumentationScope, m pmetric.Metric, dp dp.DataPoint) {
 			r.Attributes().Range(func(k string, v pcommon.Value) bool {
 				require.NotEmpty(t, k)
 				require.NotEmpty(t, v)
@@ -591,15 +591,15 @@ func TestRealtimeTimestampsTrackWallClock(t *testing.T) {
 		metricTimestamp time.Time
 	}
 	var (
-		mu   sync.Mutex
-		obs  []observation
+		mu  sync.Mutex
+		obs []observation
 	)
 
 	consumer := &timestampRecordingConsumer{
 		onConsume: func(md pmetric.Metrics) {
 			wall := time.Now()
 			var metricTs time.Time
-			dp.ForEachDataPoint(&md, func(_ pcommon.Resource, _ pcommon.InstrumentationScope, _ pmetric.Metric, d dp.DataPoint) {
+			dp.ForEachDataPoint(&md, func(_ int, _ pcommon.Resource, _ pcommon.InstrumentationScope, _ pmetric.Metric, d dp.DataPoint) {
 				if metricTs.IsZero() {
 					metricTs = d.Timestamp().AsTime()
 				}
