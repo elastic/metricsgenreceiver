@@ -149,6 +149,12 @@ func TestConfigValidateChurn(t *testing.T) {
 	}
 }
 
+func TestNewChurnRateIgnoresInvalidZeroValues(t *testing.T) {
+	assert.False(t, newChurnRate(&ChurnCfg{}, 0, time.Second).enabled())
+	assert.False(t, newChurnRate(&ChurnCfg{SamplesPerSeries: 1}, 0, time.Second).enabled())
+	assert.False(t, newChurnRate(&ChurnCfg{InstanceLifetime: time.Second}, 1, 0).enabled())
+}
+
 func TestConfig_ExponentialHistogramsTemplatePath(t *testing.T) {
 	t.Run("custom path", func(t *testing.T) {
 		cfg := &Config{

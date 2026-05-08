@@ -50,7 +50,7 @@ type churnRate struct {
 }
 
 func (r churnRate) enabled() bool {
-	return r.intervals != 0
+	return r.replacements > 0 && r.intervals > 0
 }
 
 func newChurnRate(churn *ChurnCfg, scale int, interval time.Duration) churnRate {
@@ -65,6 +65,10 @@ func newChurnRate(churn *ChurnCfg, scale int, interval time.Duration) churnRate 
 }
 
 func reduceChurnRate(replacements, intervals int64) churnRate {
+	if replacements <= 0 || intervals <= 0 {
+		return churnRate{}
+	}
+
 	// Keep the accumulator denominator small without changing the replacement rate.
 	divisor := gcdInt64(replacements, intervals)
 	return churnRate{

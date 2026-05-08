@@ -151,6 +151,7 @@ receivers:
         * `{{.RandomIntn <n>}}` (a random integer in the range `[0, n)`)
         * `{{.Mod <x> <y>}}` (the result of `x % y`)
   * `churn`: allows to simulate instances spinning down and other instances taking their place, which will create new time series.
+    This is a breaking change for existing configs that used the previous integer `churn` value.
     Replacement is deterministic and round-robin, so time series are replaced gradually instead of all at once.
     During startup, the initially created time series may have fewer samples because churn begins after the first emission.
     Configure either `samples_per_series` or `instance_lifetime`, but not both.

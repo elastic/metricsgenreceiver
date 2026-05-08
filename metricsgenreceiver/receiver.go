@@ -295,7 +295,7 @@ func addJitter(t time.Time, stdDev time.Duration, interval time.Duration, ra *ra
 func (r *MetricsGenReceiver) applyChurn(simulatedTime time.Time) {
 	for idx := range r.scenarios {
 		scn := &r.scenarios[idx]
-		churn := r.churnCount(scn)
+		churn := r.advanceChurnCount(scn)
 		if churn == 0 || len(scn.instances) == 0 {
 			continue
 		}
@@ -317,7 +317,7 @@ func (r *MetricsGenReceiver) applyChurn(simulatedTime time.Time) {
 	}
 }
 
-func (r *MetricsGenReceiver) churnCount(scn *Scenario) int {
+func (r *MetricsGenReceiver) advanceChurnCount(scn *Scenario) int {
 	if !scn.churnRate.enabled() {
 		return 0
 	}
