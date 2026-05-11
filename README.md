@@ -150,7 +150,18 @@ receivers:
         * `{{.ModFrom <n> <list>}}` (an element from the list at index `n % len(list)`)
         * `{{.RandomIntn <n>}}` (a random integer in the range `[0, n)`)
         * `{{.Mod <x> <y>}}` (the result of `x % y`)
-  * `churn` (default 0): allows to simulate instances spinning down and other instances taking their place, which will create new time series.
+  * `churn`: allows to simulate instances spinning down and other instances taking their place, which will create new time series.
+    This is a breaking change for existing configs that used the previous integer `churn` value.
+    Replacement is deterministic and round-robin, so time series are replaced gradually instead of all at once.
+    During startup, the initially created time series may have fewer samples because churn begins after the first emission.
+    Configure either `samples_per_series` or `instance_lifetime`, but not both.
+    * `samples_per_series`: the exact number of samples each new time series should emit before its instance is replaced.
+      For example, with `samples_per_series: 6`, each new time series gets 6 samples.
+      Must be greater than or equal to `1`.
+    * `instance_lifetime`: the average lifetime of an active instance.
+      Use this when you want to describe churn as a duration instead of a sample count.
+      This does not guarantee an exact number of samples per time series.
+      Must be greater than or equal to `interval`.
     Time series churn may have an impact on the performance of the backend.
   * `template_vars`: the `<path>.json`/`<path>.yaml` file is rendered as a template.
     This option lets you specify variables that are available during template rendering.

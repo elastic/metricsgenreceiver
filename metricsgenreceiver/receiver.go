@@ -45,6 +45,9 @@ type Scenario struct {
 	instances                  []scenarioInstance
 	precision                  map[string]int
 	generationHints            map[string]distribution.MetricGenerationHint
+	nextReplacementInstanceID  int
+	churnRate                  churnRate
+	churnRemainder             int64
 	// seriesIdentityHashes holds IdentityHash(metric name, attrs) for each template data point in
 	// the order ForEachDataPoint visits them. Precomputed once so the per-instance emission path
 	// avoids re-hashing the attribute set on every tick.
@@ -161,12 +164,14 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 			seriesIdentityHashes[idx] = distribution.IdentityHash(m.Name(), dataPoint.Attributes())
 		})
 		scenarios = append(scenarios, Scenario{
-			config:               scn,
-			metricsTemplate:      &metrics,
-			instances:            instances,
-			precision:            distribution.InferPrecision(&metrics),
-			generationHints:      generationHints,
-			seriesIdentityHashes: seriesIdentityHashes,
+			config:                    scn,
+			metricsTemplate:           &metrics,
+			instances:                 instances,
+			precision:                 distribution.InferPrecision(&metrics),
+			generationHints:           generationHints,
+			nextReplacementInstanceID: scn.Scale,
+			churnRate:                 newChurnRate(scn.Churn, scn.Scale, cfg.Interval),
+			seriesIdentityHashes:      seriesIdentityHashes,
 		})
 	}
 
@@ -206,7 +211,7 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 				nextLog = nextLog.Add(10 * time.Second)
 			}
 			r.progress.datapoints.Add(r.produceMetrics(ctx, currentTime))
-			r.applyChurn(i, currentTime)
+			r.applyChurn(currentTime)
 
 			if r.cfg.RealTime {
 				select {
@@ -287,15 +292,18 @@ func addJitter(t time.Time, stdDev time.Duration, interval time.Duration, ra *ra
 	return t.Add(jitter)
 }
 
-func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
-	for _, scn := range r.scenarios {
-		if scn.config.Churn == 0 {
+func (r *MetricsGenReceiver) applyChurn(simulatedTime time.Time) {
+	for idx := range r.scenarios {
+		scn := &r.scenarios[idx]
+		churn := r.consumeNextChurnCount(scn)
+		if churn == 0 || len(scn.instances) == 0 {
 			continue
 		}
 
 		startTime := simulatedTime.Format(time.RFC3339)
-		for i := 0; i < scn.config.Churn; i++ {
-			id := scn.config.Scale + interval*scn.config.Churn + i
+		for i := 0; i < churn; i++ {
+			id := scn.nextReplacementInstanceID
+			scn.nextReplacementInstanceID++
 			resource, err := metricstmpl.RenderResource(scn.config.Path, id, startTime, scn.config.TemplateVars, r.baseRand, r.cfg.InstanceOffset)
 			if err != nil {
 				r.settings.Logger.Error("failed to apply churn", zap.Error(err))
@@ -307,6 +315,18 @@ func (r *MetricsGenReceiver) applyChurn(interval int, simulatedTime time.Time) {
 			}
 		}
 	}
+}
+
+func (r *MetricsGenReceiver) consumeNextChurnCount(scn *Scenario) int {
+	if !scn.churnRate.enabled() {
+		return 0
+	}
+
+	// Carry the fractional remainder forward so slower churn rates are spread across intervals.
+	scn.churnRemainder += scn.churnRate.replacements
+	churn := scn.churnRemainder / scn.churnRate.intervals
+	scn.churnRemainder %= scn.churnRate.intervals
+	return int(churn)
 }
 
 func (r *MetricsGenReceiver) produceMetrics(ctx context.Context, currentTime time.Time) uint64 {

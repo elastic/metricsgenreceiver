@@ -31,10 +31,57 @@ type ScenarioCfg struct {
 	Path                string         `mapstructure:"path"`
 	Scale               int            `mapstructure:"scale"`
 	Concurrency         int            `mapstructure:"concurrency"`
-	Churn               int            `mapstructure:"churn"`
+	Churn               *ChurnCfg      `mapstructure:"churn"`
 	TemplateVars        map[string]any `mapstructure:"template_vars"`
 	TemporalityOverride string         `mapstructure:"temporality_override"`
 	HistogramOverride   string         `mapstructure:"histogram_override"`
+}
+
+type ChurnCfg struct {
+	InstanceLifetime time.Duration `mapstructure:"instance_lifetime"`
+	SamplesPerSeries int           `mapstructure:"samples_per_series"`
+}
+
+// churnRate is the number of instance replacements to apply per collection interval.
+// It is stored as a fraction so sub-interval replacement rates can accumulate exactly.
+type churnRate struct {
+	replacements int64
+	intervals    int64
+}
+
+func (r churnRate) enabled() bool {
+	return r.replacements > 0 && r.intervals > 0
+}
+
+func newChurnRate(churn *ChurnCfg, scale int, interval time.Duration) churnRate {
+	if churn == nil {
+		return churnRate{}
+	}
+	if churn.SamplesPerSeries > 0 {
+		return reduceChurnRate(int64(scale), int64(churn.SamplesPerSeries))
+	}
+
+	return reduceChurnRate(int64(scale)*int64(interval), int64(churn.InstanceLifetime))
+}
+
+func reduceChurnRate(replacements, intervals int64) churnRate {
+	if replacements <= 0 || intervals <= 0 {
+		return churnRate{}
+	}
+
+	// Keep the accumulator denominator small without changing the replacement rate.
+	divisor := gcdInt64(replacements, intervals)
+	return churnRate{
+		replacements: replacements / divisor,
+		intervals:    intervals / divisor,
+	}
+}
+
+func gcdInt64(a, b int64) int64 {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	return a
 }
 
 func (c ScenarioCfg) AggregationTemporalityOverride() pmetric.AggregationTemporality {
@@ -90,6 +137,29 @@ func (cfg *Config) Validate() error {
 		}
 		if scn.Concurrency < 0 {
 			return fmt.Errorf("concurrency must be a positive number")
+		}
+		if scn.Churn == nil {
+			continue
+		}
+		if scn.Scale <= 0 {
+			return fmt.Errorf("scale must be positive when churn is enabled")
+		}
+		hasInstanceLifetime := scn.Churn.InstanceLifetime != 0
+		hasSamplesPerSeries := scn.Churn.SamplesPerSeries != 0
+		if hasInstanceLifetime == hasSamplesPerSeries {
+			return fmt.Errorf("exactly one of churn.samples_per_series or churn.instance_lifetime must be set")
+		}
+		if hasSamplesPerSeries && scn.Churn.SamplesPerSeries < 1 {
+			return fmt.Errorf("churn.samples_per_series must be greater than or equal to 1")
+		}
+		if !hasInstanceLifetime {
+			continue
+		}
+		if scn.Churn.InstanceLifetime < 0 {
+			return fmt.Errorf("churn.instance_lifetime must be a positive duration")
+		}
+		if scn.Churn.InstanceLifetime < cfg.Interval {
+			return fmt.Errorf("churn.instance_lifetime must be greater than or equal to interval")
 		}
 	}
 	return nil

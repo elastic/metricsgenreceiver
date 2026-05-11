@@ -695,6 +695,79 @@ func TestRealtimeShutdownCompletesPromptly(t *testing.T) {
 		"Shutdown stalled - goroutine was not unblocked by context cancellation")
 }
 
+func TestSamplesPerSeriesChurnsRoundRobin(t *testing.T) {
+	startTime := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	cfg := &Config{
+		StartTime: startTime,
+		EndTime:   startTime.Add(5 * time.Second),
+		Interval:  time.Second,
+		Seed:      42,
+		Scenarios: []ScenarioCfg{{
+			Path:  "builtin/simple",
+			Scale: 3,
+			Churn: &ChurnCfg{
+				SamplesPerSeries: 3,
+			},
+			TemplateVars: map[string]any{"gauge_pct": 1, "gauge_int": 0, "counter": 0},
+		}},
+	}
+	rcv, err := newMetricsGenReceiver(cfg, receivertest.NewNopSettings(typ))
+	require.NoError(t, err)
+
+	require.Equal(t, []string{"host-0", "host-1", "host-2"}, instanceHostNames(rcv.scenarios[0].instances))
+
+	rcv.applyChurn(startTime)
+	require.Equal(t, []string{"host-3", "host-1", "host-2"}, instanceHostNames(rcv.scenarios[0].instances))
+
+	rcv.applyChurn(startTime.Add(time.Second))
+	require.Equal(t, []string{"host-3", "host-4", "host-2"}, instanceHostNames(rcv.scenarios[0].instances))
+
+	rcv.applyChurn(startTime.Add(2 * time.Second))
+	require.Equal(t, []string{"host-3", "host-4", "host-5"}, instanceHostNames(rcv.scenarios[0].instances))
+}
+
+func TestInstanceLifetimeSupportsLessThanOneReplacementPerInterval(t *testing.T) {
+	startTime := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	cfg := &Config{
+		StartTime: startTime,
+		EndTime:   startTime.Add(5 * time.Second),
+		Interval:  time.Second,
+		Seed:      42,
+		Scenarios: []ScenarioCfg{{
+			Path:  "builtin/simple",
+			Scale: 4,
+			Churn: &ChurnCfg{
+				InstanceLifetime: 8 * time.Second,
+			},
+			TemplateVars: map[string]any{"gauge_pct": 1, "gauge_int": 0, "counter": 0},
+		}},
+	}
+	rcv, err := newMetricsGenReceiver(cfg, receivertest.NewNopSettings(typ))
+	require.NoError(t, err)
+
+	rcv.applyChurn(startTime)
+	require.Equal(t, []string{"host-0", "host-1", "host-2", "host-3"}, instanceHostNames(rcv.scenarios[0].instances))
+
+	rcv.applyChurn(startTime.Add(time.Second))
+	require.Equal(t, []string{"host-4", "host-1", "host-2", "host-3"}, instanceHostNames(rcv.scenarios[0].instances))
+
+	rcv.applyChurn(startTime.Add(2 * time.Second))
+	require.Equal(t, []string{"host-4", "host-1", "host-2", "host-3"}, instanceHostNames(rcv.scenarios[0].instances))
+
+	rcv.applyChurn(startTime.Add(3 * time.Second))
+	require.Equal(t, []string{"host-4", "host-5", "host-2", "host-3"}, instanceHostNames(rcv.scenarios[0].instances))
+}
+
+func instanceHostNames(instances []scenarioInstance) []string {
+	hosts := make([]string, 0, len(instances))
+	for _, instance := range instances {
+		if host, ok := instance.resource.Attributes().Get("host.name"); ok {
+			hosts = append(hosts, host.Str())
+		}
+	}
+	return hosts
+}
+
 func collectHostNames(allMetrics []pmetric.Metrics) []string {
 	hostSet := make(map[string]bool)
 

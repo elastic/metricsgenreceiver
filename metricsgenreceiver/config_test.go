@@ -48,6 +48,113 @@ func testdataConfigYamlAsMap() *Config {
 	}
 }
 
+func TestConfigValidateChurn(t *testing.T) {
+	tests := []struct {
+		name      string
+		scenario  ScenarioCfg
+		wantError string
+	}{
+		{
+			name: "churn instance lifetime",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{
+					InstanceLifetime: time.Minute,
+				},
+			},
+		},
+		{
+			name: "churn samples per series",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{
+					SamplesPerSeries: 6,
+				},
+			},
+		},
+		{
+			name: "churn requires scale",
+			scenario: ScenarioCfg{
+				Churn: &ChurnCfg{
+					InstanceLifetime: time.Minute,
+				},
+			},
+			wantError: "scale must be positive when churn is enabled",
+		},
+		{
+			name: "churn requires instance lifetime",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{},
+			},
+			wantError: "exactly one of churn.samples_per_series or churn.instance_lifetime must be set",
+		},
+		{
+			name: "churn samples per series and instance lifetime are mutually exclusive",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{
+					InstanceLifetime: time.Minute,
+					SamplesPerSeries: 6,
+				},
+			},
+			wantError: "exactly one of churn.samples_per_series or churn.instance_lifetime must be set",
+		},
+		{
+			name: "negative samples per series",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{
+					SamplesPerSeries: -1,
+				},
+			},
+			wantError: "churn.samples_per_series must be greater than or equal to 1",
+		},
+		{
+			name: "negative instance lifetime",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{
+					InstanceLifetime: -time.Minute,
+				},
+			},
+			wantError: "churn.instance_lifetime must be a positive duration",
+		},
+		{
+			name: "instance lifetime shorter than interval",
+			scenario: ScenarioCfg{
+				Scale: 10,
+				Churn: &ChurnCfg{
+					InstanceLifetime: 500 * time.Millisecond,
+				},
+			},
+			wantError: "churn.instance_lifetime must be greater than or equal to interval",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			cfg := &Config{
+				Interval:  time.Second,
+				Scenarios: []ScenarioCfg{tc.scenario},
+			}
+
+			err := cfg.Validate()
+			if tc.wantError == "" {
+				require.NoError(t, err)
+			} else {
+				require.EqualError(t, err, tc.wantError)
+			}
+		})
+	}
+}
+
+func TestNewChurnRateIgnoresInvalidZeroValues(t *testing.T) {
+	assert.False(t, newChurnRate(&ChurnCfg{}, 0, time.Second).enabled())
+	assert.False(t, newChurnRate(&ChurnCfg{SamplesPerSeries: 1}, 0, time.Second).enabled())
+	assert.False(t, newChurnRate(&ChurnCfg{InstanceLifetime: time.Second}, 1, 0).enabled())
+}
+
 func TestConfig_ExponentialHistogramsTemplatePath(t *testing.T) {
 	t.Run("custom path", func(t *testing.T) {
 		cfg := &Config{
