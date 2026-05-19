@@ -43,48 +43,71 @@ receivers:
 #        counter: 1
 #        gauge_pct: 0
 #        gauge_int: 0
-
-processors:
-  batch:
+#    - path: builtin/node_exporter
+#      scale: 100
 
 extensions:
-  pprof:
+  basicauth/client:
+    client_auth:
+      username: elastic
+      password: password
 
 exporters:
-  debug:
-    verbosity: detailed
-  file:
-    path: ./file-exporter/metrics-generated.json
-  nop:
-  otlphttp/victoriametrics:
-    compression: gzip
-    encoding: proto
-    endpoint: http://localhost:8428/opentelemetry
+  elasticsearch:
+    endpoint: http://localhost:9200
     sending_queue:
       enabled: true
-      block_on_overflow: true
-      queue_size: 10
       num_consumers: 10
-  prometheusremotewrite/victoriametrics:
-    endpoint: "http://localhost:8428/api/v1/write"
+      sizer: bytes
+      queue_size: 50_000_000
+      block_on_overflow: true
+      batch:
+        flush_timeout: 1s
+        min_size: 1_000_000
+        max_size: 4_000_000
+  elasticsearch/elastic-package:
+    endpoint: https://localhost:9200
+    user: elastic
+    password: changeme
+    tls:
+      insecure_skip_verify: true
+    sending_queue:
+      enabled: true
+      num_consumers: 10
+      sizer: bytes
+      queue_size: 50_000_000
+      block_on_overflow: true
+      batch:
+        flush_timeout: 1s
+        min_size: 1_000_000
+        max_size: 4_000_000
+  otlphttp/elasticsearch:
+    compression: gzip
+    endpoint: http://localhost:9200/_otlp
+    #headers:
+    #  Authorization: ApiKey <key>
+    sending_queue:
+      enabled: true
+      num_consumers: 10
+      sizer: bytes
+      queue_size: 50_000_000
+      block_on_overflow: true
+      batch:
+        flush_timeout: 1s
+        min_size: 1_000_000
+        max_size: 4_000_000
+  prometheusremotewrite/elasticsearch:
+    endpoint: https://localhost:9200/_prometheus/api/v1/write
     resource_to_telemetry_conversion:
       enabled: true
-    remote_write_queue:
+    target_info:
       enabled: false
-  elasticsearch:
-    endpoint: "http://localhost:9200"
-    mapping:
-      mode: otel
-    metrics_dynamic_index:
-      enabled: true
-    num_workers: 10
+    remote_write_queue:
+      num_consumers: 10
 
 service:
-#  extensions: [pprof]
   pipelines:
     metrics:
       receivers: [metricsgen]
-      processors: [batch]
-#      exporters: [nop]
-#      exporters: [elasticsearch] # do not use with batch processor. ES exporter is doing batching internally.
-      exporters: [otlphttp/victoriametrics] # only use with batch processor
+#      exporters: [elasticsearch/elastic-package]
+      exporters: [otlphttp/elasticsearch]

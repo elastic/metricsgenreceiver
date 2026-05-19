@@ -206,23 +206,3 @@ service:
       receivers: [metricsgen]
       exporters: [nop]
 ```
-
-### Exporter settings
-
-Multiple exporter settings are already in the default config. Adjust the outputs needed. In case the metricsgenreceiver is sending data to a stack setup with elastic-package, the following exporter config
-for Elasticsearch has to be used (assuming it runs on localhost):
-
-```
-exporters:
-  elasticsearch:
-    endpoint: "https://localhost:9200"
-    mapping:
-      mode: otel
-    metrics_dynamic_index:
-      enabled: true
-    num_workers: 10
-    user: elastic
-    password: changeme
-    tls:
-      insecure_skip_verify: true
-```
