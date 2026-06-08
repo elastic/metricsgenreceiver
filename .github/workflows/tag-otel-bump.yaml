@@ -21,7 +21,10 @@ jobs:
           token: ${{ secrets.RELEASE_BOT_TOKEN }}
 
       - run: |
-          latest=$(git tag -l 'v1.0.*' --sort=-v:refname | sed -n '1p')
-          next="v1.0.$((${latest##*.} + 1))"
+          latest=$(git tag -l 'v*.*.*' --sort=-v:refname | sed -n '1p')
+          test -n "$latest"
+          major_minor=${latest%.*}
+          patch=${latest##*.}
+          next="${major_minor}.$((patch + 1))"
           git tag "$next"
           git push origin "$next"
