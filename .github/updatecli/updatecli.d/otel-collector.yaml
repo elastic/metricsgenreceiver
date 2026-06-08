@@ -1,0 +1,91 @@
+name: Bump OpenTelemetry Collector
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: github-actions[bot]
+      email: 41898282+github-actions[bot]@users.noreply.github.com
+      owner: elastic
+      repository: metricsgenreceiver
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "GITHUB_ACTOR" }}'
+      branch: main
+
+sources:
+  collector:
+    kind: githubrelease
+    spec:
+      owner: open-telemetry
+      repository: opentelemetry-collector-releases
+      token: '{{ requiredEnv "GITHUB_TOKEN" }}'
+      username: '{{ requiredEnv "GITHUB_ACTOR" }}'
+      versionfilter:
+        kind: regex/semver
+        regex: '^cmd/builder/v(0\.[0-9]+\.[0-9]+)$'
+        pattern: '*'
+
+targets:
+  builder-config:
+    name: Bump builder config to v{{ source "collector" }}
+    kind: file
+    scmid: default
+    sourceid: collector
+    spec:
+      file: builder-config.yaml
+      matchpattern: '0\.[0-9]+\.[0-9]+'
+
+  ci-builder:
+    name: Bump CI builder to v{{ source "collector" }}
+    kind: file
+    scmid: default
+    sourceid: collector
+    spec:
+      file: .github/workflows/ci.yaml
+      matchpattern: '0\.[0-9]+\.[0-9]+'
+
+  makefile-ocb:
+    name: Bump Makefile OCB to v{{ source "collector" }}
+    kind: file
+    scmid: default
+    sourceid: collector
+    spec:
+      file: Makefile
+      matchpattern: '0\.[0-9]+\.[0-9]+'
+
+  readme-ocb:
+    name: Bump README OCB to v{{ source "collector" }}
+    kind: file
+    scmid: default
+    sourceid: collector
+    spec:
+      file: README.md
+      matchpattern: '0\.[0-9]+\.[0-9]+'
+
+  go-mod:
+    name: Bump Go modules to v{{ source "collector" }}
+    kind: shell
+    scmid: default
+    sourceid: collector
+    spec:
+      command: >-
+        bash -ec 'version="v$1"; cd metricsgenreceiver; go get
+        go.opentelemetry.io/collector/component@latest
+        go.opentelemetry.io/collector/confmap@latest
+        go.opentelemetry.io/collector/consumer@latest
+        go.opentelemetry.io/collector/pdata@latest
+        go.opentelemetry.io/collector/receiver@latest
+        go.opentelemetry.io/collector/component/componentstatus@"$version"
+        go.opentelemetry.io/collector/component/componenttest@"$version"
+        go.opentelemetry.io/collector/confmap/xconfmap@"$version"
+        go.opentelemetry.io/collector/consumer/consumertest@"$version"
+        go.opentelemetry.io/collector/receiver/receiverhelper@"$version"
+        go.opentelemetry.io/collector/receiver/receivertest@"$version";
+        go mod tidy; cd ..; git diff --quiet -- metricsgenreceiver/go.mod
+        metricsgenreceiver/go.sum || echo "updated Go modules to $version"' _
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: 'chore(deps): bump OpenTelemetry Collector to v{{ source "collector" }}'
