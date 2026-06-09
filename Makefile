@@ -1,4 +1,6 @@
 # This currently only works for OS X ARM64.
+OCB_VERSION ?= 0.139.0
+
 .PHONY: test
 test:
 	cd metricsgenreceiver && go test ./...
@@ -6,7 +8,7 @@ test:
 .PHONY: install-ocb
 install-ocb:
 	curl --proto '=https' --tlsv1.2 -fL -o ocb \
-	https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv0.139.0/ocb_0.139.0_darwin_arm64
+	https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv$(OCB_VERSION)/ocb_$(OCB_VERSION)_darwin_arm64
 	chmod +x ocb
 
 .PHONY: build
