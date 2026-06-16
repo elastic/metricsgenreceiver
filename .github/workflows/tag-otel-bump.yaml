@@ -1,0 +1,30 @@
+name: Tag OTel Bump
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    if: >-
+      github.event.pull_request.merged == true && startsWith(github.event.pull_request.title, 'chore(deps): bump OpenTelemetry Collector to v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_BOT_TOKEN }}
+
+      - run: |
+          latest=$(git tag -l 'v*.*.*' --sort=-v:refname | sed -n '1p')
+          test -n "$latest"
+          major_minor=${latest%.*}
+          patch=${latest##*.}
+          next="${major_minor}.$((patch + 1))"
+          git tag "$next"
+          git push origin "$next"
