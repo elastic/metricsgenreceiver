@@ -89,6 +89,8 @@ func EmitForInstance(dataPoint dp.DataPoint, metric pmetric.Metric, opts Instanc
 	switch v := dataPoint.(type) {
 	case pmetric.NumberDataPoint:
 		ApplyInstanceVariation(v, opts.InstanceID, opts.IdentityHash, metric, opts.Hints, opts.Precision, opts.Variation)
+	case pmetric.ExponentialHistogramDataPoint:
+		ApplyExponentialHistogramVariation(v, opts.InstanceID, opts.IdentityHash)
 	default:
 		AdvanceDataPoint(dataPoint, opts.Rand, metric, opts.Dist, opts.ExpHistoGen, AdvanceOptions{Precision: opts.Precision})
 	}
@@ -300,4 +302,52 @@ func positiveMod(v int64, mod int64) int64 {
 		r += mod
 	}
 	return r
+}
+
+const (
+	minExpoHistoBucketMultiplier = 0.80
+	maxExpoHistoBucketMultiplier = 1.20
+)
+
+// ApplyExponentialHistogramVariation applies deterministic per-instance variation
+// to an exponential histogram data point. Bucket counts are scaled by a stable
+// multiplier derived from (identityHash, instanceID, bucketIndex), clamped to a
+// minimum of 1 for any originally populated bucket. Min and max are preserved
+// from the input; sum and count are recomputed from the varied buckets.
+func ApplyExponentialHistogramVariation(v pmetric.ExponentialHistogramDataPoint, instanceID int, identityHash uint64) {
+	scale := int(v.Scale())
+
+	posCount, posSum := varyBucketCounts(v.Positive(), instanceID, identityHash, scale)
+	negCount, negSum := varyBucketCounts(v.Negative(), instanceID, identityHash^0xa1b2c3d4e5f60718, scale)
+
+	v.SetCount(posCount + negCount + v.ZeroCount())
+	if v.HasSum() {
+		v.SetSum(posSum - negSum)
+	}
+}
+
+// varyBucketCounts applies a stable per-bucket multiplier to each bucket count,
+// clamping to a minimum of 1 for any originally populated bucket. Returns the
+// total count and the sum of representative values across all varied buckets.
+func varyBucketCounts(buckets pmetric.ExponentialHistogramDataPointBuckets, instanceID int, identityHash uint64, scale int) (uint64, float64) {
+	n := buckets.BucketCounts().Len()
+	var totalCount uint64
+	var totalSum float64
+
+	for i := 0; i < n; i++ {
+		count := buckets.BucketCounts().At(i)
+		if count == 0 {
+			continue
+		}
+		bucketIdx := int(buckets.Offset()) + i
+		countUnit := hashToUnitInterval(mixInstanceID(identityHash^uint64(bucketIdx)*0xd1342543de82ef95, instanceID))
+		multiplier := stableMultiplier(minExpoHistoBucketMultiplier, maxExpoHistoBucketMultiplier, countUnit)
+		varied := max(1, uint64(math.Round(float64(count)*multiplier)))
+		buckets.BucketCounts().SetAt(i, varied)
+		totalCount += varied
+		fraction := hashToUnitInterval(mixInstanceID(identityHash^uint64(bucketIdx)*0x9e3779b97f4a7c15, instanceID))
+		totalSum += expohistogen.LowerBucketBoundary(float64(bucketIdx)+fraction, scale) * float64(varied)
+	}
+
+	return totalCount, totalSum
 }

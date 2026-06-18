@@ -248,3 +248,102 @@ func TestGenerator_Generate_NeverGeneratesEmptyHistogram(t *testing.T) {
 		assert.Greater(t, totalBuckets, uint64(0), "histogram %d should have at least one non-empty bucket", i)
 	}
 }
+
+func TestMergeInto_Monotonicity(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
+	require.NoError(t, err)
+
+	r := rand.New(rand.NewSource(42))
+	target := pmetric.NewExponentialHistogramDataPoint()
+
+	var prevCount uint64
+	var prevSum, prevMin, prevMax float64
+
+	for i := 0; i < 20; i++ {
+		gen.MergeInto(r, target)
+
+		assert.Greater(t, target.Count(), uint64(0), "count > 0 at iteration %d", i)
+		assert.GreaterOrEqual(t, target.Count(), prevCount, "count monotonic at iteration %d", i)
+		assert.GreaterOrEqual(t, target.Sum(), prevSum, "sum monotonic at iteration %d", i)
+
+		assert.True(t, target.HasMin(), "has min at iteration %d", i)
+		assert.True(t, target.HasMax(), "has max at iteration %d", i)
+		assert.Greater(t, target.Max(), 0.0, "max positive at iteration %d", i)
+		assert.Greater(t, target.Min(), 0.0, "min positive at iteration %d", i)
+
+		if i > 0 {
+			assert.LessOrEqual(t, target.Min(), prevMin, "min non-increasing at iteration %d", i)
+			assert.GreaterOrEqual(t, target.Max(), prevMax, "max non-decreasing at iteration %d", i)
+		}
+
+		prevCount = target.Count()
+		prevSum = target.Sum()
+		prevMin = target.Min()
+		prevMax = target.Max()
+	}
+
+	assert.Greater(t, prevCount, uint64(1000), "after 20 merges count should be substantial")
+}
+
+func TestMergeInto_BucketCountsMatchTotalCount(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-low-frequency.ndjson")
+	require.NoError(t, err)
+
+	r := rand.New(rand.NewSource(99))
+	target := pmetric.NewExponentialHistogramDataPoint()
+
+	for i := 0; i < 10; i++ {
+		gen.MergeInto(r, target)
+
+		var bucketTotal uint64
+		for j := 0; j < target.Positive().BucketCounts().Len(); j++ {
+			bucketTotal += target.Positive().BucketCounts().At(j)
+		}
+		for j := 0; j < target.Negative().BucketCounts().Len(); j++ {
+			bucketTotal += target.Negative().BucketCounts().At(j)
+		}
+		bucketTotal += target.ZeroCount()
+
+		assert.Equal(t, target.Count(), bucketTotal,
+			"total count should equal sum of bucket counts + zero count at iteration %d", i)
+	}
+}
+
+func TestMergeInto_PreservesAttributesAndTimestamps(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
+	require.NoError(t, err)
+
+	r := rand.New(rand.NewSource(123))
+
+	target := pmetric.NewExponentialHistogramDataPoint()
+	target.Attributes().PutStr("service.name", "test-svc")
+	target.SetStartTimestamp(100)
+	target.SetTimestamp(200)
+
+	gen.MergeInto(r, target)
+
+	val, ok := target.Attributes().Get("service.name")
+	assert.True(t, ok, "attributes should be preserved")
+	assert.Equal(t, "test-svc", val.Str())
+	assert.Equal(t, uint64(100), uint64(target.StartTimestamp()))
+	assert.Equal(t, uint64(200), uint64(target.Timestamp()))
+}
+
+func TestMergeInto_Reproducibility(t *testing.T) {
+	gen, err := NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
+	require.NoError(t, err)
+
+	for i := 0; i < 5; i++ {
+		r1 := rand.New(rand.NewSource(555))
+		r2 := rand.New(rand.NewSource(555))
+
+		dp1 := pmetric.NewExponentialHistogramDataPoint()
+		gen.MergeInto(r1, dp1)
+		dp2 := pmetric.NewExponentialHistogramDataPoint()
+		gen.MergeInto(r2, dp2)
+
+		assert.Equal(t, dp1.Count(), dp2.Count(), "same seed should produce same count at iteration %d", i)
+		assert.Equal(t, dp1.Sum(), dp2.Sum(), "same seed should produce same sum at iteration %d", i)
+		assert.Equal(t, dp1.Scale(), dp2.Scale(), "same seed should produce same scale at iteration %d", i)
+	}
+}

@@ -137,16 +137,20 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 					m.Sum().SetAggregationTemporality(scn.AggregationTemporalityOverride())
 				case pmetric.MetricTypeHistogram:
 					m.Histogram().SetAggregationTemporality(scn.AggregationTemporalityOverride())
+				case pmetric.MetricTypeExponentialHistogram:
+					m.ExponentialHistogram().SetAggregationTemporality(scn.AggregationTemporalityOverride())
 				default:
 					// no-op
 				}
 			}
-			// initialize exponential histograms with clean values and set their temporality to delta as we currently only support that
 			if m.Type() == pmetric.MetricTypeExponentialHistogram {
 				expHistoGen.GenerateInto(baseRand, dp.(pmetric.ExponentialHistogramDataPoint))
-				m.ExponentialHistogram().SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
+				if scn.AggregationTemporalityOverride() == pmetric.AggregationTemporalityCumulative {
+					m.ExponentialHistogram().SetAggregationTemporality(pmetric.AggregationTemporalityCumulative)
+				} else {
+					m.ExponentialHistogram().SetAggregationTemporality(pmetric.AggregationTemporalityDelta)
+				}
 			}
-
 		})
 		resources, err := metricstmpl.GetResources(scn.Path, cfg.StartTime, scn.Scale, scn.TemplateVars, baseRand, cfg.InstanceOffset)
 		if err != nil {

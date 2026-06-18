@@ -479,6 +479,58 @@ func TestHistogramRandomizationDiversity(t *testing.T) {
 		"at least one histogram type should have different counts between intervals, indicating randomization is working")
 }
 
+func TestCumulativeExponentialHistogram(t *testing.T) {
+	sink := new(consumertest.MetricsSink)
+
+	factory := NewFactory()
+	startTime := time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)
+	cfg := &Config{
+		StartTime: startTime,
+		EndTime:   startTime.Add(5 * 30 * time.Second),
+		Interval:  30 * time.Second,
+		Seed:      42,
+		Scenarios: []ScenarioCfg{
+			{
+				Path:                "testdata/histogram-template",
+				Scale:               1,
+				TemporalityOverride: "cumulative",
+			},
+		},
+	}
+
+	rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+	require.NoError(t, err)
+	err = rcv.Start(context.Background(), nil)
+	require.NoError(t, err)
+
+	require.EventuallyWithT(t, func(c *assert.CollectT) {
+		require.Equal(c, 2*5*cfg.Scenarios[0].Scale, sink.DataPointCount())
+	}, 5*time.Second, time.Millisecond)
+	require.NoError(t, rcv.Shutdown(context.Background()))
+
+	allMetrics := sink.AllMetrics()
+
+	var prevCount uint64
+	for i, metrics := range allMetrics {
+		dp.ForEachMetric(&metrics, func(res pcommon.Resource, is pcommon.InstrumentationScope, m pmetric.Metric) {
+			if m.Name() != "test.exponential_histogram" {
+				return
+			}
+			require.Equal(t, pmetric.MetricTypeExponentialHistogram, m.Type())
+			assert.Equal(t, pmetric.AggregationTemporalityCumulative,
+				m.ExponentialHistogram().AggregationTemporality(),
+				"should use cumulative temporality")
+
+			expDP := m.ExponentialHistogram().DataPoints().At(0)
+			assert.Greater(t, expDP.Count(), uint64(0), "count should be > 0 at interval %d", i)
+			assert.GreaterOrEqual(t, expDP.Count(), prevCount,
+				"cumulative count should grow monotonically at interval %d (prev=%d, cur=%d)", i, prevCount, expDP.Count())
+			prevCount = expDP.Count()
+		})
+	}
+	assert.Greater(t, prevCount, uint64(0), "should have observed exponential histogram data points")
+}
+
 func TestInstanceIDWithOffset(t *testing.T) {
 	type testCase struct {
 		name           string

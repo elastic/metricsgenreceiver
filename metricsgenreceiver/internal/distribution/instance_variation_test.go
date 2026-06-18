@@ -2,10 +2,13 @@ package distribution
 
 import (
 	"math"
+	"math/rand"
 	"testing"
 	"time"
 
+	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/expohistogen"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 )
 
@@ -331,4 +334,126 @@ func newCumulativeDoubleSumMetric(name string, value float64) (pmetric.Metric, p
 	dp := metric.Sum().DataPoints().AppendEmpty()
 	dp.SetDoubleValue(value)
 	return metric, dp
+}
+
+func newExpoHistoDataPoint() pmetric.ExponentialHistogramDataPoint {
+	dp := pmetric.NewExponentialHistogramDataPoint()
+	dp.SetScale(4)
+	dp.SetCount(100)
+	dp.SetSum(50.0)
+	dp.SetMin(0.1)
+	dp.SetMax(2.0)
+	dp.SetZeroCount(0)
+	dp.Positive().SetOffset(10)
+	dp.Positive().BucketCounts().Append(5, 20, 50, 20, 5)
+	return dp
+}
+
+func TestExpoHistoVariationIsDeterministic(t *testing.T) {
+	dpA := newExpoHistoDataPoint()
+	dpB := newExpoHistoDataPoint()
+	dpC := newExpoHistoDataPoint()
+
+	hash := IdentityHash("test.expo", dpA.Attributes())
+
+	ApplyExponentialHistogramVariation(dpA, 7, hash)
+	ApplyExponentialHistogramVariation(dpB, 7, hash)
+	ApplyExponentialHistogramVariation(dpC, 8, hash)
+
+	assert.Equal(t, dpA.Count(), dpB.Count(), "same instance should produce same count")
+	assert.Equal(t, dpA.Sum(), dpB.Sum(), "same instance should produce same sum")
+	assert.NotEqual(t, dpA.Count(), dpC.Count(), "different instances should produce different counts")
+}
+
+func TestExpoHistoVariationVariesAcrossInstances(t *testing.T) {
+	seenCounts := make(map[uint64]bool)
+	hash := IdentityHash("test.expo", pmetric.NewExponentialHistogramDataPoint().Attributes())
+
+	for instanceID := 0; instanceID < 20; instanceID++ {
+		dp := newExpoHistoDataPoint()
+		ApplyExponentialHistogramVariation(dp, instanceID, hash)
+		seenCounts[dp.Count()] = true
+	}
+
+	assert.Greater(t, len(seenCounts), 5, "should produce diverse counts across instances")
+}
+
+func TestExpoHistoVariationPreservesNonEmptyBuckets(t *testing.T) {
+	hash := IdentityHash("test.expo", pmetric.NewExponentialHistogramDataPoint().Attributes())
+
+	for instanceID := 0; instanceID < 50; instanceID++ {
+		dp := newExpoHistoDataPoint()
+		ApplyExponentialHistogramVariation(dp, instanceID, hash)
+
+		assert.Greater(t, dp.Count(), uint64(0), "varied histogram should never be empty for instance %d", instanceID)
+		assert.Greater(t, dp.Positive().BucketCounts().Len(), 0, "should have positive buckets for instance %d", instanceID)
+	}
+}
+
+func TestExpoHistoVariationPreservesMinMax(t *testing.T) {
+	hash := IdentityHash("test.expo", pmetric.NewExponentialHistogramDataPoint().Attributes())
+
+	for instanceID := 0; instanceID < 20; instanceID++ {
+		dp := newExpoHistoDataPoint()
+		origMin := dp.Min()
+		origMax := dp.Max()
+		ApplyExponentialHistogramVariation(dp, instanceID, hash)
+
+		assert.Equal(t, origMin, dp.Min(), "min should be preserved for instance %d", instanceID)
+		assert.Equal(t, origMax, dp.Max(), "max should be preserved for instance %d", instanceID)
+		assert.Greater(t, dp.Sum(), 0.0, "sum should be positive for instance %d", instanceID)
+	}
+}
+
+func TestExpoHistoVariationBucketCountsMatchTotal(t *testing.T) {
+	hash := IdentityHash("test.expo", pmetric.NewExponentialHistogramDataPoint().Attributes())
+
+	for instanceID := 0; instanceID < 20; instanceID++ {
+		dp := newExpoHistoDataPoint()
+		ApplyExponentialHistogramVariation(dp, instanceID, hash)
+
+		var total uint64
+		for i := 0; i < dp.Positive().BucketCounts().Len(); i++ {
+			total += dp.Positive().BucketCounts().At(i)
+		}
+		for i := 0; i < dp.Negative().BucketCounts().Len(); i++ {
+			total += dp.Negative().BucketCounts().At(i)
+		}
+		total += dp.ZeroCount()
+
+		assert.Equal(t, dp.Count(), total, "count should match bucket sum for instance %d", instanceID)
+	}
+}
+
+func TestExpoHistoVariationPreservesMonotonicity(t *testing.T) {
+	gen, err := expohistogen.NewGenerator("builtin/exponential-histograms-high-frequency.ndjson")
+	require.NoError(t, err)
+
+	rng := rand.New(rand.NewSource(42))
+	hash := IdentityHash("test.expo", pmetric.NewExponentialHistogramDataPoint().Attributes())
+
+	template := pmetric.NewExponentialHistogramDataPoint()
+
+	for instanceID := 0; instanceID < 5; instanceID++ {
+		var prevCount uint64
+		var prevSum float64
+
+		for interval := 0; interval < 50; interval++ {
+			gen.MergeInto(rng, template)
+
+			instance := pmetric.NewExponentialHistogramDataPoint()
+			template.CopyTo(instance)
+			ApplyExponentialHistogramVariation(instance, instanceID, hash)
+
+			assert.GreaterOrEqual(t, instance.Count(), prevCount,
+				"instance %d interval %d: count must not decrease (was %d, got %d)",
+				instanceID, interval, prevCount, instance.Count())
+			assert.GreaterOrEqual(t, instance.Sum(), prevSum,
+				"instance %d interval %d: sum must not decrease (was %f, got %f)",
+				instanceID, interval, prevSum, instance.Sum())
+
+			prevCount = instance.Count()
+			prevSum = instance.Sum()
+		}
+	}
 }
