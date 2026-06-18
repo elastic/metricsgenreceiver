@@ -61,7 +61,7 @@ jobs:
             EXT=".exe"
           fi
           builder --config builder-config.yaml
-          mv otelcol-dev/otelcol "otelcol-dev/${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}${EXT}"
+          mv "otelcol-dev/otelcol${EXT}" "otelcol-dev/${PROJECT_NAME}_${{ matrix.os }}_${{ matrix.arch }}${EXT}"
 
       - name: Archive binary
         run: |
