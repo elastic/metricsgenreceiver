@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/elastic/metricsgenreceiver/metricsgenreceiver/internal/dp"
+	"github.com/lightstep/go-expohisto/structure"
 	"go.opentelemetry.io/collector/pdata/pcommon"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 )
@@ -80,6 +81,123 @@ func (g *Generator) GenerateInto(r *rand.Rand, target pmetric.ExponentialHistogr
 	negBuckets.CopyTo(target.Negative())
 }
 
+const cumulativeMaxSize = 320
+
+// MergeInto generates a random delta and merges it into the target
+// data point's existing accumulated value. The target is converted to a
+// go-expohisto structure, the delta is merged in, and the result is written back.
+// Min, max, and sum are tracked from the original pdata values rather than the
+// synthetic midpoints used for bucket replay.
+func (g *Generator) MergeInto(r *rand.Rand, target pmetric.ExponentialHistogramDataPoint) {
+	delta := pmetric.NewExponentialHistogramDataPoint()
+	g.GenerateInto(r, delta)
+
+	prevSum := target.Sum()
+	prevMin := target.Min()
+	prevMax := target.Max()
+	prevCount := target.Count()
+
+	acc := pdataToAccumulator(target)
+	mergePdataIntoAccumulator(acc, delta)
+	writeAccumulatorToPdata(acc, target)
+
+	newSum := prevSum + delta.Sum()
+	target.SetSum(newSum)
+
+	if prevCount == 0 {
+		if delta.HasMin() {
+			target.SetMin(delta.Min())
+		}
+		if delta.HasMax() {
+			target.SetMax(delta.Max())
+		}
+	} else {
+		newMin := prevMin
+		if delta.HasMin() && delta.Min() < newMin {
+			newMin = delta.Min()
+		}
+		target.SetMin(newMin)
+
+		newMax := prevMax
+		if delta.HasMax() && delta.Max() > newMax {
+			newMax = delta.Max()
+		}
+		target.SetMax(newMax)
+	}
+}
+
+func pdataToAccumulator(dp pmetric.ExponentialHistogramDataPoint) *structure.Float64 {
+	acc := &structure.Float64{}
+	acc.Init(structure.NewConfig(structure.WithMaxSize(int32(cumulativeMaxSize))))
+	mergePdataIntoAccumulator(acc, dp)
+	return acc
+}
+
+// mergePdataIntoAccumulator replays the buckets of a pdata delta data point into
+// the go-expohisto accumulator via UpdateByIncr.
+func mergePdataIntoAccumulator(acc *structure.Float64, delta pmetric.ExponentialHistogramDataPoint) {
+	scale := delta.Scale()
+
+	posBuckets := delta.Positive()
+	for i := 0; i < posBuckets.BucketCounts().Len(); i++ {
+		count := posBuckets.BucketCounts().At(i)
+		if count > 0 {
+			bucketIdx := int(posBuckets.Offset()) + i
+			acc.UpdateByIncr(bucketMidpoint(bucketIdx, int(scale)), count)
+		}
+	}
+
+	negBuckets := delta.Negative()
+	for i := 0; i < negBuckets.BucketCounts().Len(); i++ {
+		count := negBuckets.BucketCounts().At(i)
+		if count > 0 {
+			bucketIdx := int(negBuckets.Offset()) + i
+			acc.UpdateByIncr(-bucketMidpoint(bucketIdx, int(scale)), count)
+		}
+	}
+
+	if delta.ZeroCount() > 0 {
+		acc.UpdateByIncr(0, delta.ZeroCount())
+	}
+}
+
+// bucketMidpoint returns a representative value for exponential histogram bucket
+// at the given index and scale. The value is chosen so that go-expohisto's
+// MapToIndex maps it back to the same bucket index.
+func bucketMidpoint(index int, scale int) float64 {
+	return math.Exp2((float64(index) + 0.5) * math.Ldexp(1.0, -scale))
+}
+
+// writeAccumulatorToPdata writes the go-expohisto histogram state into a pdata
+// ExponentialHistogramDataPoint, preserving attributes and timestamps.
+func writeAccumulatorToPdata(h *structure.Float64, target pmetric.ExponentialHistogramDataPoint) {
+	target.SetScale(h.Scale())
+	target.SetCount(h.Count())
+	target.SetSum(h.Sum())
+	target.SetZeroCount(h.ZeroCount())
+	target.SetZeroThreshold(0)
+
+	if h.Count() > 0 {
+		target.SetMin(h.Min())
+		target.SetMax(h.Max())
+	} else {
+		target.RemoveMin()
+		target.RemoveMax()
+	}
+
+	writeBucketsToPdata(h.Positive(), target.Positive())
+	writeBucketsToPdata(h.Negative(), target.Negative())
+}
+
+func writeBucketsToPdata(src *structure.Buckets, target pmetric.ExponentialHistogramDataPointBuckets) {
+	fresh := pmetric.NewExponentialHistogramDataPointBuckets()
+	fresh.SetOffset(src.Offset())
+	for i := uint32(0); i < src.Len(); i++ {
+		fresh.BucketCounts().Append(src.At(i))
+	}
+	fresh.CopyTo(target)
+}
+
 type bucketSummary struct {
 	Count uint64
 	Sum   float64
@@ -97,7 +215,7 @@ func randomizedBucketSummary(r *rand.Rand, buckets pmetric.ExponentialHistogramD
 	for i := 0; i < buckets.BucketCounts().Len(); i++ {
 		count := buckets.BucketCounts().At(i)
 		if count > 0 {
-			value := lowerBucketBoundary(float64(buckets.Offset()+int32(i))+r.Float64(), int(scale))
+			value := LowerBucketBoundary(float64(buckets.Offset()+int32(i))+r.Float64(), int(scale))
 			summary.Count += count
 			summary.Sum += value * float64(count)
 			if value < summary.Min {
@@ -111,7 +229,7 @@ func randomizedBucketSummary(r *rand.Rand, buckets pmetric.ExponentialHistogramD
 	return summary
 }
 
-func lowerBucketBoundary(index float64, scale int) float64 {
+func LowerBucketBoundary(index float64, scale int) float64 {
 	inverseFactor := math.Ldexp(math.Ln2, -scale)
 	return 2.0 * math.Exp((index-float64(int64(1)<<scale))*inverseFactor)
 }
