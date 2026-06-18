@@ -18,7 +18,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_BOT_TOKEN }}
+          token: ${{ secrets.RELEASE_BOT_TOKEN || github.token }}
 
       - run: |
           latest=$(git tag -l 'v*.*.*' --sort=-v:refname | sed -n '1p')
