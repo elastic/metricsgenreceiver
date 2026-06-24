@@ -52,6 +52,11 @@ type Scenario struct {
 	// the order ForEachDataPoint visits them. Precomputed once so the per-instance emission path
 	// avoids re-hashing the attribute set on every tick.
 	seriesIdentityHashes []uint64
+	// seriesPlans holds the resolved per-series variation strategy and precision for each number
+	// data point, indexed like seriesIdentityHashes. Precomputed once so the per-instance emission
+	// path avoids per-data-point hint/precision map lookups and strategy dispatch. Entries for
+	// non-number data points carry a zero-value plan and are unused.
+	seriesPlans []distribution.NumberSeriesPlan
 }
 
 type scenarioInstance struct {
@@ -163,19 +168,25 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 				resource: resource,
 			}
 		}
+		precision := distribution.InferPrecision(&metrics)
 		seriesIdentityHashes := make([]uint64, metrics.DataPointCount())
+		seriesPlans := make([]distribution.NumberSeriesPlan, metrics.DataPointCount())
 		dp.ForEachDataPoint(&metrics, func(idx int, _ pcommon.Resource, _ pcommon.InstrumentationScope, m pmetric.Metric, dataPoint dp.DataPoint) {
 			seriesIdentityHashes[idx] = distribution.IdentityHash(m.Name(), dataPoint.Attributes())
+			if _, isNumber := dataPoint.(pmetric.NumberDataPoint); isNumber {
+				seriesPlans[idx] = distribution.PlanNumberSeries(m, generationHints, precision)
+			}
 		})
 		scenarios = append(scenarios, Scenario{
 			config:                    scn,
 			metricsTemplate:           &metrics,
 			instances:                 instances,
-			precision:                 distribution.InferPrecision(&metrics),
+			precision:                 precision,
 			generationHints:           generationHints,
 			nextReplacementInstanceID: scn.Scale,
 			churnRate:                 newChurnRate(scn.Churn, scn.Scale, cfg.Interval),
 			seriesIdentityHashes:      seriesIdentityHashes,
+			seriesPlans:               seriesPlans,
 		})
 	}
 
@@ -392,6 +403,7 @@ func (r *MetricsGenReceiver) produceMetricsForInstance(ctx context.Context, rng 
 		distribution.EmitForInstance(dataPoint, m, distribution.InstanceEmitOptions{
 			InstanceID:   instance.id,
 			IdentityHash: scn.seriesIdentityHashes[idx],
+			Plan:         scn.seriesPlans[idx],
 			Hints:        scn.generationHints,
 			Precision:    scn.precision,
 			Variation: distribution.InstanceVariationOptions{
