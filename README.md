@@ -31,11 +31,11 @@ metricsgenreceiver is a receiver for the otel collector. To build the otelcollec
 
 ```bash
 curl --proto '=https' --tlsv1.2 -fL -o ocb \
-https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv0.154.0/ocb_0.154.0_darwin_arm64
+https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/cmd%2Fbuilder%2Fv0.155.0/ocb_0.155.0_darwin_arm64
 chmod +x ocb
 ```
 
-Be aware, currently this exact version is needed (v0.154.0).
+Be aware, currently this exact version is needed (v0.155.0).
 
 Then run the following command:
 
