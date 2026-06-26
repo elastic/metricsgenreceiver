@@ -1,0 +1,82 @@
+name: Benchmark
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: bench-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    name: Benchmark Comparison
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: 'metricsgenreceiver/go.mod'
+
+      - name: Install benchstat
+        run: go install golang.org/x/perf/cmd/benchstat@latest
+
+      # Both runs happen sequentially in this job on the same runner to eliminate
+      # cross-machine variance. No caching: comparing results from different runner
+      # instances introduces noise that can look like a regression.
+      - name: Benchmark base branch
+        run: |
+          git checkout ${{ github.event.pull_request.base.sha }}
+          cd metricsgenreceiver
+          go test -run='^$' -bench=BenchmarkMetricsGenReceiver -benchtime=1x -count=10 -timeout=20m . \
+            | tee ../bench-base.txt
+
+      - name: Benchmark PR HEAD
+        run: |
+          git checkout ${{ github.event.pull_request.head.sha }}
+          cd metricsgenreceiver
+          go test -run='^$' -bench=BenchmarkMetricsGenReceiver -benchtime=1x -count=10 -timeout=20m . \
+            | tee ../bench-head.txt
+
+      - name: Build comment body
+        id: comment
+        run: |
+          export BENCHSTAT_OUT=$(benchstat bench-base.txt bench-head.txt 2>&1) || true
+          export BASE_SHORT="${{ github.event.pull_request.base.sha }}"
+          export BASE_SHORT="${BASE_SHORT:0:8}"
+          export HEAD_SHORT="${{ github.event.pull_request.head.sha }}"
+          export HEAD_SHORT="${HEAD_SHORT:0:8}"
+          export RAW_BASE=$(cat bench-base.txt)
+          export RAW_HEAD=$(cat bench-head.txt)
+
+          {
+            echo 'body<<BODY_DELIMITER'
+            envsubst '$BENCHSTAT_OUT $BASE_SHORT $HEAD_SHORT $RAW_BASE $RAW_HEAD' \
+              < .github/templates/bench-comment.md
+            echo 'BODY_DELIMITER'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Find existing comment
+        uses: peter-evans/find-comment@v4
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '## Benchmark Results'
+
+      - name: Post or update benchmark comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: ${{ steps.comment.outputs.body }}
