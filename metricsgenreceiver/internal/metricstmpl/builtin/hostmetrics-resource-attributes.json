@@ -8,7 +8,9 @@
             "value": {
               "stringValue": "host-{{.InstanceID}}"
             }
-          },
+          }
+          {{if not .Vars.exclude_host_ip_mac}}
+          ,
           {
             "key": "host.ip",
             "value": {
@@ -81,6 +83,7 @@
               }
             }
           }
+          {{end}}
         ]
       }
     }
