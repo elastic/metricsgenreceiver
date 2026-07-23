@@ -162,6 +162,66 @@ func TestReceiver(t *testing.T) {
 	}
 }
 
+func TestReceiverExcludeHostIPMAC(t *testing.T) {
+	tests := []struct {
+		name         string
+		templateVars map[string]any
+		wantIPMAC    bool
+	}{
+		{
+			name:         "default includes host.ip and host.mac",
+			templateVars: nil,
+			wantIPMAC:    true,
+		},
+		{
+			name:         "exclude_host_ip_mac true excludes host.ip and host.mac",
+			templateVars: map[string]any{"exclude_host_ip_mac": true},
+			wantIPMAC:    false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			sink := new(consumertest.MetricsSink)
+
+			factory := NewFactory()
+			cfg := testdataConfigYamlAsMap()
+			cfg.Scenarios[0].Path = "builtin/hostmetrics"
+			cfg.Scenarios[0].TemplateVars = test.templateVars
+			rcv, err := factory.CreateMetrics(context.Background(), receivertest.NewNopSettings(typ), cfg, sink)
+			require.NoError(t, err)
+			require.NoError(t, rcv.Start(context.Background(), nil))
+
+			require.EventuallyWithT(t, func(c *assert.CollectT) {
+				require.Greater(c, sink.DataPointCount(), 0)
+			}, 2*time.Second, time.Millisecond)
+			require.NoError(t, rcv.Shutdown(context.Background()))
+
+			allMetrics := sink.AllMetrics()
+			require.NotEmpty(t, allMetrics)
+
+			wantIPMACAssertion := assert.False
+			if test.wantIPMAC {
+				wantIPMACAssertion = assert.True
+			}
+
+			for _, md := range allMetrics {
+				for i := 0; i < md.ResourceMetrics().Len(); i++ {
+					attrs := md.ResourceMetrics().At(i).Resource().Attributes()
+
+					_, hasName := attrs.Get("host.name")
+					assert.True(t, hasName, "host.name must always be present")
+
+					_, hasIP := attrs.Get("host.ip")
+					_, hasMAC := attrs.Get("host.mac")
+					wantIPMACAssertion(t, hasIP, "host.ip presence")
+					wantIPMACAssertion(t, hasMAC, "host.mac presence")
+				}
+			}
+		})
+	}
+}
+
 func TestReceiverAppliesGenerationHints(t *testing.T) {
 	sink := new(consumertest.MetricsSink)
 

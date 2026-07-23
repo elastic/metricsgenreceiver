@@ -170,4 +170,14 @@ func BenchmarkMetricsGenReceiver(b *testing.B) {
 		}}
 		runBench(b, cfg)
 	})
+
+	b.Run("hostmetrics-exclude-host-ip-mac", func(b *testing.B) {
+		cfg := benchBaseConfig()
+		cfg.Scenarios = []ScenarioCfg{{
+			Path:         "builtin/hostmetrics",
+			Scale:        100,
+			TemplateVars: map[string]any{"exclude_host_ip_mac": true},
+		}}
+		runBench(b, cfg)
+	})
 }

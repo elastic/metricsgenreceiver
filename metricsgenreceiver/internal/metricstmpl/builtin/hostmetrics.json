@@ -21,6 +21,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -45,6 +46,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
@@ -1052,6 +1054,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -1076,6 +1079,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
@@ -1234,6 +1238,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -1258,6 +1263,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
@@ -1526,6 +1532,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -1550,6 +1557,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
@@ -2218,6 +2226,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -2242,6 +2251,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
@@ -2385,6 +2395,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -2409,6 +2420,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
@@ -2809,6 +2821,7 @@
               "stringValue": "arm64"
             }
           },
+          {{if not .exclude_host_ip_mac}}
           {
             "key": "host.ip",
             "value": {
@@ -2833,6 +2846,7 @@
               }
             }
           },
+          {{end}}
           {
             "key": "os.description",
             "value": {
