@@ -200,17 +200,22 @@ func TestReceiverExcludeHostIPMAC(t *testing.T) {
 			allMetrics := sink.AllMetrics()
 			require.NotEmpty(t, allMetrics)
 
+			wantIPMACAssertion := assert.False
+			if test.wantIPMAC {
+				wantIPMACAssertion = assert.True
+			}
+
 			for _, md := range allMetrics {
 				for i := 0; i < md.ResourceMetrics().Len(); i++ {
 					attrs := md.ResourceMetrics().At(i).Resource().Attributes()
 
 					_, hasName := attrs.Get("host.name")
-					require.True(t, hasName, "host.name must always be present")
+					assert.True(t, hasName, "host.name must always be present")
 
 					_, hasIP := attrs.Get("host.ip")
 					_, hasMAC := attrs.Get("host.mac")
-					require.Equal(t, test.wantIPMAC, hasIP, "host.ip presence")
-					require.Equal(t, test.wantIPMAC, hasMAC, "host.mac presence")
+					wantIPMACAssertion(t, hasIP, "host.ip presence")
+					wantIPMACAssertion(t, hasMAC, "host.mac presence")
 				}
 			}
 		})
