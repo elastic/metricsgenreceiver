@@ -298,6 +298,88 @@ func TestDefaultInstanceVariationForUnhintedMetrics(t *testing.T) {
 	assert.NotEqual(t, dpA.DoubleValue(), dpB.DoubleValue())
 }
 
+func TestEmitForInstanceWithPlannedNumberSeriesMatchesFallback(t *testing.T) {
+	start := time.Unix(1000, 0)
+	variation := InstanceVariationOptions{
+		Timestamp:        start.Add(5 * time.Minute),
+		StartTime:        start,
+		Interval:         30 * time.Second,
+		CounterBaseDelta: 100,
+	}
+
+	tests := []struct {
+		name      string
+		hints     map[string]MetricGenerationHint
+		precision map[string]int
+		build     func() (pmetric.Metric, pmetric.NumberDataPoint)
+		assert    func(t *testing.T, planned pmetric.NumberDataPoint, fallback pmetric.NumberDataPoint)
+	}{
+		{
+			name: "hinted slow gauge uses planned precision",
+			hints: map[string]MetricGenerationHint{
+				"test.slow_gauge": {Class: GenerationHintSlowGauge},
+			},
+			precision: map[string]int{"test.slow_gauge": 2},
+			build: func() (pmetric.Metric, pmetric.NumberDataPoint) {
+				return newGaugeDoubleMetric("test.slow_gauge", 42.123)
+			},
+			assert: func(t *testing.T, planned pmetric.NumberDataPoint, fallback pmetric.NumberDataPoint) {
+				assert.Equal(t, fallback.DoubleValue(), planned.DoubleValue())
+				assert.Equal(t, roundToPrecision(planned.DoubleValue(), 2), planned.DoubleValue())
+			},
+		},
+		{
+			name: "hinted current count uses planned strategy",
+			hints: map[string]MetricGenerationHint{
+				"test.current_count": {Class: GenerationHintCurrentCount},
+			},
+			build: func() (pmetric.Metric, pmetric.NumberDataPoint) {
+				return newGaugeIntMetric("test.current_count", 10)
+			},
+			assert: func(t *testing.T, planned pmetric.NumberDataPoint, fallback pmetric.NumberDataPoint) {
+				assert.Equal(t, fallback.IntValue(), planned.IntValue())
+			},
+		},
+		{
+			name:      "unhinted cumulative counter keeps runtime metric semantics",
+			precision: map[string]int{"test.unhinted_counter": 0},
+			build: func() (pmetric.Metric, pmetric.NumberDataPoint) {
+				return newCumulativeDoubleSumMetric("test.unhinted_counter", 1000.25)
+			},
+			assert: func(t *testing.T, planned pmetric.NumberDataPoint, fallback pmetric.NumberDataPoint) {
+				assert.Equal(t, fallback.DoubleValue(), planned.DoubleValue())
+				assert.Equal(t, roundToPrecision(planned.DoubleValue(), 0), planned.DoubleValue())
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			plannedMetric, plannedDP := tc.build()
+			fallbackMetric, fallbackDP := tc.build()
+			plannedDP.Attributes().PutStr("series", "a")
+			fallbackDP.Attributes().PutStr("series", "a")
+			identityHash := IdentityHash(plannedMetric.Name(), plannedDP.Attributes())
+
+			EmitForInstance(plannedDP, plannedMetric, InstanceEmitOptions{
+				InstanceID:   7,
+				IdentityHash: identityHash,
+				Plan:         PlanNumberSeries(plannedMetric, tc.hints, tc.precision),
+				Variation:    variation,
+			})
+			EmitForInstance(fallbackDP, fallbackMetric, InstanceEmitOptions{
+				InstanceID:   7,
+				IdentityHash: identityHash,
+				Hints:        tc.hints,
+				Precision:    tc.precision,
+				Variation:    variation,
+			})
+
+			tc.assert(t, plannedDP, fallbackDP)
+		})
+	}
+}
+
 func newGaugeDoubleMetric(name string, value float64) (pmetric.Metric, pmetric.NumberDataPoint) {
 	metric := pmetric.NewMetric()
 	metric.SetName(name)
