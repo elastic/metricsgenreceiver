@@ -38,7 +38,41 @@ const (
 // Implementations must be stateless: keeping per-series state would violate the project's
 // bounded-memory design principle.
 type InstanceVariationStrategy interface {
-	ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions)
+	ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision NumberPrecision, opts InstanceVariationOptions)
+}
+
+// NumberPrecision is the decimal precision resolved for a metric family. It is
+// resolved once per data point series (see NumberSeriesPlan) so the emission hot
+// path does not perform a map lookup on every data point.
+type NumberPrecision struct {
+	Decimals int
+	Set      bool
+}
+
+func resolvePrecision(metric pmetric.Metric, precision map[string]int) NumberPrecision {
+	if precision == nil {
+		return NumberPrecision{}
+	}
+	d, ok := precision[metric.Name()]
+	return NumberPrecision{Decimals: d, Set: ok}
+}
+
+// NumberSeriesPlan captures the per-series variation context that is stable across
+// instances and intervals for a given data point index: the resolved variation
+// strategy and decimal precision. Resolving these once at startup keeps the
+// per-emit hot path free of map lookups and strategy dispatch.
+type NumberSeriesPlan struct {
+	strategy  InstanceVariationStrategy
+	precision NumberPrecision
+}
+
+// PlanNumberSeries resolves the variation strategy and precision for a number metric
+// once so the receiver can reuse it for every instance and every interval.
+func PlanNumberSeries(metric pmetric.Metric, hints map[string]MetricGenerationHint, precision map[string]int) NumberSeriesPlan {
+	return NumberSeriesPlan{
+		strategy:  strategyFor(metric, hints),
+		precision: resolvePrecision(metric, precision),
+	}
 }
 
 var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
@@ -56,7 +90,7 @@ var instanceVariations = map[GenerationHintClass]InstanceVariationStrategy{
 // variation is inferred from the metric shape. identityHash must be the value returned by
 // IdentityHash for this data point.
 func ApplyInstanceVariation(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, hints map[string]MetricGenerationHint, precision map[string]int, opts InstanceVariationOptions) {
-	strategyFor(metric, hints).ApplyNumber(v, instanceID, identityHash, metric, precision, opts)
+	strategyFor(metric, hints).ApplyNumber(v, instanceID, identityHash, metric, resolvePrecision(metric, precision), opts)
 }
 
 // InstanceVariationOptions contains timing information used for stateless,
@@ -75,12 +109,17 @@ type InstanceVariationOptions struct {
 type InstanceEmitOptions struct {
 	InstanceID   int
 	IdentityHash uint64
-	Hints        map[string]MetricGenerationHint
-	Precision    map[string]int
-	Variation    InstanceVariationOptions
-	Rand         *rand.Rand
-	Dist         DistributionCfg
-	ExpHistoGen  *expohistogen.Generator
+	// Plan holds the per-series strategy and precision resolved once at startup.
+	// When its strategy is set, the NumberDataPoint path uses it and avoids the
+	// per-emit Hints/Precision map lookups. Hints and Precision remain as a fallback
+	// for callers that do not precompute a plan.
+	Plan        NumberSeriesPlan
+	Hints       map[string]MetricGenerationHint
+	Precision   map[string]int
+	Variation   InstanceVariationOptions
+	Rand        *rand.Rand
+	Dist        DistributionCfg
+	ExpHistoGen *expohistogen.Generator
 }
 
 // EmitForInstance is the single entry point the receiver uses to emit a data point for an
@@ -88,7 +127,11 @@ type InstanceEmitOptions struct {
 func EmitForInstance(dataPoint dp.DataPoint, metric pmetric.Metric, opts InstanceEmitOptions) {
 	switch v := dataPoint.(type) {
 	case pmetric.NumberDataPoint:
-		ApplyInstanceVariation(v, opts.InstanceID, opts.IdentityHash, metric, opts.Hints, opts.Precision, opts.Variation)
+		if opts.Plan.strategy != nil {
+			opts.Plan.strategy.ApplyNumber(v, opts.InstanceID, opts.IdentityHash, metric, opts.Plan.precision, opts.Variation)
+		} else {
+			ApplyInstanceVariation(v, opts.InstanceID, opts.IdentityHash, metric, opts.Hints, opts.Precision, opts.Variation)
+		}
 	case pmetric.ExponentialHistogramDataPoint:
 		ApplyExponentialHistogramVariation(v, opts.InstanceID, opts.IdentityHash)
 	default:
@@ -120,7 +163,7 @@ func defaultInstanceVariationFor(metric pmetric.Metric) InstanceVariationStrateg
 
 type noInstanceVariation struct{}
 
-func (noInstanceVariation) ApplyNumber(pmetric.NumberDataPoint, int, uint64, pmetric.Metric, map[string]int, InstanceVariationOptions) {
+func (noInstanceVariation) ApplyNumber(pmetric.NumberDataPoint, int, uint64, pmetric.Metric, NumberPrecision, InstanceVariationOptions) {
 }
 
 type boundedMultiplierVariation struct {
@@ -144,7 +187,7 @@ func counterVariation() boundedMultiplierVariation {
 	}
 }
 
-func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
+func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision NumberPrecision, opts InstanceVariationOptions) {
 	current := currentNumberDataPointValue(v)
 	if current == 0 {
 		return
@@ -156,7 +199,7 @@ func (s boundedMultiplierVariation) ApplyNumber(v pmetric.NumberDataPoint, insta
 	} else {
 		next = s.applyNonCumulativeVariation(current, identityHash, instanceID, instanceUnit, opts)
 	}
-	writeNumberDataPoint(v, next, metric, precision)
+	writeNumberDataPoint(v, next, precision)
 }
 
 func (s boundedMultiplierVariation) applyCumulativeCounterVariation(current float64, identityHash uint64, instanceID int, instanceUnit float64, opts InstanceVariationOptions) float64 {
@@ -181,7 +224,7 @@ type currentCountVariation struct {
 	maxOffset int64
 }
 
-func (s currentCountVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision map[string]int, opts InstanceVariationOptions) {
+func (s currentCountVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID int, identityHash uint64, metric pmetric.Metric, precision NumberPrecision, opts InstanceVariationOptions) {
 	current := currentNumberDataPointValue(v)
 	span := s.maxOffset - s.minOffset + 1
 	if span <= 0 {
@@ -193,7 +236,7 @@ func (s currentCountVariation) ApplyNumber(v pmetric.NumberDataPoint, instanceID
 	instanceUnit := hashToUnitInterval(mixInstanceID(identityHash, instanceID))
 	multiplier := stableGaugeMultiplier(instanceUnit)
 	next := math.Max(0, current*multiplier+float64(offset))
-	writeNumberDataPoint(v, next, metric, precision)
+	writeNumberDataPoint(v, next, precision)
 }
 
 func stableGaugeMultiplier(instanceUnit float64) float64 {
@@ -284,11 +327,11 @@ func lerp(start, end, fraction float64) float64 {
 	return start + (end-start)*fraction
 }
 
-func writeNumberDataPoint(v pmetric.NumberDataPoint, next float64, metric pmetric.Metric, precision map[string]int) {
+func writeNumberDataPoint(v pmetric.NumberDataPoint, next float64, precision NumberPrecision) {
 	switch v.ValueType() {
 	case pmetric.NumberDataPointValueTypeDouble:
-		if p, ok := precision[metric.Name()]; ok {
-			next = roundToPrecision(next, p)
+		if precision.Set {
+			next = roundToPrecision(next, precision.Decimals)
 		}
 		v.SetDoubleValue(next)
 	case pmetric.NumberDataPointValueTypeInt:
