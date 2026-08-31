@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 concurrency:
   group: bench-${{ github.event.pull_request.number }}
@@ -48,7 +47,6 @@ jobs:
             | tee ../bench-head.txt
 
       - name: Build comment body
-        id: comment
         run: |
           export BENCHSTAT_OUT=$(benchstat bench-base.txt bench-head.txt 2>&1) || true
           export BASE_SHORT="${{ github.event.pull_request.base.sha }}"
@@ -58,25 +56,13 @@ jobs:
           export RAW_BASE=$(cat bench-base.txt)
           export RAW_HEAD=$(cat bench-head.txt)
 
-          {
-            echo 'body<<BODY_DELIMITER'
-            envsubst '$BENCHSTAT_OUT $BASE_SHORT $HEAD_SHORT $RAW_BASE $RAW_HEAD' \
-              < .github/templates/bench-comment.md
-            echo 'BODY_DELIMITER'
-          } >> "$GITHUB_OUTPUT"
+          envsubst '$BENCHSTAT_OUT $BASE_SHORT $HEAD_SHORT $RAW_BASE $RAW_HEAD' \
+            < .github/templates/bench-comment.md \
+            > comment-body.md
 
-      - name: Find existing comment
-        uses: peter-evans/find-comment@v4
-        id: find-comment
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '## Benchmark Results'
-
-      - name: Post or update benchmark comment
-        uses: peter-evans/create-or-update-comment@v5
-        with:
-          comment-id: ${{ steps.find-comment.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          edit-mode: replace
-          body: ${{ steps.comment.outputs.body }}
+          name: bench-comment
+          path: comment-body.md
+          retention-days: 1
