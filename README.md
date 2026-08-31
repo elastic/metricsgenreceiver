@@ -217,3 +217,4 @@ service:
       receivers: [metricsgen]
       exporters: [nop]
 ```
+
