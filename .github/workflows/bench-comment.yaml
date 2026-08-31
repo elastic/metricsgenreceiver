@@ -22,18 +22,31 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
+      # github.event.workflow_run.pull_requests is only populated for PRs whose
+      # head branch lives in this repo, so it's empty for fork PRs. Look the PR
+      # up by head SHA instead, which works regardless of where the branch lives.
+      - name: Resolve PR number
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh api "repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_sha }}/pulls" --jq '.[0].number')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
       - name: Find existing comment
+        if: steps.pr.outputs.number != ''
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
         id: find-comment
         with:
-          issue-number: ${{ github.event.workflow_run.pull_requests[0].number }}
+          issue-number: ${{ steps.pr.outputs.number }}
           comment-author: 'github-actions[bot]'
           body-includes: '## Benchmark Results'
 
       - name: Post or update benchmark comment
+        if: steps.pr.outputs.number != ''
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
-          issue-number: ${{ github.event.workflow_run.pull_requests[0].number }}
+          issue-number: ${{ steps.pr.outputs.number }}
           edit-mode: replace
           body-path: comment-body.md
