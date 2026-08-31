@@ -23,14 +23,15 @@ jobs:
           github-token: ${{ github.token }}
 
       # github.event.workflow_run.pull_requests is only populated for PRs whose
-      # head branch lives in this repo, so it's empty for fork PRs. Look the PR
-      # up by head SHA instead, which works regardless of where the branch lives.
+      # head branch lives in this repo, so it's empty for fork PRs. The
+      # commits/{sha}/pulls REST endpoint has the same gap for fork commits
+      # (it isn't reliably indexed), so use search instead.
       - name: Resolve PR number
         id: pr
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          number=$(gh api "repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_sha }}/pulls" --jq '.[0].number')
+          number=$(gh api "search/issues?q=${{ github.event.workflow_run.head_sha }}+repo:${{ github.repository }}+type:pr" --jq '.items[0].number')
           echo "number=$number" >> "$GITHUB_OUTPUT"
 
       - name: Find existing comment
