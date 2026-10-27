@@ -1,5 +1,5 @@
 # This currently only works for OS X ARM64.
-OCB_VERSION ?= 0.163.2
+OCB_VERSION ?= 0.164.0
 
 .PHONY: test
 test:
