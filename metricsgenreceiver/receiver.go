@@ -24,6 +24,36 @@ import (
 	"go.uber.org/zap"
 )
 
+// exitCoordinator decides when a process with exit_after_end receivers should exit: only once every such receiver in
+// the process has finished generating. A collector runs one process, so the coordinator is process-wide.
+//
+// Receivers register in newMetricsGenReceiver, which the collector runs for every receiver before any Start, so the
+// pending count is complete before the first receiver can finish. Exactly one receiver sees finish return true, so the
+// fatal status is reported once, from one goroutine, and cannot block on a collector that has already begun shutdown.
+type exitCoordinator struct {
+	mu      sync.Mutex
+	pending int
+}
+
+var exits exitCoordinator
+
+func (c *exitCoordinator) register() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.pending++
+}
+
+// finish records that one registered receiver has finished generating and reports whether it was the last one.
+func (c *exitCoordinator) finish() bool {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if c.pending <= 0 {
+		return false
+	}
+	c.pending--
+	return c.pending == 0
+}
+
 type MetricsGenReceiver struct {
 	cfg       *Config
 	obsreport *receiverhelper.ObsReport
@@ -190,6 +220,10 @@ func newMetricsGenReceiver(cfg *Config, set receiver.Settings) (*MetricsGenRecei
 		})
 	}
 
+	if cfg.ExitAfterEnd {
+		exits.register()
+	}
+
 	return &MetricsGenReceiver{
 		cfg:         cfg,
 		settings:    set,
@@ -238,7 +272,12 @@ func (r *MetricsGenReceiver) Start(ctx context.Context, host component.Host) err
 			currentTime = currentTime.Add(r.cfg.Interval)
 		}
 		if r.cfg.ExitAfterEnd {
-			// After the runner has finished generating metrics, we wait for the configured duration before exiting.
+			if !exits.finish() {
+				// Another exit_after_end receiver in this process is still generating; it will ask for the exit.
+				r.settings.Logger.Info("finished generating metrics, waiting for the other receivers before exiting")
+				return
+			}
+			// This is the last exit_after_end receiver: wait for the configured duration before exiting.
 			if r.cfg.ExitAfterEndTimeout > 0 {
 				r.settings.Logger.Info("finished generating metrics, waiting before exiting",
 					zap.Duration("exit_after_end_timeout", r.cfg.ExitAfterEndTimeout),
